@@ -235,9 +235,14 @@ impl Publisher {
             .deploy(&wasm_hash))
     }
 
-    pub fn get_num(env: Env, contract_name: String) -> Result<u64, Error> {
+    /// How many deploys have been made for the given contract.
+    pub fn get_num_deploys(
+        env: Env,
+        contract_name: String,
+        version: Option<u32>,
+    ) -> Result<u64, Error> {
         let contracts = Contracts::get(&env);
-        let binary = contracts.find_version(contract_name, None)?;
+        let binary = contracts.find_version(contract_name, version)?;
         Ok(binary.num_deployed)
     }
 }

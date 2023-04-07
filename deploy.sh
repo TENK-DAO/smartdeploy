@@ -52,5 +52,8 @@ $smartdeploy --help
 
 if test "$FILE_HASH" = ""; then
     $smartdeploy register_name --contract_name hello_world --author "$(soroban config identity address default)"
-    $smartdeploy publish_binary --contract_name hello_world --hash 6c453071976d247e6c8552034ba24a7b6ba95d599eb216d72a15bf8bd7176a8a
+    $smartdeploy publish_binary \
+      --contract_name hello_world \
+      --hash 6c453071976d247e6c8552034ba24a7b6ba95d599eb216d72a15bf8bd7176a8a \
+      --repo https://github.com/AhaLabs/soroban-examples/tree/0d977e1b56d3b7007855f6557248e17f37081699/hello_world
 fi

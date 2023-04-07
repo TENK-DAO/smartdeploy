@@ -46,19 +46,19 @@ fn handle_error_cases() {
     let res = client.try_register_name(&other_address, name).unwrap_err();
     assert!(matches!(res, Ok(crate::Error::AlreadyRegistered)));
 
-    let res = client.get_num(name);
+    let res = client.get_num_deploys(name, &None);
     std::println!("num {res:?}");
 
     let res = client.try_deploy(name, &None);
     std::println!("{res:?}");
 
-    let res = client.get_num(name);
+    let res = client.get_num_deploys(name, &None);
     std::println!("num {res:?}");
 
     let res = client.try_deploy(name, &None);
     std::println!("{res:?}");
 
-    let res = client.get_num(name);
+    let res = client.get_num_deploys(name, &None);
     std::println!("num {res:?}");
 
     let res = client.try_deploy(name, &None);

@@ -41,18 +41,18 @@ soroban config network add --global --rpc-url https://rpc-futurenet.stellar.org:
 
 ## Invoking the contract
 
-Currently SmartDeploy is deployed to `d2ac92199a97697a35f249de07d6c3e10180bfe97c7be2cc44f13a035307197c`.
+Currently SmartDeploy is deployed to `35341e1989b452ebba2119754f5b02b043a4838477902718073770d8354dca63`.
 
 To see if it's working let's look at the contract's help doc.
 
 ```bash
-soroban contract invoke --id d2ac92199a97697a35f249de07d6c3e10180bfe97c7be2cc44f13a035307197c --network futurenet --source default -- --help
+soroban contract invoke --id 35341e1989b452ebba2119754f5b02b043a4838477902718073770d8354dca63 --network futurenet --source default -- --help
 ```
 
 You should see something like
 
 ```
-Usage: d2ac92199a97697a35f249de07d6c3e10180bfe97c7be2cc44f13a035307197c [COMMAND]
+Usage: 35341e1989b452ebba2119754f5b02b043a4838477902718073770d8354dca63 [COMMAND]
 
 Commands:
   register_name   Register a contract name to allow publishing.
@@ -71,10 +71,12 @@ Options:
   -h, --help  Print help
 ```
 
+## Creating an alias
+
 That command was a bit long and this behaves like its own CLI command so let's make an alias for it!
 
 ```bash
-alias smartdeploy="soroban contract invoke --id d2ac92199a97697a35f249de07d6c3e10180bfe97c7be2cc44f13a035307197c --network futurenet --source default --"
+alias smartdeploy="soroban contract invoke --id 35341e1989b452ebba2119754f5b02b043a4838477902718073770d8354dca63 --network futurenet --source default --"
 ```
 
 Now it's just:
@@ -88,7 +90,7 @@ Add this alias to your .bashrc or .zshrc to have this added when you launch your
 The hello world example is published so let's fetch the bytes. First let's see the help doc:
 
 ```bash
-smartdeploy fetch --help
+smartdeploy fetch_metadata --help
 ```
 
 Should return
@@ -115,15 +117,25 @@ Options:
 The contract is named `hello_world`.
 
 ```bash
+smartdeploy fetch_metadata --contract_name hello_world
+```
+
+Should return `"{"repo":"https://github.com/AhaLabs/soroban-examples/tree/0d977e1b56d3b7007855f6557248e17f37081699/hello_world"}"`.
+
+This allows you to audit the code before deciding to deploy it.
+
+Next we can fetch the hash of the contract with `fetch`:
+
+```bash
 smartdeploy fetch --contract_name hello_world
 ```
 
-Should return `"6c453071976d247e6c8552034ba24a7b6ba95d599eb216d72a15bf8bd7176a8a"`
+should return: `"6c453071976d247e6c8552034ba24a7b6ba95d599eb216d72a15bf8bd7176a8a"`
 
-We could now copy this and use:
+We could now copy the hash and manually deploy it:
 
 ```bash
-soroban contract deploy --wasm-hash 6c453071976d247e6c8552034ba24a7b6ba95d599eb216d72a15bf8bd7176a8a --identity default --network futurenet`
+soroban contract deploy --wasm-hash 6c453071976d247e6c8552034ba24a7b6ba95d599eb216d72a15bf8bd7176a8a --identity default --network futurenet --salt "00"`
 ```
 
 But SmartDeploy has deploy in the name!
@@ -161,17 +173,17 @@ So let's deploy a hello world contract.
 smartdeploy deploy --contract_name hello_world
 ```
 
-This should return a contract id.  One such example is c528c4666ae3c03d10e76a42015620db7a07a9eac665c70dedb99bc1e6c16ca1.
+This should return a contract id.  One such example is c9ccbd0e91bb8ea123b323b22379f76024a4ff4cd6b1541aa4f68fa531d65af6.
 
 You can test to see if it's working with checking for the help docs.
 
 ```bash
-soroban contract invoke --id c528c4666ae3c03d10e76a42015620db7a07a9eac665c70dedb99bc1e6c16ca1 --network futurenet -- --help
+soroban contract invoke  --network futurenet --id c9ccbd0e91bb8ea123b323b22379f76024a4ff4cd6b1541aa4f68fa531d65af6 -- --help
 ```
 
 Should return:
 ```
-Usage: c528c4666ae3c03d10e76a42015620db7a07a9eac665c70dedb99bc1e6c16ca1 [COMMAND]
+Usage: c9ccbd0e91bb8ea123b323b22379f76024a4ff4cd6b1541aa4f68fa531d65af6 [COMMAND]
 
 Commands:
   hello  
@@ -181,6 +193,13 @@ Options:
   -h, --help  Print help
 
 ```
+
+Finally, let's call the deployed contract!
+
+```bash
+soroban contract invoke --id c9ccbd0e91bb8ea123b323b22379f76024a4ff4cd6b1541aa4f68fa531d65af6 --network futurenet -- hello --to world
+```
+
 ## Deploying your own version of smartdeploy
 
 To make it eaiser you can use the provided scripts to set things up:
