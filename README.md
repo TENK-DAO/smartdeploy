@@ -38,7 +38,8 @@ Next you need to add futurenet as a network:
 ```bash
 soroban config network add --global \
                            --rpc-url https://rpc-futurenet.stellar.org:443/soroban/rpc \
-                           --network-passphrase "Test SDF Future Network ; October 2022" futurenet
+                           --network-passphrase "Test SDF Future Network ; October 2022" \
+                           futurenet
 ```
 
 ## Invoking the contract
