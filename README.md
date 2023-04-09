@@ -36,7 +36,9 @@ curl "https://friendbot-futurenet.stellar.org/?addr=$(soroban config identity ad
 Next you need to add futurenet as a network:
 
 ```bash
-soroban config network add --global --rpc-url https://rpc-futurenet.stellar.org:443/soroban/rpc --network-passphrase "Test SDF Future Network ; October 2022" futurenet
+soroban config network add --global \
+                           --rpc-url https://rpc-futurenet.stellar.org:443/soroban/rpc \
+                           --network-passphrase "Test SDF Future Network ; October 2022" futurenet
 ```
 
 ## Invoking the contract
@@ -46,7 +48,10 @@ Currently SmartDeploy is deployed to `35341e1989b452ebba2119754f5b02b043a4838477
 To see if it's working let's look at the contract's help doc.
 
 ```bash
-soroban contract invoke --id 35341e1989b452ebba2119754f5b02b043a4838477902718073770d8354dca63 --network futurenet --source default -- --help
+soroban contract invoke --id 35341e1989b452ebba2119754f5b02b043a4838477902718073770d8354dca63 \
+                        --network futurenet \
+                        --source default \
+                        -- --help
 ```
 
 You should see something like
@@ -87,7 +92,7 @@ smartdeploy --help
 
 Add this alias to your .bashrc or .zshrc to have this added when you launch your shell.
 
-The hello world example is published so let's fetch the bytes. First let's see the help doc:
+The hello world example is published so let's fetch the metadata. First let's see the help doc:
 
 ```bash
 smartdeploy fetch_metadata --help
