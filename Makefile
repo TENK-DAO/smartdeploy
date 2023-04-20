@@ -7,11 +7,7 @@ test: build
 	cargo test --features testutils
 
 build:
-	cargo build --target wasm32-unknown-unknown --release
-	cd target/wasm32-unknown-unknown/release/ && \
-		for i in *.wasm ; do \
-			ls -l "$$i"; \
-		done
+	cargo build --target wasm32-unknown-unknown --profile release-with-logs
 
 watch:
 	cargo watch --clear --watch-when-idle --shell '$(MAKE)'

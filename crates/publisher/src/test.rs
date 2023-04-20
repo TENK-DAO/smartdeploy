@@ -38,7 +38,7 @@ fn handle_error_cases() {
     let res = client.try_fetch(name, &None).unwrap_err();
     assert!(matches!(res, Ok(crate::Error::NoSuchVersion)));
 
-    client.publish_binary(name, &wasm_hash, &None);
+    client.publish_binary(name, &wasm_hash, &None, &None);
     let res = client.try_fetch(name, &None).unwrap().unwrap();
     assert_eq!(res, wasm_hash);
 
@@ -49,19 +49,19 @@ fn handle_error_cases() {
     let res = client.get_num_deploys(name, &None);
     std::println!("num {res:?}");
 
-    let res = client.try_deploy(name, &None);
+    let res = client.try_deploy(name, &None, &String::from_slice(env, "hello"), &None);
     std::println!("{res:?}");
 
     let res = client.get_num_deploys(name, &None);
     std::println!("num {res:?}");
 
-    let res = client.try_deploy(name, &None);
+    let res = client.try_deploy(name, &None, &String::from_slice(env, "hello"), &None);
     std::println!("{res:?}");
 
     let res = client.get_num_deploys(name, &None);
     std::println!("num {res:?}");
 
-    let res = client.try_deploy(name, &None);
+    let res = client.try_deploy(name, &None, &String::from_slice(env, "hello"), &None);
     std::println!("{res:?}");
 }
 
@@ -72,20 +72,20 @@ fn returns_most_recent_version() {
     client.register_name(address, name);
     let wasm_hash = env.install_contract_wasm(contract::WASM);
 
-    client.publish_binary(name, &wasm_hash, &None);
+    client.publish_binary(name, &wasm_hash, &None, &None);
 
     let second_hash: BytesN<32> = BytesN::random(env);
-    client.publish_binary(name, &second_hash, &None);
+    client.publish_binary(name, &second_hash, &None, &None);
     let res = client.fetch(name, &None);
     assert_eq!(res, second_hash);
 
     let third_hash: BytesN<32> = BytesN::random(env);
-    client.publish_binary(name, &third_hash, &None);
+    client.publish_binary(name, &third_hash, &None, &None);
     let res = client.fetch(name, &None);
     assert_eq!(res, third_hash);
 
     let third_hash: BytesN<32> = BytesN::random(env);
-    client.publish_binary(name, &third_hash, &None);
+    client.publish_binary(name, &third_hash, &None, &None);
     let res = client.fetch(name, &None);
     assert_eq!(res, third_hash);
 }

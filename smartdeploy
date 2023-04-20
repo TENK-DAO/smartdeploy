@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd );
+ID="$(cat $SCRIPT_DIR/contract_id.txt)"
+
+soroban -v contract invoke --network futurenet --source default --id $ID -- $@

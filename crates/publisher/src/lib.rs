@@ -1,8 +1,13 @@
 #![no_std]
-
 use soroban_sdk::{
-    contracterror, contractimpl, contracttype, log, Address, BytesN, Env, Map, String, TryFromVal,
+    self, contracterror, contractimpl, contracttype, log, Address, Bytes, BytesN, Env, Map, String,
+    Symbol, TryFromVal, TryIntoVal,
 };
+
+extern crate alloc;
+use version::{Version, INITAL_VERSION};
+
+pub mod version;
 
 pub struct Publisher;
 
@@ -20,17 +25,15 @@ pub struct PublishedBinary {
     num_deployed: u64,
 }
 
-type ContractVersion = u32;
-
 /// Contains
 #[contracttype]
 pub struct PublishedContract {
-    versions: Map<u32, PublishedBinary>,
+    versions: Map<Version, PublishedBinary>,
     author: Address,
 }
 
 impl PublishedContract {
-    pub fn most_recent_version(&self) -> Result<ContractVersion, Error> {
+    pub fn most_recent_version(&self) -> Result<Version, Error> {
         self.versions
             .keys()
             .last()
@@ -39,7 +42,7 @@ impl PublishedContract {
             .ok_or(Error::NoSuchVersion)
     }
 
-    pub fn get(&self, version: Option<ContractVersion>) -> Result<PublishedBinary, Error> {
+    pub fn get(&self, version: Option<Version>) -> Result<PublishedBinary, Error> {
         let version = if let Some(version) = version {
             version
         } else {
@@ -52,11 +55,7 @@ impl PublishedContract {
             .ok_or(Error::NoSuchVersion)
     }
 
-    pub fn set(
-        &mut self,
-        version: Option<ContractVersion>,
-        binary: PublishedBinary,
-    ) -> Result<(), Error> {
+    pub fn set(&mut self, version: Option<Version>, binary: PublishedBinary) -> Result<(), Error> {
         let version = if let Some(version) = version {
             version
         } else {
@@ -94,7 +93,7 @@ impl Contracts {
     pub fn find_version(
         &self,
         name: String,
-        version: Option<ContractVersion>,
+        version: Option<Version>,
     ) -> Result<PublishedBinary, Error> {
         self.find_contract(name)?.get(version)
     }
@@ -148,34 +147,36 @@ impl Publisher {
     /// Currently a contract's version is a `u32` and publishing will increment it.
     /// If no repo is provided, then the previously published binary's repo will be used. If it's the first
     /// time then it will be empty.
+    /// `kind` is Patch by default,
     pub fn publish_binary(
         env: Env,
         contract_name: String,
         hash: BytesN<32>,
         repo: Option<String>,
+        kind: Option<version::Kind>,
     ) -> Result<(), Error> {
         let mut contracts = Contracts::get(&env);
         let mut contract = contracts.find_contract(contract_name.clone())?;
         contract.author.require_auth();
         let keys = contract.versions.keys();
-        let last_version = keys.last().transpose().unwrap().unwrap_or(0);
-        let version = last_version + 1;
+        let last_version = keys.last().transpose().unwrap().unwrap_or_default();
+
+        let new_version = last_version.update(&kind.unwrap_or_default());
         let metadata = if let Some(repo) = repo {
             ContractMetadata { repo }
-        } else if version == 1 {
+        } else if new_version == INITAL_VERSION {
             ContractMetadata {
                 repo: String::from_slice(&env, ""),
             }
         } else {
-            let last = contract.get(Some(last_version))?;
-            last.metadata
+            contract.get(Some(new_version.clone()))?.metadata
         };
         let published_binary = PublishedBinary {
             hash,
             metadata,
             num_deployed: 0,
         };
-        contract.versions.set(version, published_binary);
+        contract.versions.set(new_version, published_binary);
         contracts.set_contract(contract_name, contract);
         Contracts::set(&env, contracts);
         Ok(())
@@ -186,7 +187,7 @@ impl Publisher {
     pub fn fetch(
         env: Env,
         contract_name: String,
-        version: Option<u32>,
+        version: Option<Version>,
     ) -> Result<BytesN<32>, Error> {
         // Err(Error::NoSuchVersion)
         Ok(Contracts::get(&env)
@@ -199,7 +200,7 @@ impl Publisher {
     pub fn fetch_metadata(
         env: Env,
         contract_name: String,
-        version: Option<u32>,
+        version: Option<Version>,
     ) -> Result<ContractMetadata, Error> {
         Ok(Contracts::get(&env)
             .find_version(contract_name, version)?
@@ -212,22 +213,21 @@ impl Publisher {
     pub fn deploy(
         env: Env,
         contract_name: String,
-        version: Option<u32>,
+        version: Option<Version>,
+        deployed_name: String,
+        salt: Option<BytesN<32>>,
     ) -> Result<BytesN<32>, Error> {
-        let wasm_hash = Self::fetch(env.clone(), contract_name.clone(), version)?;
+        let wasm_hash = Self::fetch(env.clone(), contract_name.clone(), version.clone())?;
         let mut contracts = Contracts::get(&env);
         let mut contract = contracts.find_contract(contract_name.clone())?;
-        let mut binary = contracts.find_version(contract_name.clone(), version)?;
+        let mut binary = contracts.find_version(contract_name.clone(), version.clone())?;
 
-        let salt_bytes: [u8; 8] = binary.num_deployed.to_be_bytes();
-
-        log!(&env, "num_deployed {}", binary.num_deployed);
+        let salt = salt.unwrap_or_else(|| hash_string(&env, &deployed_name));
         binary.num_deployed += 1;
+        log!(&env, "num_deployed {}", binary.num_deployed);
         contract.set(version, binary)?;
         contracts.set_contract(contract_name, contract);
         Contracts::set(&env, contracts);
-        let mut salt = [0; 32];
-        salt[..8].copy_from_slice(&salt_bytes[..8]);
 
         Ok(env
             .deployer()
@@ -239,12 +239,27 @@ impl Publisher {
     pub fn get_num_deploys(
         env: Env,
         contract_name: String,
-        version: Option<u32>,
+        version: Option<Version>,
     ) -> Result<u64, Error> {
         let contracts = Contracts::get(&env);
-        let binary = contracts.find_version(contract_name, version)?;
+        let binary: PublishedBinary = contracts.find_version(contract_name, version)?;
         Ok(binary.num_deployed)
+    }
+
+    pub fn hash(env: Env, input: String) -> BytesN<32> {
+        hash_string(&env, &input)
     }
 }
 
+pub fn hash_string(env: &Env, s: &String) -> BytesN<32> {
+    let len = s.len() as usize;
+    let mut bytes = [0u8; 100];
+    let bytes = &mut bytes[0..len];
+    s.copy_into_slice(bytes);
+    let mut b = Bytes::new(env);
+    b.copy_from_slice(0, bytes);
+    env.crypto().sha256(&b)
+}
+
+#[cfg(test)]
 mod test;
