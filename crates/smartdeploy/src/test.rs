@@ -1,7 +1,9 @@
 #![cfg(test)]
 
-use crate::{Publisher, PublisherClient};
-use soroban_sdk::{
+use std::println;
+
+use crate::gen::{SorobanContract, SorobanContractClient};
+use loam_sdk::soroban_sdk::{
     testutils::{Address as _, BytesN as _},
     Address, BytesN, Env, String,
 };
@@ -9,14 +11,15 @@ extern crate std;
 
 // The contract that will be deployed by the Publisher contract.
 mod contract {
+    use loam_sdk::soroban_sdk;
     soroban_sdk::contractimport!(
         file = "../../target/wasm32-unknown-unknown/release/smart_deploy.wasm"
     );
 }
 
-fn init() -> (Env, PublisherClient, Address) {
+fn init() -> (Env, SorobanContractClient, Address) {
     let env = Env::default();
-    let client = PublisherClient::new(&env, &env.register_contract(None, Publisher));
+    let client = SorobanContractClient::new(&env, &env.register_contract(None, SorobanContract));
     let address = Address::random(&env);
     (env, client, address)
 }
@@ -31,6 +34,7 @@ fn handle_error_cases() {
 
     let name = &name(env);
     let res = client.try_fetch(name, &None).unwrap_err();
+    println!("{res:#?}");
     assert!(matches!(res, Ok(crate::Error::NoSuchContract)));
     client.register_name(address, name);
     let wasm_hash = env.install_contract_wasm(contract::WASM);
@@ -73,7 +77,8 @@ fn returns_most_recent_version() {
     let wasm_hash = env.install_contract_wasm(contract::WASM);
 
     client.publish_binary(name, &wasm_hash, &None, &None);
-
+    let fetched_hash = client.fetch(name, &None);
+    assert_eq!(fetched_hash, wasm_hash);
     let second_hash: BytesN<32> = BytesN::random(env);
     client.publish_binary(name, &second_hash, &None, &None);
     let res = client.fetch(name, &None);

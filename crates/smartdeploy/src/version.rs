@@ -1,8 +1,10 @@
-use soroban_sdk::contracttype;
+use core::fmt::Display;
+
+use loam_sdk::soroban_sdk::{self, contracttype};
 
 /// Represents the version of the contract
 #[contracttype]
-#[derive(Default, Eq, PartialEq, Clone)]
+#[derive(Default, Eq, PartialEq, Clone, Debug)]
 pub struct Version {
     patch: u32,
     minor: u32,
@@ -14,6 +16,12 @@ pub const INITAL_VERSION: Version = Version {
     minor: 0,
     patch: 1,
 };
+
+impl Display for Version {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "v{}.{}.{}", self.major(), self.minor(), self.patch())
+    }
+}
 
 impl Version {
     #[must_use]
@@ -43,6 +51,17 @@ impl Version {
             Kind::Minor => self.publish_minor(),
             Kind::Major => self.publish_major(),
         }
+    }
+    pub fn patch(&self) -> u32 {
+        self.patch
+    }
+
+    pub fn minor(&self) -> u32 {
+        self.minor
+    }
+
+    pub fn major(&self) -> u32 {
+        self.major
     }
 }
 

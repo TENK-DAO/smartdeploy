@@ -1,15 +1,25 @@
 #![no_std]
-use soroban_sdk::{
-    self, contracterror, contractimpl, contracttype, log, Address, Bytes, BytesN, Env, Map, String,
-    Symbol, TryFromVal, TryIntoVal,
+use loam_sdk::{
+    soroban_sdk::{self, contracttype, get_env, log, Address, Bytes, BytesN, Env, Map, String},
+    IntoKey,
 };
 
 extern crate alloc;
+use loam_sdk_core_riffs::{owner::Owner, Ownable, Redeployable};
 use version::{Version, INITAL_VERSION};
 
+pub mod error;
+pub mod gen;
+pub mod registry;
 pub mod version;
 
-pub struct Publisher;
+use error::Error;
+
+#[contracttype]
+#[derive(IntoKey, Default)]
+pub struct SmartDeploy {
+    pub contracts: Contracts,
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Ord, PartialOrd)]
 #[contracttype]
@@ -17,8 +27,17 @@ pub struct ContractMetadata {
     repo: String,
 }
 
+impl Default for ContractMetadata {
+    fn default() -> Self {
+        Self {
+            repo: String::from_slice(get_env(), ""),
+        }
+    }
+}
+
 /// Contains
 #[contracttype]
+#[derive(Clone)]
 pub struct PublishedBinary {
     hash: BytesN<32>,
     metadata: ContractMetadata,
@@ -27,9 +46,19 @@ pub struct PublishedBinary {
 
 /// Contains
 #[contracttype]
+#[derive(Clone)]
 pub struct PublishedContract {
     versions: Map<Version, PublishedBinary>,
     author: Address,
+}
+
+impl PublishedContract {
+    pub fn new(author: Address) -> Self {
+        Self {
+            author,
+            versions: Map::new(get_env()),
+        }
+    }
 }
 
 impl PublishedContract {
@@ -66,20 +95,15 @@ impl PublishedContract {
     }
 }
 
-#[contracterror]
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
-#[repr(u32)]
-pub enum Error {
-    /// No such Contract has been registered
-    NoSuchContract = 1,
-    /// No such version of the contact has been published
-    NoSuchVersion = 2,
-    /// Contract already registered
-    AlreadyRegistered = 3,
-}
-
 #[contracttype]
-struct Contracts(Map<String, PublishedContract>);
+#[derive(Clone)]
+pub struct Contracts(Map<String, PublishedContract>);
+
+impl Default for Contracts {
+    fn default() -> Self {
+        Self(Map::new(get_env()))
+    }
+}
 
 impl Contracts {
     pub fn find_contract(&self, name: String) -> Result<PublishedContract, Error> {
@@ -102,44 +126,16 @@ impl Contracts {
         self.0.set(name, contract);
     }
 }
+// #[loam]
 
-impl Contracts {
-    pub fn key(env: &Env) -> String {
-        String::try_from_val(env, &"").unwrap()
-    }
-}
-
-impl Contracts {
-    pub fn get(env: &Env) -> Self {
-        let key = &Self::key(env);
-        env.storage()
-            .get(key)
-            .unwrap_or_else(|| Ok(Contracts(Map::new(env))))
-            .unwrap()
-    }
-
-    pub fn set(env: &Env, contracts: Contracts) {
-        env.storage().set(&Self::key(env), &contracts);
-    }
-}
-
-#[contractimpl]
-impl Publisher {
+impl SmartDeploy {
     /// Register a contract name to allow publishing.
-    pub fn register_name(env: Env, author: Address, contract_name: String) -> Result<(), Error> {
-        let mut this = Contracts::get(&env);
-        if this.find_contract(contract_name.clone()).is_ok() {
+    pub fn register_name(&mut self, author: Address, contract_name: String) -> Result<(), Error> {
+        if self.contracts.find_contract(contract_name.clone()).is_ok() {
             return Err(Error::AlreadyRegistered);
         }
-        this.set_contract(
-            contract_name,
-            PublishedContract {
-                author,
-                versions: Map::new(&env),
-            },
-        );
-
-        Contracts::set(&env, this);
+        self.contracts
+            .set_contract(contract_name, PublishedContract::new(author));
         Ok(())
     }
 
@@ -149,27 +145,24 @@ impl Publisher {
     /// time then it will be empty.
     /// `kind` is Patch by default,
     pub fn publish_binary(
-        env: Env,
+        &mut self,
         contract_name: String,
         hash: BytesN<32>,
         repo: Option<String>,
         kind: Option<version::Kind>,
     ) -> Result<(), Error> {
-        let mut contracts = Contracts::get(&env);
-        let mut contract = contracts.find_contract(contract_name.clone())?;
+        let mut contract = self.contracts.find_contract(contract_name.clone())?;
         contract.author.require_auth();
         let keys = contract.versions.keys();
         let last_version = keys.last().transpose().unwrap().unwrap_or_default();
-
-        let new_version = last_version.update(&kind.unwrap_or_default());
+        log!(get_env(), "{}", last_version);
+        let new_version = last_version.clone().update(&kind.unwrap_or_default());
         let metadata = if let Some(repo) = repo {
             ContractMetadata { repo }
         } else if new_version == INITAL_VERSION {
-            ContractMetadata {
-                repo: String::from_slice(&env, ""),
-            }
+            ContractMetadata::default()
         } else {
-            contract.get(Some(new_version.clone()))?.metadata
+            contract.get(Some(last_version))?.metadata
         };
         let published_binary = PublishedBinary {
             hash,
@@ -177,57 +170,54 @@ impl Publisher {
             num_deployed: 0,
         };
         contract.versions.set(new_version, published_binary);
-        contracts.set_contract(contract_name, contract);
-        Contracts::set(&env, contracts);
+        self.contracts.set_contract(contract_name, contract);
         Ok(())
     }
 
-    /// Fetch the hash for a given contract_name.
+    /// Fetch the hash for a given `contract_name`.
     /// If version is not provided, it is the most recent version.
     pub fn fetch(
-        env: Env,
+        &self,
         contract_name: String,
         version: Option<Version>,
     ) -> Result<BytesN<32>, Error> {
-        // Err(Error::NoSuchVersion)
-        Ok(Contracts::get(&env)
-            .find_version(contract_name, version)?
-            .hash)
+        Ok(self.contracts.find_version(contract_name, version)?.hash)
     }
 
-    /// Fetch metadata for a given contract_name.
+    /// Fetch metadata for a given `contract_name`.
     /// If version is not provided, it is the most recent version.
     pub fn fetch_metadata(
-        env: Env,
+        &self,
         contract_name: String,
         version: Option<Version>,
     ) -> Result<ContractMetadata, Error> {
-        Ok(Contracts::get(&env)
+        Ok(self
+            .contracts
             .find_version(contract_name, version)?
             .metadata)
     }
 
     /// Deploys a new published contract returning the deployed contract's id.
     /// If no salt provided it will use the current sequence number.
-    #[allow(clippy::cast_possible_truncation, clippy::needless_range_loop)]
     pub fn deploy(
-        env: Env,
+        &mut self,
         contract_name: String,
         version: Option<Version>,
         deployed_name: String,
         salt: Option<BytesN<32>>,
     ) -> Result<BytesN<32>, Error> {
-        let wasm_hash = Self::fetch(env.clone(), contract_name.clone(), version.clone())?;
-        let mut contracts = Contracts::get(&env);
-        let mut contract = contracts.find_contract(contract_name.clone())?;
-        let mut binary = contracts.find_version(contract_name.clone(), version.clone())?;
+        let env = get_env();
+        let wasm_hash = self.fetch(contract_name.clone(), version.clone())?;
+        let mut contract = self.contracts.find_contract(contract_name.clone())?;
+        let mut binary = self
+            .contracts
+            .find_version(contract_name.clone(), version.clone())?;
 
-        let salt = salt.unwrap_or_else(|| hash_string(&env, &deployed_name));
+        let salt = salt.unwrap_or_else(|| hash_string(env, &deployed_name));
         binary.num_deployed += 1;
-        log!(&env, "num_deployed {}", binary.num_deployed);
+        log!(env, "num_deployed {}", binary.num_deployed);
         contract.set(version, binary)?;
-        contracts.set_contract(contract_name, contract);
-        Contracts::set(&env, contracts);
+        self.contracts.set_contract(contract_name, contract);
 
         Ok(env
             .deployer()
@@ -237,17 +227,17 @@ impl Publisher {
 
     /// How many deploys have been made for the given contract.
     pub fn get_num_deploys(
-        env: Env,
+        &self,
         contract_name: String,
         version: Option<Version>,
     ) -> Result<u64, Error> {
-        let contracts = Contracts::get(&env);
+        let contracts = &self.contracts;
         let binary: PublishedBinary = contracts.find_version(contract_name, version)?;
         Ok(binary.num_deployed)
     }
 
-    pub fn hash(env: Env, input: String) -> BytesN<32> {
-        hash_string(&env, &input)
+    pub fn get_contracts(&self) -> Contracts {
+        self.contracts.clone()
     }
 }
 
@@ -260,6 +250,12 @@ pub fn hash_string(env: &Env, s: &String) -> BytesN<32> {
     b.copy_from_slice(0, bytes);
     env.crypto().sha256(&b)
 }
+
+impl Ownable for SmartDeploy {
+    type Impl = Owner;
+}
+
+impl Redeployable for SmartDeploy {}
 
 #[cfg(test)]
 mod test;

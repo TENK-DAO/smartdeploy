@@ -3,6 +3,12 @@
 version = 3
 
 [[package]]
+name = "Inflector"
+version = "0.11.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fe438c63458706e03479442743baae6c88256498e6431708f6dfc520a26515d3"
+
+[[package]]
 name = "addr2line"
 version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -27,6 +33,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "arbitrary"
+version = "1.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e2d098ff73c1ca148721f37baad5ea6a465a13f9573aba8641fbbbae8164a54e"
+dependencies = [
+ "derive_arbitrary",
+]
+
+[[package]]
 name = "autocfg"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -45,6 +60,14 @@ dependencies = [
  "miniz_oxide",
  "object",
  "rustc-demangle",
+]
+
+[[package]]
+name = "base"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riffs",
 ]
 
 [[package]]
@@ -265,6 +288,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "derive_arbitrary"
+version = "1.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f3cdeb9ec472d588e539a818b2dee436825730da08ad0017c4b1a17676bdc8b7"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "digest"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -329,6 +363,14 @@ name = "ethnum"
 version = "1.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0198b9d0078e0f30dedc7acbb21c974e838fc8fae3ee170128658a98cb2c1c04"
+
+[[package]]
+name = "fetch-redeploy"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riffs",
+]
 
 [[package]]
 name = "fnv"
@@ -482,12 +524,50 @@ dependencies = [
 ]
 
 [[package]]
+name = "loam-sdk"
+version = "0.1.0"
+source = "git+https://github.com/loambuild/loam-sdk?rev=fb45acf5cb508f5ffc85c335221b56aa10842897#fb45acf5cb508f5ffc85c335221b56aa10842897"
+dependencies = [
+ "loam-soroban-sdk",
+ "macro-wrapper",
+]
+
+[[package]]
+name = "loam-sdk-core-riffs"
+version = "0.1.0"
+source = "git+https://github.com/loambuild/loam-sdk?rev=fb45acf5cb508f5ffc85c335221b56aa10842897#fb45acf5cb508f5ffc85c335221b56aa10842897"
+dependencies = [
+ "loam-sdk",
+]
+
+[[package]]
+name = "loam-soroban-sdk"
+version = "0.1.0"
+source = "git+https://github.com/loambuild/loam-sdk?rev=fb45acf5cb508f5ffc85c335221b56aa10842897#fb45acf5cb508f5ffc85c335221b56aa10842897"
+dependencies = [
+ "macro-wrapper",
+ "soroban-sdk",
+]
+
+[[package]]
 name = "log"
 version = "0.4.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "abb12e687cfb44aa40f41fc3978ef76448f9b6038cad6aef4259d3c095a2382e"
 dependencies = [
  "cfg-if",
+]
+
+[[package]]
+name = "macro-wrapper"
+version = "0.0.1"
+source = "git+https://github.com/loambuild/loam-sdk?rev=fb45acf5cb508f5ffc85c335221b56aa10842897#fb45acf5cb508f5ffc85c335221b56aa10842897"
+dependencies = [
+ "Inflector",
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+ "thiserror",
 ]
 
 [[package]]
@@ -798,17 +878,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "74233d3b3b2f6d4b006dc19dee745e73e2a6bfb6f93607cd3b02bd5b00797d7c"
 
 [[package]]
-name = "smart-deploy"
+name = "smartdeploy"
 version = "0.0.0"
 dependencies = [
- "soroban-sdk",
+ "loam-sdk",
+ "loam-sdk-core-riffs",
 ]
 
 [[package]]
 name = "soroban-env-common"
 version = "0.0.15"
-source = "git+https://github.com/stellar/rs-soroban-env?rev=cf83838ae8a07a00224f0a5a3500eb7969bac7cf#cf83838ae8a07a00224f0a5a3500eb7969bac7cf"
+source = "git+https://github.com/stellar/rs-soroban-env?rev=83ab1b0e2ce7e08d33d686ed4b4ea0564b454160#83ab1b0e2ce7e08d33d686ed4b4ea0564b454160"
 dependencies = [
+ "arbitrary",
  "crate-git-revision",
  "ethnum",
  "serde",
@@ -821,7 +903,7 @@ dependencies = [
 [[package]]
 name = "soroban-env-guest"
 version = "0.0.15"
-source = "git+https://github.com/stellar/rs-soroban-env?rev=cf83838ae8a07a00224f0a5a3500eb7969bac7cf#cf83838ae8a07a00224f0a5a3500eb7969bac7cf"
+source = "git+https://github.com/stellar/rs-soroban-env?rev=83ab1b0e2ce7e08d33d686ed4b4ea0564b454160#83ab1b0e2ce7e08d33d686ed4b4ea0564b454160"
 dependencies = [
  "soroban-env-common",
  "static_assertions",
@@ -830,7 +912,7 @@ dependencies = [
 [[package]]
 name = "soroban-env-host"
 version = "0.0.15"
-source = "git+https://github.com/stellar/rs-soroban-env?rev=cf83838ae8a07a00224f0a5a3500eb7969bac7cf#cf83838ae8a07a00224f0a5a3500eb7969bac7cf"
+source = "git+https://github.com/stellar/rs-soroban-env?rev=83ab1b0e2ce7e08d33d686ed4b4ea0564b454160#83ab1b0e2ce7e08d33d686ed4b4ea0564b454160"
 dependencies = [
  "backtrace",
  "curve25519-dalek",
@@ -852,7 +934,7 @@ dependencies = [
 [[package]]
 name = "soroban-env-macros"
 version = "0.0.15"
-source = "git+https://github.com/stellar/rs-soroban-env?rev=cf83838ae8a07a00224f0a5a3500eb7969bac7cf#cf83838ae8a07a00224f0a5a3500eb7969bac7cf"
+source = "git+https://github.com/stellar/rs-soroban-env?rev=83ab1b0e2ce7e08d33d686ed4b4ea0564b454160#83ab1b0e2ce7e08d33d686ed4b4ea0564b454160"
 dependencies = [
  "itertools",
  "proc-macro2",
@@ -867,7 +949,7 @@ dependencies = [
 [[package]]
 name = "soroban-ledger-snapshot"
 version = "0.7.0"
-source = "git+https://github.com/stellar/rs-soroban-sdk?rev=8abd3353c728f09ee1c8a2544f67a853e915afc2#8abd3353c728f09ee1c8a2544f67a853e915afc2"
+source = "git+https://github.com/stellar/rs-soroban-sdk?rev=d3c160e54430a37c795ed73618d6e084d6c0d8b6#d3c160e54430a37c795ed73618d6e084d6c0d8b6"
 dependencies = [
  "serde",
  "serde_json",
@@ -878,7 +960,7 @@ dependencies = [
 [[package]]
 name = "soroban-native-sdk-macros"
 version = "0.0.15"
-source = "git+https://github.com/stellar/rs-soroban-env?rev=cf83838ae8a07a00224f0a5a3500eb7969bac7cf#cf83838ae8a07a00224f0a5a3500eb7969bac7cf"
+source = "git+https://github.com/stellar/rs-soroban-env?rev=83ab1b0e2ce7e08d33d686ed4b4ea0564b454160#83ab1b0e2ce7e08d33d686ed4b4ea0564b454160"
 dependencies = [
  "itertools",
  "proc-macro2",
@@ -889,7 +971,7 @@ dependencies = [
 [[package]]
 name = "soroban-sdk"
 version = "0.7.0"
-source = "git+https://github.com/stellar/rs-soroban-sdk?rev=8abd3353c728f09ee1c8a2544f67a853e915afc2#8abd3353c728f09ee1c8a2544f67a853e915afc2"
+source = "git+https://github.com/stellar/rs-soroban-sdk?rev=d3c160e54430a37c795ed73618d6e084d6c0d8b6#d3c160e54430a37c795ed73618d6e084d6c0d8b6"
 dependencies = [
  "bytes-lit",
  "ed25519-dalek",
@@ -904,7 +986,7 @@ dependencies = [
 [[package]]
 name = "soroban-sdk-macros"
 version = "0.7.0"
-source = "git+https://github.com/stellar/rs-soroban-sdk?rev=8abd3353c728f09ee1c8a2544f67a853e915afc2#8abd3353c728f09ee1c8a2544f67a853e915afc2"
+source = "git+https://github.com/stellar/rs-soroban-sdk?rev=d3c160e54430a37c795ed73618d6e084d6c0d8b6#d3c160e54430a37c795ed73618d6e084d6c0d8b6"
 dependencies = [
  "darling",
  "itertools",
@@ -920,7 +1002,7 @@ dependencies = [
 [[package]]
 name = "soroban-spec"
 version = "0.7.0"
-source = "git+https://github.com/stellar/rs-soroban-sdk?rev=8abd3353c728f09ee1c8a2544f67a853e915afc2#8abd3353c728f09ee1c8a2544f67a853e915afc2"
+source = "git+https://github.com/stellar/rs-soroban-sdk?rev=d3c160e54430a37c795ed73618d6e084d6c0d8b6#d3c160e54430a37c795ed73618d6e084d6c0d8b6"
 dependencies = [
  "base64",
  "darling",
@@ -984,8 +1066,9 @@ dependencies = [
 [[package]]
 name = "stellar-xdr"
 version = "0.0.15"
-source = "git+https://github.com/stellar/rs-stellar-xdr?rev=4655b635c698bb3bbc628bdba456df627c42ee3a#4655b635c698bb3bbc628bdba456df627c42ee3a"
+source = "git+https://github.com/stellar/rs-stellar-xdr?rev=5e7cd5792894a3f067067a868f30a62697c1dd7b#5e7cd5792894a3f067067a868f30a62697c1dd7b"
 dependencies = [
+ "arbitrary",
  "base64",
  "crate-git-revision",
  "hex",

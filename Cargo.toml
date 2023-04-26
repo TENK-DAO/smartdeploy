@@ -13,17 +13,19 @@ opt-level = "z"
 overflow-checks = true
 debug = 0
 strip = "symbols"
-debug-assertions = true
+debug-assertions = false
 panic = "abort"
 codegen-units = 1
 lto = true
 
-[workspace.dependencies.soroban-sdk]
-version = "0.7.0"
-git = "https://github.com/stellar/rs-soroban-sdk"
-rev = "8abd3353c728f09ee1c8a2544f67a853e915afc2"
+# [workspace.dependencies.soroban-sdk]
+# version = "0.7.0"
+# git = "https://github.com/stellar/rs-soroban-sdk"
+# rev = "8abd3353c728f09ee1c8a2544f67a853e915afc2"
 
-[workspace.dependencies.soroban-auth]
-version = "0.7.0"
-git = "https://github.com/stellar/rs-soroban-sdk"
-rev = "8abd3353c728f09ee1c8a2544f67a853e915afc2"
+
+[workspace.dependencies]
+# loam-sdk = { path = "../../loam/crates/loam" }
+# loam-sdk-core-riffs = { path = "../../loam/crates/loam-core" }
+loam-sdk = { git = "https://github.com/loambuild/loam-sdk", rev = "fb45acf5cb508f5ffc85c335221b56aa10842897" }
+loam-sdk-core-riffs = { git = "https://github.com/loambuild/loam-sdk", rev = "fb45acf5cb508f5ffc85c335221b56aa10842897" }

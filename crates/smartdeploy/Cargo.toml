@@ -1,5 +1,5 @@
 [package]
-name = "smart-deploy"
+name = "smartdeploy"
 version = "0.0.0"
 authors = ["Stellar Development Foundation <info@stellar.org>"]
 license = "Apache-2.0"
@@ -10,7 +10,8 @@ crate-type = ["cdylib"]
 doctest = false
 
 [dependencies]
-soroban-sdk = { workspace = true, features = ["alloc"] }
+loam-sdk = { workspace = true }
+loam-sdk-core-riffs = { workspace = true }
 
 [dev_dependencies]
-soroban-sdk = { workspace = true, features = ["testutils"] }
+loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }

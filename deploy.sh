@@ -1,11 +1,11 @@
 #!/bin/bash
 
-make
+make build
 
 CURRENT_HASH=$(soroban contract install \
        --network futurenet \
        --source default \
-       --wasm ./target/wasm32-unknown-unknown/release-with-logs/smart_deploy.wasm)
+       --wasm ./target/wasm32-unknown-unknown/release-with-logs/smartdeploy.wasm)
 
 
 FILE_HASH=""
