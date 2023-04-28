@@ -365,14 +365,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0198b9d0078e0f30dedc7acbb21c974e838fc8fae3ee170128658a98cb2c1c04"
 
 [[package]]
-name = "fetch-redeploy"
-version = "0.0.0"
-dependencies = [
- "loam-sdk",
- "loam-sdk-core-riffs",
-]
-
-[[package]]
 name = "fnv"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -526,7 +518,7 @@ dependencies = [
 [[package]]
 name = "loam-sdk"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?rev=fb45acf5cb508f5ffc85c335221b56aa10842897#fb45acf5cb508f5ffc85c335221b56aa10842897"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.1.0#33fc1afbf7bf7b26c8d7f95e8b0f40d5581a1b0f"
 dependencies = [
  "loam-soroban-sdk",
  "macro-wrapper",
@@ -535,7 +527,7 @@ dependencies = [
 [[package]]
 name = "loam-sdk-core-riffs"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?rev=fb45acf5cb508f5ffc85c335221b56aa10842897#fb45acf5cb508f5ffc85c335221b56aa10842897"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.1.0#33fc1afbf7bf7b26c8d7f95e8b0f40d5581a1b0f"
 dependencies = [
  "loam-sdk",
 ]
@@ -543,7 +535,7 @@ dependencies = [
 [[package]]
 name = "loam-soroban-sdk"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?rev=fb45acf5cb508f5ffc85c335221b56aa10842897#fb45acf5cb508f5ffc85c335221b56aa10842897"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.1.0#33fc1afbf7bf7b26c8d7f95e8b0f40d5581a1b0f"
 dependencies = [
  "macro-wrapper",
  "soroban-sdk",
@@ -561,7 +553,7 @@ dependencies = [
 [[package]]
 name = "macro-wrapper"
 version = "0.0.1"
-source = "git+https://github.com/loambuild/loam-sdk?rev=fb45acf5cb508f5ffc85c335221b56aa10842897#fb45acf5cb508f5ffc85c335221b56aa10842897"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.1.0#33fc1afbf7bf7b26c8d7f95e8b0f40d5581a1b0f"
 dependencies = [
  "Inflector",
  "proc-macro2",

@@ -25,6 +25,7 @@ rustflags = [
     "-Aclippy::must_use_candidate",
     "-Aclippy::missing_panics_doc",
     "-Aclippy::missing_errors_doc",
+    "-Aclippy::module-name-repetitions",
     # "-Aclippy::missing_safety_doc",
     # "-Aclippy::inline_always",
     # "-Aclippy::default_trait_access",
