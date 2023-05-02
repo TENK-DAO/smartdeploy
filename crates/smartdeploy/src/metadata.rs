@@ -16,13 +16,12 @@ impl Default for ContractMetadata {
     }
 }
 
-/// Contains
+/// Contains info about specific version of published binary
 #[contracttype]
 #[derive(Clone)]
 pub struct PublishedWasm {
     pub hash: BytesN<32>,
     pub metadata: ContractMetadata,
-    pub num_deployed: u64,
 }
 
 /// Contains

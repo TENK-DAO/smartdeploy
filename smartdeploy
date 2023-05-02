@@ -2,4 +2,8 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd );
 ID="$(cat $SCRIPT_DIR/contract_id.txt)"
 
-soroban -v contract invoke --network futurenet --source default --id $ID -- $@
+NAME=$1
+shift
+
+CONTRACT_ID=$(soroban contract invoke --source default --id $ID -- fetch_contract_id --deployed_name $NAME | jq -r)
+soroban contract invoke --id "$CONTRACT_ID" -- $@

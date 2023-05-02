@@ -1,31 +1,34 @@
 #![no_std]
-use loam_sdk_core_riffs::{owner::Owner, Ownable, Redeployable};
-use registry::{Binary, ContractRegistry, Deployable};
+use loam_sdk::{soroban_contract, soroban_sdk};
+use loam_sdk_core_riff::{owner::Owner, CoreRiff};
+use registry::{contract::ContractRegistry, wasm::WasmRegistry, Binary, Deployable};
 
 extern crate alloc;
 
 pub mod error;
-pub mod gen;
 pub mod metadata;
 pub mod registry;
 pub mod util;
 pub mod version;
 
+use error::Error;
+use version::Version;
+
 pub struct Contract;
 
 impl Binary for Contract {
-    type Impl = ContractRegistry;
+    type Impl = WasmRegistry;
 }
 
 impl Deployable for Contract {
     type Impl = ContractRegistry;
 }
 
-impl Ownable for Contract {
+impl CoreRiff for Contract {
     type Impl = Owner;
 }
 
-impl Redeployable for Contract {}
+soroban_contract!();
 
 #[cfg(test)]
 mod test;

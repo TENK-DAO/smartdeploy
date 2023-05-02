@@ -6,8 +6,9 @@ TARGET_DIR := './target/wasm32-unknown-unknown/release-with-logs'
 SMARTDEPLOY := TARGET_DIR / 'smartdeploy.wasm'
 BASE := TARGET_DIR / 'base.wasm'
 soroban := 'target/bin/soroban'
-smartdeploy := 'soroban contract invoke --id ' + env_var('DEFAULT_ID')   + ' --config-dir ' + env_var('CONFIG_DIR') + ' -- '
+smartdeploy := 'soroban contract invoke --id ' + env_var('DEFAULT_ID') + ' -- '
 # hash := if path_exists({{SMARTDEPLOY}}) == "true" {`soroban contract install --wasm ./target/wasm32-unknown-unknown/contracts/example_status_message.wasm --config-dir ./target` } else {""}
+id:=`cat contract_id.txt`
 
 
 path:
@@ -34,5 +35,6 @@ deploy: build setup
     soroban contract deploy --id $DEFAULT_ID --wasm {{SMARTDEPLOY}} --config-dir $CONFIG_DIR
     {{smartdeploy}} owner_set --owner default
     {{smartdeploy}} --help
-    
-    
+
+publish name hash kind='Patch' author='default':
+    soroban contract invoke --id {{id}} -- publish --contract_name {{name}} --hash {{hash}} --author {{author}}

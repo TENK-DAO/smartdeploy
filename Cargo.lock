@@ -63,14 +63,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "base"
-version = "0.0.0"
-dependencies = [
- "loam-sdk",
- "loam-sdk-core-riffs",
-]
-
-[[package]]
 name = "base32"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -81,6 +73,15 @@ name = "base64"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9e1b586273c5702936fe7b7d6896644d8be71e6314cfe09d3167c95f712589e8"
+
+[[package]]
+name = "bitmaps"
+version = "2.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "031043d04099746d8db04daf1fa424b2bc8bd69d92b25962dcde24da39ab64a2"
+dependencies = [
+ "typenum",
+]
 
 [[package]]
 name = "block-buffer"
@@ -122,6 +123,38 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "camino"
+version = "1.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c530edf18f37068ac2d977409ed5cd50d53d73bc653c7647b48eb78976ac9ae2"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "cargo-platform"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cbdb825da8a5df079a43676dbe042702f1707b1109f713a01420fbb4cc71fa27"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "cargo_metadata"
+version = "0.15.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eee4243f1f26fc7a42710e7439c149e2b10b05472f88090acce52632f231a73a"
+dependencies = [
+ "camino",
+ "cargo-platform",
+ "semver",
+ "serde",
+ "serde_json",
+ "thiserror",
 ]
 
 [[package]]
@@ -454,6 +487,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b9e0384b61958566e926dc50660321d12159025e767c18e043daf26b70104c39"
 
 [[package]]
+name = "im-rc"
+version = "15.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "af1955a75fa080c677d3972822ec4bad316169ab1cfc6c257a942c2265dbe5fe"
+dependencies = [
+ "bitmaps",
+ "rand_core 0.6.4",
+ "rand_xoshiro",
+ "sized-chunks",
+ "typenum",
+ "version_check",
+]
+
+[[package]]
 name = "indexmap"
 version = "1.9.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -518,26 +565,40 @@ dependencies = [
 [[package]]
 name = "loam-sdk"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.1.0#33fc1afbf7bf7b26c8d7f95e8b0f40d5581a1b0f"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.3.0#da20523b2ab49cd4a1c60b82cc267f726dc24ec7"
 dependencies = [
+ "loam-sdk-macro",
  "loam-soroban-sdk",
- "macro-wrapper",
 ]
 
 [[package]]
-name = "loam-sdk-core-riffs"
+name = "loam-sdk-core-riff"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.1.0#33fc1afbf7bf7b26c8d7f95e8b0f40d5581a1b0f"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.3.0#da20523b2ab49cd4a1c60b82cc267f726dc24ec7"
 dependencies = [
  "loam-sdk",
 ]
 
 [[package]]
+name = "loam-sdk-macro"
+version = "0.0.1"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.3.0#da20523b2ab49cd4a1c60b82cc267f726dc24ec7"
+dependencies = [
+ "Inflector",
+ "cargo_metadata",
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+ "syn-file-expand",
+ "thiserror",
+]
+
+[[package]]
 name = "loam-soroban-sdk"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.1.0#33fc1afbf7bf7b26c8d7f95e8b0f40d5581a1b0f"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.3.0#da20523b2ab49cd4a1c60b82cc267f726dc24ec7"
 dependencies = [
- "macro-wrapper",
+ "loam-sdk-macro",
  "soroban-sdk",
 ]
 
@@ -548,18 +609,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "abb12e687cfb44aa40f41fc3978ef76448f9b6038cad6aef4259d3c095a2382e"
 dependencies = [
  "cfg-if",
-]
-
-[[package]]
-name = "macro-wrapper"
-version = "0.0.1"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.1.0#33fc1afbf7bf7b26c8d7f95e8b0f40d5581a1b0f"
-dependencies = [
- "Inflector",
- "proc-macro2",
- "quote",
- "syn 1.0.109",
- "thiserror",
 ]
 
 [[package]]
@@ -763,6 +812,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "rand_xoshiro"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6f97cdb2a36ed4183de61b2f824cc45c9f1037f28afe0a322e9fff4c108b5aaa"
+dependencies = [
+ "rand_core 0.6.4",
+]
+
+[[package]]
 name = "rustc-demangle"
 version = "0.1.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -779,6 +837,15 @@ name = "scratch"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1792db035ce95be60c3f8853017b3999209281c24e2ba5bc8e59bf97a0c590c1"
+
+[[package]]
+name = "semver"
+version = "1.0.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bebd363326d05ec3e2f532ab7660680f3b02130d780c299bca73469d521bc0ed"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "serde"
@@ -870,11 +937,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "74233d3b3b2f6d4b006dc19dee745e73e2a6bfb6f93607cd3b02bd5b00797d7c"
 
 [[package]]
+name = "sized-chunks"
+version = "0.6.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "16d69225bde7a69b235da73377861095455d298f2b970996eec25ddbb42b3d1e"
+dependencies = [
+ "bitmaps",
+ "typenum",
+]
+
+[[package]]
 name = "smartdeploy"
 version = "0.0.0"
 dependencies = [
  "loam-sdk",
- "loam-sdk-core-riffs",
+ "loam-sdk-core-riff",
 ]
 
 [[package]]
@@ -1100,6 +1177,20 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-ident",
+]
+
+[[package]]
+name = "syn-file-expand"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b6181cbea559711c240607c08763542d871f1b8988dd48e4c713e1c674642c63"
+dependencies = [
+ "im-rc",
+ "itertools",
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+ "thiserror",
 ]
 
 [[package]]

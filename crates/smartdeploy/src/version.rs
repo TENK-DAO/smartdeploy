@@ -1,6 +1,6 @@
 use core::fmt::Display;
 
-use loam_sdk::soroban_sdk::{self, contracttype};
+use loam_sdk::soroban_sdk::{self, contracttype, get_env, log, Env};
 
 /// Represents the version of the contract
 #[contracttype]
@@ -24,6 +24,16 @@ impl Display for Version {
 }
 
 impl Version {
+    pub(crate) fn log(&self) {
+        log!(
+            get_env(),
+            "v{}.{}.{}",
+            self.major(),
+            self.minor(),
+            self.patch()
+        );
+    }
+
     #[must_use]
     pub fn publish_patch(mut self) -> Self {
         self.patch += 1;
@@ -45,11 +55,11 @@ impl Version {
     }
 
     #[must_use]
-    pub fn update(self, kind: &Kind) -> Self {
+    pub fn update(self, kind: &Update) -> Self {
         match kind {
-            Kind::Patch => self.publish_patch(),
-            Kind::Minor => self.publish_minor(),
-            Kind::Major => self.publish_major(),
+            Update::Patch => self.publish_patch(),
+            Update::Minor => self.publish_minor(),
+            Update::Major => self.publish_major(),
         }
     }
     pub fn patch(&self) -> u32 {
@@ -67,7 +77,7 @@ impl Version {
 
 #[contracttype]
 #[derive(Default)]
-pub enum Kind {
+pub enum Update {
     #[default]
     Patch,
     Minor,
