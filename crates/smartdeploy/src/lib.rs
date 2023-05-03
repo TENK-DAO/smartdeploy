@@ -1,7 +1,7 @@
 #![no_std]
 use loam_sdk::{soroban_contract, soroban_sdk};
 use loam_sdk_core_riff::{owner::Owner, CoreRiff};
-use registry::{contract::ContractRegistry, wasm::WasmRegistry, Binary, Deployable};
+use registry::{contract::ContractRegistry, wasm::WasmRegistry, Deployable, Publishable};
 
 extern crate alloc;
 
@@ -16,7 +16,7 @@ use version::Version;
 
 pub struct Contract;
 
-impl Binary for Contract {
+impl Publishable for Contract {
     type Impl = WasmRegistry;
 }
 

@@ -1,0 +1,19 @@
+[package]
+name = "soroban-errors-contract"
+version = "0.0.0"
+authors = ["Stellar Development Foundation <info@stellar.org>"]
+license = "Apache-2.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+doctest = false
+
+[dependencies]
+loam-sdk = { workspace = true }
+loam-sdk-core-riff = { workspace = true }
+
+
+[dev_dependencies]
+loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }

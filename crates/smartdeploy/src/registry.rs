@@ -1,8 +1,6 @@
 use loam_sdk::{
     riff,
-    soroban_sdk::{
-        self, Lazy,
-    },
+    soroban_sdk::{self, Lazy},
 };
 
 use crate::{
@@ -14,8 +12,7 @@ pub mod contract;
 pub mod wasm;
 
 #[riff]
-
-pub trait IsBinary {
+pub trait IsPublishable {
     /// Fetch the hash from the registry
     fn fetch_hash(
         &self,
@@ -44,6 +41,13 @@ pub trait IsBinary {
         repo: Option<soroban_sdk::String>,
         kind: Option<version::Update>,
     ) -> Result<(), Error>;
+
+    /// Paginate the published contracts. Defaults: strart=0, limit=rest
+    fn list_published_contracts(
+        &self,
+        start: Option<u32>,
+        limit: Option<u32>,
+    ) -> Result<soroban_sdk::Vec<(soroban_sdk::String, crate::metadata::PublishedContract)>, Error>;
 }
 
 #[riff]
@@ -63,4 +67,11 @@ pub trait IsDeployable {
         &self,
         deployed_name: soroban_sdk::String,
     ) -> Result<soroban_sdk::BytesN<32>, Error>;
+
+    /// Paginate the deployed contracts. Defaults: strart=0, limit=rest
+    fn list_deployed_contracts(
+        &self,
+        start: Option<u32>,
+        limit: Option<u32>,
+    ) -> Result<soroban_sdk::Vec<(soroban_sdk::String, soroban_sdk::BytesN<32>)>, Error>;
 }

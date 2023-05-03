@@ -1,7 +1,7 @@
 
 [workspace]
 resolver = "2"
-members = ["crates/*"]
+members = ["crates/*", "examples/increment", "examples/errors"]
 # exclude = ["xtask"]
 
 [profile.release-with-logs]

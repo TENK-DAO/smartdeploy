@@ -1,7 +1,5 @@
-use loam_sdk::{
-    soroban_sdk::{
-        self, contracttype, get_env, Address, BytesN, IntoKey, Map, String,
-    },
+use loam_sdk::soroban_sdk::{
+    self, contracttype, get_env, vec, Address, BytesN, IntoKey, Map, String,
 };
 
 use crate::{
@@ -10,7 +8,7 @@ use crate::{
     version::{self, Version, INITAL_VERSION},
 };
 
-use super::IsBinary;
+use super::IsPublishable;
 
 #[contracttype]
 #[derive(IntoKey)]
@@ -43,7 +41,7 @@ impl WasmRegistry {
     }
 }
 
-impl IsBinary for WasmRegistry {
+impl IsPublishable for WasmRegistry {
     fn fetch(
         &self,
         contract_name: String,
@@ -84,5 +82,23 @@ impl IsBinary for WasmRegistry {
         contract.versions.set(new_version, published_binary);
         self.set_contract(contract_name, contract);
         Ok(())
+    }
+
+    fn list_published_contracts(
+        &self,
+        start: Option<u32>,
+        limit: Option<u32>,
+    ) -> Result<soroban_sdk::Vec<(soroban_sdk::String, crate::metadata::PublishedContract)>, Error>
+    {
+        let items = self
+            .0
+            .iter()
+            .skip(start.unwrap_or_default() as usize)
+            .take(limit.unwrap_or_else(|| self.0.len()) as usize);
+        let mut res = vec![get_env()];
+        for item in items {
+            res.push_back(item.map_err(|_| Error::NoSuchContractPublished)?);
+        }
+        Ok(res)
     }
 }

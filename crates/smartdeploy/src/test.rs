@@ -10,12 +10,12 @@ use loam_sdk::soroban_sdk::{
 extern crate std;
 
 // The contract that will be deployed by the Publisher contract.
-mod contract {
-    use loam_sdk::soroban_sdk;
-    soroban_sdk::contractimport!(
-        file = "../../target/wasm32-unknown-unknown/release-with-logs/smartdeploy.wasm"
-    );
-}
+// mod contract {
+//     use loam_sdk::soroban_sdk;
+//     soroban_sdk::contractimport!(
+//         file = "../../target/wasm32-unknown-unknown/release-with-logs/smartdeploy.wasm"
+//     );
+// }
 
 fn init() -> (Env, SorobanContractClient, Address) {
     let env = Env::default();

@@ -41,12 +41,12 @@ else
     echo -n $ID > contract_id.txt
 fi
 
-ID=$(cat contract_id.txt)
 
 
 echo SmartDeploy $ID
 author=$(soroban config identity address default)
-smartdeploy="soroban contract invoke  --source default --id $ID --"
+ID=$(cat contract_id.txt)
+smartdeploy="soroban contract invoke  --source default --id $(cat contract_id.txt) --"
 $smartdeploy --help
 
 if test "$FILE_HASH" = ""; then
@@ -58,3 +58,7 @@ if test "$FILE_HASH" = ""; then
     
    $smartdeploy deploy --contract_name smartdeploy --owner default --deployed_name "smartdeploy"
 fi
+
+for i in $(cargo metadata --format-version 1 --no-deps | jq '.packages[].name' | rg --color never soroban); do 
+
+then

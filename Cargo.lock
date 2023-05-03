@@ -1016,6 +1016,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "soroban-errors-contract"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riff",
+]
+
+[[package]]
+name = "soroban-increment-contract"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riff",
+]
+
+[[package]]
 name = "soroban-ledger-snapshot"
 version = "0.7.0"
 source = "git+https://github.com/stellar/rs-soroban-sdk?rev=d3c160e54430a37c795ed73618d6e084d6c0d8b6#d3c160e54430a37c795ed73618d6e084d6c0d8b6"
