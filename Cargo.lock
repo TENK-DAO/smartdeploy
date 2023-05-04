@@ -392,6 +392,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7fcaabb2fef8c910e7f4c7ce9f67a1283a1715879a7c230ca9d6d1ae31f16d91"
 
 [[package]]
+name = "errors"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riff",
+]
+
+[[package]]
 name = "ethnum"
 version = "1.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -498,6 +506,14 @@ dependencies = [
  "sized-chunks",
  "typenum",
  "version_check",
+]
+
+[[package]]
+name = "increment"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riff",
 ]
 
 [[package]]
@@ -1013,22 +1029,6 @@ dependencies = [
  "stellar-xdr",
  "syn 1.0.109",
  "thiserror",
-]
-
-[[package]]
-name = "soroban-errors-contract"
-version = "0.0.0"
-dependencies = [
- "loam-sdk",
- "loam-sdk-core-riff",
-]
-
-[[package]]
-name = "soroban-increment-contract"
-version = "0.0.0"
-dependencies = [
- "loam-sdk",
- "loam-sdk-core-riff",
 ]
 
 [[package]]

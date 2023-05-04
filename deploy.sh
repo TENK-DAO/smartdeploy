@@ -1,11 +1,8 @@
 #!/bin/bash
 
-just build
-
-CURRENT_HASH=$(soroban contract install \
+CURRENT_HASH=$(just soroban contract install \
        --source default \
        --wasm ./target/wasm32-unknown-unknown/release-with-logs/smartdeploy.wasm)
-
 
 FILE_HASH=""
 
@@ -13,12 +10,11 @@ FILE_HASH=""
 
 if test -e "./hash.txt"; then
   FILE_HASH=$(cat ./hash.txt)
-else
-  echo "New Binary!"
+  # echo "New Binary!"
 fi
 
 if test "$CURRENT_HASH" = "$FILE_HASH"; then
-  echo "Already deployed"
+  :
 else
   FILE_HASH=""
   echo -n "$CURRENT_HASH" > ./hash.txt
@@ -33,9 +29,7 @@ else
 
     SALT=$a$b$c$d$e$f$g$h
 
-    echo $SALT
-
-    ID=$(soroban contract deploy \
+    ID=$(just soroban contract deploy \
             --salt $SALT \
             --wasm-hash $CURRENT_HASH);
     echo -n $ID > contract_id.txt
@@ -43,11 +37,11 @@ fi
 
 
 
-echo SmartDeploy $ID
-author=$(soroban config identity address default)
+author=$(just soroban config identity address default)
 ID=$(cat contract_id.txt)
-smartdeploy="soroban contract invoke  --source default --id $(cat contract_id.txt) --"
-$smartdeploy --help
+
+
+smartdeploy="just soroban --quiet contract invoke  --source default --id $ID --"
 
 if test "$FILE_HASH" = ""; then
     $smartdeploy publish \
