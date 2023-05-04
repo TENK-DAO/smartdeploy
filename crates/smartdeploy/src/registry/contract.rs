@@ -1,6 +1,6 @@
 use loam_sdk::soroban_sdk::{
-    self, contracttype, get_env, vec, Address, BytesN, IntoKey, IntoVal, Map, RawVal, String,
-    Symbol, Vec,
+    self, contracttype, env, vec, Address, BytesN, IntoKey, IntoVal, Map, RawVal, String, Symbol,
+    Vec,
 };
 
 use crate::{error::Error, registry::Publishable, util::hash_string, version::Version, Contract};
@@ -15,7 +15,7 @@ pub struct ContractRegistry(pub Map<String, ContractId>);
 
 impl Default for ContractRegistry {
     fn default() -> Self {
-        Self(Map::new(get_env()))
+        Self(Map::new(env()))
     }
 }
 
@@ -30,7 +30,7 @@ impl IsDeployable for ContractRegistry {
         owner: Address,
         salt: Option<BytesN<32>>,
     ) -> Result<BytesN<32>, Error> {
-        let env = get_env();
+        let env = env();
         if self.0.contains_key(deployed_name.clone()) {
             return Err(Error::NoSuchContractDeployed);
         }
@@ -65,7 +65,7 @@ impl IsDeployable for ContractRegistry {
             .iter()
             .skip(start.unwrap_or_default() as usize)
             .take(limit.unwrap_or_else(|| self.0.len()) as usize);
-        let mut res = vec![get_env()];
+        let mut res = vec![env()];
         for item in items {
             res.push_back(item.map_err(|_| Error::NoSuchContractDeployed)?);
         }

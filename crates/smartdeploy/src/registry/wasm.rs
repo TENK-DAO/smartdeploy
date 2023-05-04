@@ -1,6 +1,4 @@
-use loam_sdk::soroban_sdk::{
-    self, contracttype, get_env, vec, Address, BytesN, IntoKey, Map, String,
-};
+use loam_sdk::soroban_sdk::{self, contracttype, env, vec, Address, BytesN, IntoKey, Map, String};
 
 use crate::{
     error::Error,
@@ -16,7 +14,7 @@ pub struct WasmRegistry(Map<String, PublishedContract>);
 
 impl Default for WasmRegistry {
     fn default() -> Self {
-        Self(Map::new(get_env()))
+        Self(Map::new(env()))
     }
 }
 impl WasmRegistry {
@@ -95,7 +93,7 @@ impl IsPublishable for WasmRegistry {
             .iter()
             .skip(start.unwrap_or_default() as usize)
             .take(limit.unwrap_or_else(|| self.0.len()) as usize);
-        let mut res = vec![get_env()];
+        let mut res = vec![env()];
         for item in items {
             res.push_back(item.map_err(|_| Error::NoSuchContractPublished)?);
         }

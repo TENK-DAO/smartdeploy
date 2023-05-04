@@ -565,7 +565,7 @@ dependencies = [
 [[package]]
 name = "loam-sdk"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.3.0#da20523b2ab49cd4a1c60b82cc267f726dc24ec7"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.4.0#5473bb20fb3c818e7c30652fadf66647760a408d"
 dependencies = [
  "loam-sdk-macro",
  "loam-soroban-sdk",
@@ -574,7 +574,7 @@ dependencies = [
 [[package]]
 name = "loam-sdk-core-riff"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.3.0#da20523b2ab49cd4a1c60b82cc267f726dc24ec7"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.4.0#5473bb20fb3c818e7c30652fadf66647760a408d"
 dependencies = [
  "loam-sdk",
 ]
@@ -582,7 +582,7 @@ dependencies = [
 [[package]]
 name = "loam-sdk-macro"
 version = "0.0.1"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.3.0#da20523b2ab49cd4a1c60b82cc267f726dc24ec7"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.4.0#5473bb20fb3c818e7c30652fadf66647760a408d"
 dependencies = [
  "Inflector",
  "cargo_metadata",
@@ -596,7 +596,7 @@ dependencies = [
 [[package]]
 name = "loam-soroban-sdk"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.3.0#da20523b2ab49cd4a1c60b82cc267f726dc24ec7"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.4.0#5473bb20fb3c818e7c30652fadf66647760a408d"
 dependencies = [
  "loam-sdk-macro",
  "soroban-sdk",
@@ -1034,7 +1034,7 @@ dependencies = [
 [[package]]
 name = "soroban-ledger-snapshot"
 version = "0.7.0"
-source = "git+https://github.com/stellar/rs-soroban-sdk?rev=d3c160e54430a37c795ed73618d6e084d6c0d8b6#d3c160e54430a37c795ed73618d6e084d6c0d8b6"
+source = "git+https://github.com/stellar/rs-soroban-sdk?rev=5d40b4c85660d918339e58aca43036e495a36280#5d40b4c85660d918339e58aca43036e495a36280"
 dependencies = [
  "serde",
  "serde_json",
@@ -1056,7 +1056,7 @@ dependencies = [
 [[package]]
 name = "soroban-sdk"
 version = "0.7.0"
-source = "git+https://github.com/stellar/rs-soroban-sdk?rev=d3c160e54430a37c795ed73618d6e084d6c0d8b6#d3c160e54430a37c795ed73618d6e084d6c0d8b6"
+source = "git+https://github.com/stellar/rs-soroban-sdk?rev=5d40b4c85660d918339e58aca43036e495a36280#5d40b4c85660d918339e58aca43036e495a36280"
 dependencies = [
  "bytes-lit",
  "ed25519-dalek",
@@ -1071,7 +1071,7 @@ dependencies = [
 [[package]]
 name = "soroban-sdk-macros"
 version = "0.7.0"
-source = "git+https://github.com/stellar/rs-soroban-sdk?rev=d3c160e54430a37c795ed73618d6e084d6c0d8b6#d3c160e54430a37c795ed73618d6e084d6c0d8b6"
+source = "git+https://github.com/stellar/rs-soroban-sdk?rev=5d40b4c85660d918339e58aca43036e495a36280#5d40b4c85660d918339e58aca43036e495a36280"
 dependencies = [
  "darling",
  "itertools",
@@ -1087,7 +1087,7 @@ dependencies = [
 [[package]]
 name = "soroban-spec"
 version = "0.7.0"
-source = "git+https://github.com/stellar/rs-soroban-sdk?rev=d3c160e54430a37c795ed73618d6e084d6c0d8b6#d3c160e54430a37c795ed73618d6e084d6c0d8b6"
+source = "git+https://github.com/stellar/rs-soroban-sdk?rev=5d40b4c85660d918339e58aca43036e495a36280#5d40b4c85660d918339e58aca43036e495a36280"
 dependencies = [
  "base64",
  "darling",

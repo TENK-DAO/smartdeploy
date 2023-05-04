@@ -11,7 +11,10 @@ soroban := 'target/bin/soroban'
 id:=`cat contract_id.txt`
 
 smartdeploy +args:
-    soroban contract invoke -- {{args}}
+    @soroban contract invoke --id {{id}} -- {{args}}
+
+soroban_install name:
+    @soroban contract install --wasm ./target/wasm32-unknown-unknown/release-with-logs/{{name}}.wasm
 
 path:
     echo ${PATH}
@@ -36,10 +39,28 @@ setup_default:
 deploy_self:
     ./deploy.sh
 
-deploy: build setup
-    soroban contract deploy --id $DEFAULT_ID --wasm {{SMARTDEPLOY}} --config-dir $CONFIG_DIR
-    just smartdeploy owner_set --owner default
-    just smartdeploy --help
+publish_all: clean deploy_self
+    #!/usr/bin/env bash
+    for name in $(cargo metadata --format-version 1 --no-deps | jq -r '.packages[].name' | rg --color never soroban)
+    do
+        name="${name//-/_}"
+        hash=$(just soroban_install $name);
+        just publish $name $hash
+        just deploy $name $name
+    done
+
+deploy contract_name deployed_name owner='default':
+    just smartdeploy deploy --contract_name {{contract_name}} --deployed_name {{deployed_name}} --owner {{owner}}
 
 publish name hash kind='Patch' author='default':
-    soroban contract invoke --id {{id}} -- publish --contract_name {{name}} --hash {{hash}} --author {{author}}
+    @soroban contract invoke --id {{id}} -- publish --contract_name {{name}} --hash {{hash}} --author {{author}}
+
+clean:
+    rm -rf .soroban/ledger.json hash.txt
+
+
+list_published_contracts *args:
+    @just smartdeploy list_published_contracts {{args}} | jq .
+
+list_deployed_contracts *args:
+    @just smartdeploy list_deployed_contracts {{args}} | jq .

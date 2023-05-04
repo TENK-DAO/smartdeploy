@@ -1,6 +1,6 @@
 use core::fmt::Display;
 
-use loam_sdk::soroban_sdk::{self, contracttype, get_env, log, Env};
+use loam_sdk::soroban_sdk::{self, contracttype, env, log, Env};
 
 /// Represents the version of the contract
 #[contracttype]
@@ -25,13 +25,7 @@ impl Display for Version {
 
 impl Version {
     pub(crate) fn log(&self) {
-        log!(
-            get_env(),
-            "v{}.{}.{}",
-            self.major(),
-            self.minor(),
-            self.patch()
-        );
+        log!(env(), "v{}.{}.{}", self.major(), self.minor(), self.patch());
     }
 
     #[must_use]

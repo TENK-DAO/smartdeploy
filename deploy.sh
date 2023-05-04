@@ -59,6 +59,3 @@ if test "$FILE_HASH" = ""; then
    $smartdeploy deploy --contract_name smartdeploy --owner default --deployed_name "smartdeploy"
 fi
 
-for i in $(cargo metadata --format-version 1 --no-deps | jq '.packages[].name' | rg --color never soroban); do 
-
-then
