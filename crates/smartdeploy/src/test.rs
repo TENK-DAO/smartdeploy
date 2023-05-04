@@ -1,12 +1,7 @@
 #![cfg(test)]
 
-use std::println;
-
-use crate::{error::Error, SorobanContract, SorobanContractClient};
-use loam_sdk::soroban_sdk::{
-    testutils::{Address as _, BytesN as _},
-    Address, BytesN, Env, String,
-};
+use crate::{SorobanContract, SorobanContractClient};
+use loam_sdk::soroban_sdk::{testutils::Address as _, Address, Env, String};
 extern crate std;
 
 // The contract that will be deployed by the Publisher contract.
@@ -30,9 +25,9 @@ pub fn name(env: &Env) -> String {
 
 #[test]
 fn handle_error_cases() {
-    let (env, client, address) = &init();
+    // let (env, client, address) = &init();
 
-    let name = &name(env);
+    // let name = &name(env);
     // let res = client.try_fetch(name, &None).unwrap_err();
 
     // println!("{res:#?}");

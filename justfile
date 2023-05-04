@@ -6,14 +6,22 @@ TARGET_DIR := './target/wasm32-unknown-unknown/release-with-logs'
 SMARTDEPLOY := TARGET_DIR / 'smartdeploy.wasm'
 BASE := TARGET_DIR / 'base.wasm'
 soroban := 'target/bin/soroban'
+FILE := 'target/bin/soroban-smartdeploy'
 # smartdeploy := 'soroban contract invoke --id ' + env_var('DEFAULT_ID') + ' -- '
 # hash := if path_exists({{SMARTDEPLOY}}) == "true" {`soroban contract install --wasm ./target/wasm32-unknown-unknown/contracts/example_status_message.wasm --config-dir ./target` } else {""}
 id:=`cat contract_id.txt`
 
+soroban +args:
+    @soroban {{args}}
+
+# Execute plugin
+s name +args:
+    @just soroban {{ name }} {{ args }}
+
 smartdeploy +args:
     @soroban contract invoke --id {{id}} -- {{args}}
 
-soroban_install name:
+@soroban_install name:
     @soroban contract install --wasm ./target/wasm32-unknown-unknown/release-with-logs/{{name}}.wasm
 
 path:
@@ -36,31 +44,54 @@ setup_default:
     echo {{ if path_exists(env_var('CONFIG_DIR') / 'identity/default.toml') == "true" { "" } else { `just setup_default` } }}
     
 
-deploy_self:
-    ./deploy.sh
+@deploy_self: build
+    @./deploy.sh
+
+@install_self:
+    echo "#!/usr/bin/env bash \njust soroban contract invoke --id {{id}} -- \$@" > {{ FILE }}
+    chmod +x {{ FILE }}
+
 
 publish_all: clean deploy_self
     #!/usr/bin/env bash
-    for name in $(cargo metadata --format-version 1 --no-deps | jq -r '.packages[].name' | rg --color never soroban)
+    just install_self;
+    for name in $(cargo metadata --format-version 1 --no-deps | jq -r '.packages[].name')
     do
-        name="${name//-/_}"
-        hash=$(just soroban_install $name);
-        just publish $name $hash
-        just deploy $name $name
+        if [ "$name" != "smartdeploy" ]; then
+            name="${name//-/_}";
+            hash=$(just soroban_install $name);
+            just publish_one $name $hash
+        fi
     done
 
-deploy contract_name deployed_name owner='default':
+[private]
+@publish_one name hash:
+    @just publish {{ name }} {{ hash }}
+    @just deploy {{ name }} {{ name }}
+    @just install_contract {{ name }}
+
+@deploy contract_name deployed_name owner='default':
     just smartdeploy deploy --contract_name {{contract_name}} --deployed_name {{deployed_name}} --owner {{owner}}
 
-publish name hash kind='Patch' author='default':
-    @soroban contract invoke --id {{id}} -- publish --contract_name {{name}} --hash {{hash}} --author {{author}}
+@publish name hash kind='Patch' author='default':
+    @soroban --quiet contract invoke --id {{id}} -- publish --contract_name {{name}} --hash {{hash}} --author {{author}}
 
-clean:
-    rm -rf .soroban/ledger.json hash.txt
+# Delete non-wasm artifacts
+@clean:
+    rm -rf .soroban/*.json hash.txt target/bin/soroban-*
 
 
-list_published_contracts *args:
-    @just smartdeploy list_published_contracts {{args}} | jq .
 
-list_deployed_contracts *args:
-    @just smartdeploy list_deployed_contracts {{args}} | jq .
+# List Published Contracts
+published_contracts start='0' limit='100':
+    @just smartdeploy list_published_contracts --start {{start}} --limit {{limit}} | jq .
+
+# List Deployed Contracts
+deployed_contracts start='0' limit='100':
+    @just smartdeploy list_deployed_contracts --start {{start}} --limit {{limit}} | jq .
+
+
+
+@install_contract name:
+    ./install_contract.sh {{name}}
+
