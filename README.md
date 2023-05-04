@@ -2,6 +2,8 @@
 
 A framework for publishing, deploying, and upgrading Soroban smart contracts.
 
+Uses [Loam-SDK](https://github.com/loambuild/loam-sdk)
+
 ## Publishing
 
 Currently smart contracts are `installed` to the network allowing them to be deployed using the hash of the installed contract. However, unless you are the author of the smart contract you won't know much about which hashes correspond to which contracts.  Furthermore, there is no notion of a version of each hash so you would find many contracts with almost identical implementations.
