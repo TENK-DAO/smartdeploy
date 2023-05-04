@@ -1,11 +1,10 @@
 #!/bin/bash
 
-make
+just build
 
 CURRENT_HASH=$(soroban contract install \
-       --network futurenet \
        --source default \
-       --wasm ./target/wasm32-unknown-unknown/release-with-logs/smart_deploy.wasm)
+       --wasm ./target/wasm32-unknown-unknown/release-with-logs/smartdeploy.wasm)
 
 
 FILE_HASH=""
@@ -37,23 +36,26 @@ else
     echo $SALT
 
     ID=$(soroban contract deploy \
-            --network futurenet \
             --salt $SALT \
             --wasm-hash $CURRENT_HASH);
     echo -n $ID > contract_id.txt
 fi
 
-ID=$(cat contract_id.txt)
 
 
 echo SmartDeploy $ID
-smartdeploy="soroban contract invoke --network futurenet --source default --id $ID --"
+author=$(soroban config identity address default)
+ID=$(cat contract_id.txt)
+smartdeploy="soroban contract invoke  --source default --id $(cat contract_id.txt) --"
 $smartdeploy --help
 
 if test "$FILE_HASH" = ""; then
-    $smartdeploy register_name --contract_name hello_world --author "$(soroban config identity address default)"
-    $smartdeploy publish_binary \
-      --contract_name hello_world \
-      --hash 6c453071976d247e6c8552034ba24a7b6ba95d599eb216d72a15bf8bd7176a8a \
-      --repo https://github.com/AhaLabs/soroban-examples/tree/0d977e1b56d3b7007855f6557248e17f37081699/hello_world
+    $smartdeploy publish \
+      --contract_name smartdeploy \
+      --hash $(cat hash.txt) \
+      --author $author \
+      --repo https://github.com/tenk-dao/smart-deploy
+    
+   $smartdeploy deploy --contract_name smartdeploy --owner default --deployed_name "smartdeploy"
 fi
+

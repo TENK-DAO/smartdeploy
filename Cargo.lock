@@ -3,6 +3,12 @@
 version = 3
 
 [[package]]
+name = "Inflector"
+version = "0.11.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fe438c63458706e03479442743baae6c88256498e6431708f6dfc520a26515d3"
+
+[[package]]
 name = "addr2line"
 version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -24,6 +30,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "819e7219dbd41043ac279b19830f2efc897156490d7fd6ea916720117ee66311"
 dependencies = [
  "libc",
+]
+
+[[package]]
+name = "arbitrary"
+version = "1.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e2d098ff73c1ca148721f37baad5ea6a465a13f9573aba8641fbbbae8164a54e"
+dependencies = [
+ "derive_arbitrary",
 ]
 
 [[package]]
@@ -58,6 +73,15 @@ name = "base64"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9e1b586273c5702936fe7b7d6896644d8be71e6314cfe09d3167c95f712589e8"
+
+[[package]]
+name = "bitmaps"
+version = "2.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "031043d04099746d8db04daf1fa424b2bc8bd69d92b25962dcde24da39ab64a2"
+dependencies = [
+ "typenum",
+]
 
 [[package]]
 name = "block-buffer"
@@ -99,6 +123,38 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "camino"
+version = "1.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c530edf18f37068ac2d977409ed5cd50d53d73bc653c7647b48eb78976ac9ae2"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "cargo-platform"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cbdb825da8a5df079a43676dbe042702f1707b1109f713a01420fbb4cc71fa27"
+dependencies = [
+ "serde",
+]
+
+[[package]]
+name = "cargo_metadata"
+version = "0.15.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eee4243f1f26fc7a42710e7439c149e2b10b05472f88090acce52632f231a73a"
+dependencies = [
+ "camino",
+ "cargo-platform",
+ "semver",
+ "serde",
+ "serde_json",
+ "thiserror",
 ]
 
 [[package]]
@@ -265,6 +321,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "derive_arbitrary"
+version = "1.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f3cdeb9ec472d588e539a818b2dee436825730da08ad0017c4b1a17676bdc8b7"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "digest"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -420,6 +487,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b9e0384b61958566e926dc50660321d12159025e767c18e043daf26b70104c39"
 
 [[package]]
+name = "im-rc"
+version = "15.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "af1955a75fa080c677d3972822ec4bad316169ab1cfc6c257a942c2265dbe5fe"
+dependencies = [
+ "bitmaps",
+ "rand_core 0.6.4",
+ "rand_xoshiro",
+ "sized-chunks",
+ "typenum",
+ "version_check",
+]
+
+[[package]]
 name = "indexmap"
 version = "1.9.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -479,6 +560,46 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ecd207c9c713c34f95a097a5b029ac2ce6010530c7b49d7fea24d977dede04f5"
 dependencies = [
  "cc",
+]
+
+[[package]]
+name = "loam-sdk"
+version = "0.1.0"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.4.0#5473bb20fb3c818e7c30652fadf66647760a408d"
+dependencies = [
+ "loam-sdk-macro",
+ "loam-soroban-sdk",
+]
+
+[[package]]
+name = "loam-sdk-core-riff"
+version = "0.1.0"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.4.0#5473bb20fb3c818e7c30652fadf66647760a408d"
+dependencies = [
+ "loam-sdk",
+]
+
+[[package]]
+name = "loam-sdk-macro"
+version = "0.0.1"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.4.0#5473bb20fb3c818e7c30652fadf66647760a408d"
+dependencies = [
+ "Inflector",
+ "cargo_metadata",
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+ "syn-file-expand",
+ "thiserror",
+]
+
+[[package]]
+name = "loam-soroban-sdk"
+version = "0.1.0"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.4.0#5473bb20fb3c818e7c30652fadf66647760a408d"
+dependencies = [
+ "loam-sdk-macro",
+ "soroban-sdk",
 ]
 
 [[package]]
@@ -691,6 +812,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "rand_xoshiro"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6f97cdb2a36ed4183de61b2f824cc45c9f1037f28afe0a322e9fff4c108b5aaa"
+dependencies = [
+ "rand_core 0.6.4",
+]
+
+[[package]]
 name = "rustc-demangle"
 version = "0.1.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -707,6 +837,15 @@ name = "scratch"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1792db035ce95be60c3f8853017b3999209281c24e2ba5bc8e59bf97a0c590c1"
+
+[[package]]
+name = "semver"
+version = "1.0.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bebd363326d05ec3e2f532ab7660680f3b02130d780c299bca73469d521bc0ed"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "serde"
@@ -798,17 +937,29 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "74233d3b3b2f6d4b006dc19dee745e73e2a6bfb6f93607cd3b02bd5b00797d7c"
 
 [[package]]
-name = "smart-deploy"
+name = "sized-chunks"
+version = "0.6.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "16d69225bde7a69b235da73377861095455d298f2b970996eec25ddbb42b3d1e"
+dependencies = [
+ "bitmaps",
+ "typenum",
+]
+
+[[package]]
+name = "smartdeploy"
 version = "0.0.0"
 dependencies = [
- "soroban-sdk",
+ "loam-sdk",
+ "loam-sdk-core-riff",
 ]
 
 [[package]]
 name = "soroban-env-common"
 version = "0.0.15"
-source = "git+https://github.com/stellar/rs-soroban-env?rev=cf83838ae8a07a00224f0a5a3500eb7969bac7cf#cf83838ae8a07a00224f0a5a3500eb7969bac7cf"
+source = "git+https://github.com/stellar/rs-soroban-env?rev=83ab1b0e2ce7e08d33d686ed4b4ea0564b454160#83ab1b0e2ce7e08d33d686ed4b4ea0564b454160"
 dependencies = [
+ "arbitrary",
  "crate-git-revision",
  "ethnum",
  "serde",
@@ -821,7 +972,7 @@ dependencies = [
 [[package]]
 name = "soroban-env-guest"
 version = "0.0.15"
-source = "git+https://github.com/stellar/rs-soroban-env?rev=cf83838ae8a07a00224f0a5a3500eb7969bac7cf#cf83838ae8a07a00224f0a5a3500eb7969bac7cf"
+source = "git+https://github.com/stellar/rs-soroban-env?rev=83ab1b0e2ce7e08d33d686ed4b4ea0564b454160#83ab1b0e2ce7e08d33d686ed4b4ea0564b454160"
 dependencies = [
  "soroban-env-common",
  "static_assertions",
@@ -830,7 +981,7 @@ dependencies = [
 [[package]]
 name = "soroban-env-host"
 version = "0.0.15"
-source = "git+https://github.com/stellar/rs-soroban-env?rev=cf83838ae8a07a00224f0a5a3500eb7969bac7cf#cf83838ae8a07a00224f0a5a3500eb7969bac7cf"
+source = "git+https://github.com/stellar/rs-soroban-env?rev=83ab1b0e2ce7e08d33d686ed4b4ea0564b454160#83ab1b0e2ce7e08d33d686ed4b4ea0564b454160"
 dependencies = [
  "backtrace",
  "curve25519-dalek",
@@ -852,7 +1003,7 @@ dependencies = [
 [[package]]
 name = "soroban-env-macros"
 version = "0.0.15"
-source = "git+https://github.com/stellar/rs-soroban-env?rev=cf83838ae8a07a00224f0a5a3500eb7969bac7cf#cf83838ae8a07a00224f0a5a3500eb7969bac7cf"
+source = "git+https://github.com/stellar/rs-soroban-env?rev=83ab1b0e2ce7e08d33d686ed4b4ea0564b454160#83ab1b0e2ce7e08d33d686ed4b4ea0564b454160"
 dependencies = [
  "itertools",
  "proc-macro2",
@@ -865,9 +1016,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "soroban-errors-contract"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riff",
+]
+
+[[package]]
+name = "soroban-increment-contract"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riff",
+]
+
+[[package]]
 name = "soroban-ledger-snapshot"
 version = "0.7.0"
-source = "git+https://github.com/stellar/rs-soroban-sdk?rev=8abd3353c728f09ee1c8a2544f67a853e915afc2#8abd3353c728f09ee1c8a2544f67a853e915afc2"
+source = "git+https://github.com/stellar/rs-soroban-sdk?rev=5d40b4c85660d918339e58aca43036e495a36280#5d40b4c85660d918339e58aca43036e495a36280"
 dependencies = [
  "serde",
  "serde_json",
@@ -878,7 +1045,7 @@ dependencies = [
 [[package]]
 name = "soroban-native-sdk-macros"
 version = "0.0.15"
-source = "git+https://github.com/stellar/rs-soroban-env?rev=cf83838ae8a07a00224f0a5a3500eb7969bac7cf#cf83838ae8a07a00224f0a5a3500eb7969bac7cf"
+source = "git+https://github.com/stellar/rs-soroban-env?rev=83ab1b0e2ce7e08d33d686ed4b4ea0564b454160#83ab1b0e2ce7e08d33d686ed4b4ea0564b454160"
 dependencies = [
  "itertools",
  "proc-macro2",
@@ -889,7 +1056,7 @@ dependencies = [
 [[package]]
 name = "soroban-sdk"
 version = "0.7.0"
-source = "git+https://github.com/stellar/rs-soroban-sdk?rev=8abd3353c728f09ee1c8a2544f67a853e915afc2#8abd3353c728f09ee1c8a2544f67a853e915afc2"
+source = "git+https://github.com/stellar/rs-soroban-sdk?rev=5d40b4c85660d918339e58aca43036e495a36280#5d40b4c85660d918339e58aca43036e495a36280"
 dependencies = [
  "bytes-lit",
  "ed25519-dalek",
@@ -904,7 +1071,7 @@ dependencies = [
 [[package]]
 name = "soroban-sdk-macros"
 version = "0.7.0"
-source = "git+https://github.com/stellar/rs-soroban-sdk?rev=8abd3353c728f09ee1c8a2544f67a853e915afc2#8abd3353c728f09ee1c8a2544f67a853e915afc2"
+source = "git+https://github.com/stellar/rs-soroban-sdk?rev=5d40b4c85660d918339e58aca43036e495a36280#5d40b4c85660d918339e58aca43036e495a36280"
 dependencies = [
  "darling",
  "itertools",
@@ -920,7 +1087,7 @@ dependencies = [
 [[package]]
 name = "soroban-spec"
 version = "0.7.0"
-source = "git+https://github.com/stellar/rs-soroban-sdk?rev=8abd3353c728f09ee1c8a2544f67a853e915afc2#8abd3353c728f09ee1c8a2544f67a853e915afc2"
+source = "git+https://github.com/stellar/rs-soroban-sdk?rev=5d40b4c85660d918339e58aca43036e495a36280#5d40b4c85660d918339e58aca43036e495a36280"
 dependencies = [
  "base64",
  "darling",
@@ -984,8 +1151,9 @@ dependencies = [
 [[package]]
 name = "stellar-xdr"
 version = "0.0.15"
-source = "git+https://github.com/stellar/rs-stellar-xdr?rev=4655b635c698bb3bbc628bdba456df627c42ee3a#4655b635c698bb3bbc628bdba456df627c42ee3a"
+source = "git+https://github.com/stellar/rs-stellar-xdr?rev=5e7cd5792894a3f067067a868f30a62697c1dd7b#5e7cd5792894a3f067067a868f30a62697c1dd7b"
 dependencies = [
+ "arbitrary",
  "base64",
  "crate-git-revision",
  "hex",
@@ -1025,6 +1193,20 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-ident",
+]
+
+[[package]]
+name = "syn-file-expand"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b6181cbea559711c240607c08763542d871f1b8988dd48e4c713e1c674642c63"
+dependencies = [
+ "im-rc",
+ "itertools",
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+ "thiserror",
 ]
 
 [[package]]

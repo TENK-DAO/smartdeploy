@@ -1,16 +1,19 @@
 [package]
-name = "smart-deploy"
+name = "soroban-errors-contract"
 version = "0.0.0"
 authors = ["Stellar Development Foundation <info@stellar.org>"]
 license = "Apache-2.0"
 edition = "2021"
+publish = false
 
 [lib]
 crate-type = ["cdylib"]
 doctest = false
 
 [dependencies]
-soroban-sdk = { workspace = true, features = ["alloc"] }
+loam-sdk = { workspace = true }
+loam-sdk-core-riff = { workspace = true }
+
 
 [dev_dependencies]
-soroban-sdk = { workspace = true, features = ["testutils"] }
+loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }

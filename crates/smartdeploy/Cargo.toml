@@ -1,0 +1,19 @@
+[package]
+name = "smartdeploy"
+description = "A crate for managing and deploying smart contracts on the Soroban blockchain."
+documentation = "https://docs.rs/smartdeploy"
+version = "0.0.0"
+authors = ["Stellar Development Foundation <info@stellar.org>"]
+license = "Apache-2.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+doctest = false
+
+[dependencies]
+loam-sdk = { workspace = true }
+loam-sdk-core-riff = { workspace = true }
+
+[dev_dependencies]
+loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }
