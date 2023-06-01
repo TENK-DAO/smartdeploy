@@ -5,6 +5,7 @@ documentation = "https://docs.rs/smartdeploy"
 version = "0.0.0"
 authors = ["Stellar Development Foundation <info@stellar.org>"]
 license = "Apache-2.0"
+rust-version = "1.69"
 edition = "2021"
 
 [lib]

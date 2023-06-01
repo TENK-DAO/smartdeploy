@@ -12,12 +12,12 @@ extern crate std;
 //     );
 // }
 
-fn init() -> (Env, SorobanContractClient, Address) {
-    let env = Env::default();
-    let client = SorobanContractClient::new(&env, &env.register_contract(None, SorobanContract));
-    let address = Address::random(&env);
-    (env, client, address)
-}
+// fn init() -> (Env, SorobanContractClient, Address) {
+//     let env = Env::default();
+//     let client = SorobanContractClient::new(&env, &env.register_contract(None, SorobanContract));
+//     let address = Address::random(&env);
+//     (env, client, address)
+// }
 
 pub fn name(env: &Env) -> String {
     String::from_slice(env, "publisher")

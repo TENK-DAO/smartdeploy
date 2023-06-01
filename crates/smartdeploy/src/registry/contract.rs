@@ -7,11 +7,9 @@ use crate::{error::Error, registry::Publishable, util::hash_string, version::Ver
 
 use super::IsDeployable;
 
-type ContractId = BytesN<32>;
-
-#[contracttype]
+#[contracttype(export = false)]
 #[derive(IntoKey)]
-pub struct ContractRegistry(pub Map<String, ContractId>);
+pub struct ContractRegistry(pub Map<String, Address>);
 
 impl Default for ContractRegistry {
     fn default() -> Self {
@@ -29,13 +27,13 @@ impl IsDeployable for ContractRegistry {
         deployed_name: String,
         owner: Address,
         salt: Option<BytesN<32>>,
-    ) -> Result<BytesN<32>, Error> {
+    ) -> Result<Address, Error> {
         let env = env();
         if self.0.contains_key(deployed_name.clone()) {
             return Err(Error::NoSuchContractDeployed);
         }
         let hash = Contract::fetch_hash(contract_name, version)?;
-        let salt = salt.unwrap_or_else(|| hash_string(env, &deployed_name));
+        let salt = salt.unwrap_or_else(|| hash_string(&deployed_name));
         // Deploy the contract using the installed WASM code with given hash.
         let id = env.deployer().with_current_contract(&salt).deploy(&hash);
         // TODO: Invoke using a External API interface that is generated from Core Riff.
@@ -48,7 +46,7 @@ impl IsDeployable for ContractRegistry {
         Ok(id)
     }
 
-    fn fetch_contract_id(&self, deployed_name: String) -> Result<ContractId, Error> {
+    fn fetch_contract_id(&self, deployed_name: String) -> Result<Address, Error> {
         self.0
             .get(deployed_name)
             .unwrap()
@@ -59,7 +57,7 @@ impl IsDeployable for ContractRegistry {
         &self,
         start: Option<u32>,
         limit: Option<u32>,
-    ) -> Result<soroban_sdk::Vec<(soroban_sdk::String, soroban_sdk::BytesN<32>)>, Error> {
+    ) -> Result<soroban_sdk::Vec<(soroban_sdk::String, soroban_sdk::Address)>, Error> {
         let items = self
             .0
             .iter()

@@ -8,7 +8,7 @@ use crate::{
 
 use super::IsPublishable;
 
-#[contracttype]
+#[contracttype(export = false)]
 #[derive(IntoKey)]
 pub struct WasmRegistry(Map<String, PublishedContract>);
 
