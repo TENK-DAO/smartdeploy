@@ -27,5 +27,5 @@ lto = true
 [workspace.dependencies]
 # loam-sdk = { path = "../../loam/crates/loam" }
 # loam-sdk-core-riff = { path = "../../loam/crates/loam-core" }
-loam-sdk = { git = "https://github.com/loambuild/loam-sdk", tag = "v0.4.0" }
-loam-sdk-core-riff = { git = "https://github.com/loambuild/loam-sdk", tag = "v0.4.0" }
+loam-sdk = { git = "https://github.com/loambuild/loam-sdk", tag = "v0.4.3" }
+loam-sdk-core-riff = { git = "https://github.com/loambuild/loam-sdk", tag = "v0.4.3" }

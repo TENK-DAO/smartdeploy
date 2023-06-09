@@ -2,6 +2,7 @@
 set dotenv-load
 
 export PATH := './target/bin:' + env_var('PATH')
+export SOROBAN_NETWORK := 'futurenet'
 TARGET_DIR := './target/wasm32-unknown-unknown/release-with-logs'
 SMARTDEPLOY := TARGET_DIR / 'smartdeploy.wasm'
 BASE := TARGET_DIR / 'base.wasm'
@@ -10,9 +11,10 @@ FILE := 'target/bin/soroban-smartdeploy'
 # smartdeploy := 'soroban contract invoke --id ' + env_var('DEFAULT_ID') + ' -- '
 # hash := if path_exists({{SMARTDEPLOY}}) == "true" {`soroban contract install --wasm ./target/wasm32-unknown-unknown/contracts/example_status_message.wasm --config-dir ./target` } else {""}
 id:=`cat contract_id.txt`
+ROOT_DIR := 'target/contracts/smartdeploy'
 
-soroban +args:
-    @soroban {{args}}
+@soroban +args:
+    {{soroban}} {{args}}
 
 # Execute plugin
 s name +args:
@@ -24,8 +26,14 @@ smartdeploy +args:
 @soroban_install name:
     @soroban contract install --wasm ./target/wasm32-unknown-unknown/release-with-logs/{{name}}.wasm
 
-path:
-    echo ${PATH}
+@generate: build
+    (cd ~/c/s/soroban-cli; cargo build)
+    @just soroban contract bindings ts \
+        --wasm {{SMARTDEPLOY}} \
+        --contract-id {{id}} \
+        --contract-name smartdeploy \
+        --root-dir {{ ROOT_DIR }}
+    cd {{ ROOT_DIR }}; npm i && npm run build
 
 target:
     echo {{TARGET_DIR}}

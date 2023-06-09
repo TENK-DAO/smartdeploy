@@ -3,7 +3,7 @@
 [alias] # command aliases
 xtask = "run --package xtask --"
 bwl = "build --profile release-with-logs"
-install_soroban = "install --git https://github.com/ahalabs/soroban-tools --rev 351a8b2c17e025acd0770c49141ff29604e4b8ac --root ./target soroban-cli --debug"
+install_soroban = "install --git https://github.com/ahalabs/soroban-tools --rev de7156ec80b0fe3a495e19ae7316945058b18afc --debug --root ./target soroban-cli"
 # c = "check"
 # t = "test"
 # r = "run"

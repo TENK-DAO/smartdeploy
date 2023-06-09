@@ -52,7 +52,8 @@ pub trait IsPublishable {
 
 #[riff]
 pub trait IsDeployable {
-    /// Deploy a contract. A contract can only be deployed once
+    /// Deploys a new published contract returning the deployed contract's id.
+    /// If no salt provided it will use the current sequence number.
     fn deploy(
         &mut self,
         contract_name: soroban_sdk::String,
@@ -60,18 +61,18 @@ pub trait IsDeployable {
         deployed_name: soroban_sdk::String,
         owner: soroban_sdk::Address,
         salt: Option<soroban_sdk::BytesN<32>>,
-    ) -> Result<soroban_sdk::BytesN<32>, Error>;
+    ) -> Result<soroban_sdk::Address, Error>;
 
     /// Fetch contract id
     fn fetch_contract_id(
         &self,
         deployed_name: soroban_sdk::String,
-    ) -> Result<soroban_sdk::BytesN<32>, Error>;
+    ) -> Result<soroban_sdk::Address, Error>;
 
     /// Paginate the deployed contracts. Defaults: strart=0, limit=rest
     fn list_deployed_contracts(
         &self,
         start: Option<u32>,
         limit: Option<u32>,
-    ) -> Result<soroban_sdk::Vec<(soroban_sdk::String, soroban_sdk::BytesN<32>)>, Error>;
+    ) -> Result<soroban_sdk::Vec<(soroban_sdk::String, soroban_sdk::Address)>, Error>;
 }
