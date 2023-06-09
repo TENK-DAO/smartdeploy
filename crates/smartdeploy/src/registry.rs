@@ -52,7 +52,8 @@ pub trait IsPublishable {
 
 #[riff]
 pub trait IsDeployable {
-    /// Deploy a contract. A contract can only be deployed once
+    /// Deploys a new published contract returning the deployed contract's id.
+    /// If no salt provided it will use the current sequence number.
     fn deploy(
         &mut self,
         contract_name: soroban_sdk::String,

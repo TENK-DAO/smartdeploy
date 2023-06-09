@@ -18,8 +18,6 @@ impl Default for ContractRegistry {
 }
 
 impl IsDeployable for ContractRegistry {
-    /// Deploys a new published contract returning the deployed contract's id.
-    /// If no salt provided it will use the current sequence number.
     fn deploy(
         &mut self,
         contract_name: String,
@@ -32,6 +30,8 @@ impl IsDeployable for ContractRegistry {
         if self.0.contains_key(deployed_name.clone()) {
             return Err(Error::NoSuchContractDeployed);
         }
+        // signed by owner
+        owner.require_auth();
         let hash = Contract::fetch_hash(contract_name, version)?;
         let salt = salt.unwrap_or_else(|| hash_string(&deployed_name));
         // Deploy the contract using the installed WASM code with given hash.
@@ -49,8 +49,9 @@ impl IsDeployable for ContractRegistry {
     fn fetch_contract_id(&self, deployed_name: String) -> Result<Address, Error> {
         self.0
             .get(deployed_name)
+            .transpose()
             .unwrap()
-            .map_err(|_| Error::NoSuchContractDeployed)
+            .ok_or(Error::NoSuchContractDeployed)
     }
 
     fn list_deployed_contracts(
