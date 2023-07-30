@@ -1,6 +1,6 @@
 use loam_sdk::soroban_sdk::{
-    self, contracttype, env, vec, Address, BytesN, IntoKey, IntoVal, Map, RawVal, String, Symbol,
-    Vec,
+    self, contracttype, env, vec, Address, BytesN, IntoKey, IntoVal, Map, Val, String,
+    Vec, symbol_short,
 };
 
 use crate::{error::Error, registry::Publishable, util::hash_string, version::Version, Contract};
@@ -35,13 +35,13 @@ impl IsDeployable for ContractRegistry {
         let hash = Contract::fetch_hash(contract_name, version)?;
         let salt = salt.unwrap_or_else(|| hash_string(&deployed_name));
         // Deploy the contract using the installed WASM code with given hash.
-        let id = env.deployer().with_current_contract(&salt).deploy(&hash);
+        let id = env.deployer().with_current_contract(salt).deploy(hash);
         // TODO: Invoke using a External API interface that is generated from Core Riff.
-        let init_fn = Symbol::short("owner_set");
-        let mut init_args: Vec<RawVal> = Vec::new(env);
+        let init_fn = symbol_short!("owner_set");
+        let mut init_args: Vec<Val> = Vec::new(env);
         init_args.push_back(owner.into_val(env));
         // Invoke the init function with the given arguments.
-        let _res: RawVal = env.invoke_contract(&id, &init_fn, init_args);
+        let _res: Val = env.invoke_contract(&id, &init_fn, init_args);
         self.0.set(deployed_name, id.clone());
         Ok(id)
     }
@@ -49,8 +49,6 @@ impl IsDeployable for ContractRegistry {
     fn fetch_contract_id(&self, deployed_name: String) -> Result<Address, Error> {
         self.0
             .get(deployed_name)
-            .transpose()
-            .unwrap()
             .ok_or(Error::NoSuchContractDeployed)
     }
 
@@ -66,7 +64,7 @@ impl IsDeployable for ContractRegistry {
             .take(limit.unwrap_or_else(|| self.0.len()) as usize);
         let mut res = vec![env()];
         for item in items {
-            res.push_back(item.map_err(|_| Error::NoSuchContractDeployed)?);
+            res.push_back(item);
         }
         Ok(res)
     }

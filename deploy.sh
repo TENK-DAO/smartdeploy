@@ -10,7 +10,7 @@ FILE_HASH=""
 
 if test -e "./hash.txt"; then
   FILE_HASH=$(cat ./hash.txt)
-  # echo "New Binary!"
+  echo "New Binary!"
 fi
 
 if test "$CURRENT_HASH" = "$FILE_HASH"; then

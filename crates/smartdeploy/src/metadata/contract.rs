@@ -40,8 +40,6 @@ impl PublishedContract {
         self.versions
             .keys()
             .last()
-            .transpose()
-            .unwrap()
             .ok_or(Error::NoSuchVersion)
     }
 
@@ -53,8 +51,6 @@ impl PublishedContract {
         };
         self.versions
             .get(version)
-            .transpose()
-            .unwrap()
             .ok_or(Error::NoSuchVersion)
     }
 

@@ -21,8 +21,6 @@ impl WasmRegistry {
     pub fn find_contract(&self, name: String) -> Result<PublishedContract, Error> {
         self.0
             .get(name)
-            .transpose()
-            .unwrap()
             .ok_or(Error::NoSuchContractPublished)
     }
 
@@ -65,7 +63,7 @@ impl IsPublishable for WasmRegistry {
             .unwrap_or_else(|_| PublishedContract::new(author));
         contract.author.require_auth();
         let keys = contract.versions.keys();
-        let last_version = keys.last().transpose().unwrap().unwrap_or_default();
+        let last_version = keys.last().unwrap_or_default();
         last_version.log();
         let new_version = last_version.clone().update(&kind.unwrap_or_default());
         new_version.log();
@@ -95,7 +93,7 @@ impl IsPublishable for WasmRegistry {
             .take(limit.unwrap_or_else(|| self.0.len()) as usize);
         let mut res = vec![env()];
         for item in items {
-            res.push_back(item.map_err(|_| Error::NoSuchContractPublished)?);
+            res.push_back(item);
         }
         Ok(res)
     }

@@ -39,8 +39,8 @@ target:
     echo {{TARGET_DIR}}
     echo {{SMARTDEPLOY}}
 
-build profile='release-with-logs':
-    cargo build --target wasm32-unknown-unknown --profile {{profile}} 
+build package="smartdeploy" profile='release-with-logs':
+    soroban contract build --package {{package}} --profile {{profile}} 
 
 
 [private]
@@ -60,7 +60,7 @@ setup_default:
     chmod +x {{ FILE }}
 
 
-publish_all: clean deploy_self
+publish_all:
     #!/usr/bin/env bash
     just install_self;
     for name in $(cargo metadata --format-version 1 --no-deps | jq -r '.packages[].name')
