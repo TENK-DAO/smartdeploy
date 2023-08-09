@@ -41,15 +41,15 @@ author=$(just soroban config identity address default)
 ID=$(cat contract_id.txt)
 
 
-smartdeploy="just soroban --quiet contract invoke  --source default --id $ID --"
+smartdeploy="just soroban --quiet contract invoke  --source default --id $ID"
 
 if test "$FILE_HASH" = ""; then
-    $smartdeploy publish \
+    $smartdeploy --fee 500000 -- publish \
       --contract_name smartdeploy \
-      --hash $(cat hash.txt) \
+      --bytes-file-path ./target/loam/smartdeploy.wasm \
       --author $author \
       --repo https://github.com/tenk-dao/smart-deploy
     
-   $smartdeploy deploy --contract_name smartdeploy --owner default --deployed_name "smartdeploy"
+   $smartdeploy -- deploy --contract_name smartdeploy --owner default --deployed_name "smartdeploy"
 fi
 

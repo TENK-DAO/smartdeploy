@@ -7,6 +7,7 @@ TARGET_DIR := './target/wasm32-unknown-unknown/release-with-logs'
 SMARTDEPLOY := TARGET_DIR / 'smartdeploy.wasm'
 BASE := TARGET_DIR / 'base.wasm'
 soroban := 'target/bin/soroban'
+loam := 'target/bin/loam'
 FILE := 'target/bin/soroban-smartdeploy'
 # smartdeploy := 'soroban contract invoke --id ' + env_var('DEFAULT_ID') + ' -- '
 # hash := if path_exists({{SMARTDEPLOY}}) == "true" {`soroban contract install --wasm ./target/wasm32-unknown-unknown/contracts/example_status_message.wasm --config-dir ./target` } else {""}
@@ -23,32 +24,33 @@ s name +args:
 smartdeploy +args:
     @soroban contract invoke --id {{id}} -- {{args}}
 
+smartdeploy_raw +args:
+    @soroban --vv contract invoke --id {{id}} 
+
 @soroban_install name:
     @soroban contract install --wasm ./target/wasm32-unknown-unknown/release-with-logs/{{name}}.wasm
 
-@generate: build
-    (cd ~/c/s/soroban-cli; cargo build)
-    @just soroban contract bindings ts \
-        --wasm {{SMARTDEPLOY}} \
+@generate: 
+    @just soroban contract bindings typescript \
         --contract-id {{id}} \
         --contract-name smartdeploy \
-        --root-dir {{ ROOT_DIR }}
-    cd {{ ROOT_DIR }}; npm i && npm run build
+        --output-dir {{ ROOT_DIR }}
 
 target:
     echo {{TARGET_DIR}}
     echo {{SMARTDEPLOY}}
 
-build package="smartdeploy" profile='release-with-logs':
-    soroban contract build --package {{package}} --profile {{profile}} 
+build:
+    loam build --profile release-with-logs --out-dir target/loam
 
 
 [private]
 setup_default:
-   soroban config identity generate -d default --config-dir $CONFIG_DIR
+   soroban config identity generate default --config-dir $CONFIG_DIR --network futurenet
 
 @setup:
-    echo {{ if path_exists(soroban) == "true" { "" } else { `cargo install_soroban` } }}
+    echo {{ if path_exists(soroban) == "true" { "" } else { `cargo install_soroban_dev` } }}
+    echo {{ if path_exists(loam) == "true" { "" } else { `cargo install_loam` } }}
     echo {{ if path_exists(env_var('CONFIG_DIR') / 'identity/default.toml') == "true" { "" } else { `just setup_default` } }}
     
 
@@ -62,27 +64,28 @@ setup_default:
 
 publish_all:
     #!/usr/bin/env bash
-    just install_self;
+    # just install_self;
     for name in $(cargo metadata --format-version 1 --no-deps | jq -r '.packages[].name')
     do
         if [ "$name" != "smartdeploy" ]; then
+            echo $name;
             name="${name//-/_}";
-            hash=$(just soroban_install $name);
-            just publish_one $name $hash
+            # hash=$(just soroban_install $name);
+            just publish_one $name
         fi
     done
 
 [private]
-@publish_one name hash:
-    @just publish {{ name }} {{ hash }}
+@publish_one name:
+    @just publish {{ name }}
     @just deploy {{ name }} {{ name }}
     @just install_contract {{ name }}
 
 @deploy contract_name deployed_name owner='default':
     just smartdeploy deploy --contract_name {{contract_name}} --deployed_name {{deployed_name}} --owner {{owner}}
 
-@publish name hash kind='Patch' author='default':
-    @soroban --quiet contract invoke --id {{id}} -- publish --contract_name {{name}} --hash {{hash}} --author {{author}}
+@publish name kind='Patch' author='default':
+    just smartdeploy publish --contract_name {{name}} --bytes-file-path ./target/loam/{{name}}.wasm --author {{author}}
 
 # Delete non-wasm artifacts
 @clean:

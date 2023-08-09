@@ -1,23 +1,22 @@
 #![cfg(test)]
-
-use crate::{SorobanContract, SorobanContractClient};
-use loam_sdk::soroban_sdk::{testutils::Address as _, Address, Env, String};
+use crate::{SorobanContract, SorobanContractClient, error::Error};
+use loam_sdk::soroban_sdk::{testutils::Address as _, Address, Env, String, Bytes};
 extern crate std;
 
 // The contract that will be deployed by the Publisher contract.
-// mod contract {
-//     use loam_sdk::soroban_sdk;
-//     soroban_sdk::contractimport!(
-//         file = "../../target/wasm32-unknown-unknown/release-with-logs/smartdeploy.wasm"
-//     );
-// }
+mod contract {
+    use loam_sdk::soroban_sdk;
+    soroban_sdk::contractimport!(
+        file = "../../target/loam/smartdeploy.wasm"
+    );
+}
 
-// fn init() -> (Env, SorobanContractClient, Address) {
-//     let env = Env::default();
-//     let client = SorobanContractClient::new(&env, &env.register_contract(None, SorobanContract));
-//     let address = Address::random(&env);
-//     (env, client, address)
-// }
+fn init() -> (Env, SorobanContractClient<'static>, Address) {
+    let env = Env::default();
+    let client = SorobanContractClient::new(&env, &env.register_contract(None, SorobanContract));
+    let address = Address::random(&env);
+    (env, client, address)
+}
 
 pub fn name(env: &Env) -> String {
     String::from_slice(env, "publisher")
@@ -25,25 +24,25 @@ pub fn name(env: &Env) -> String {
 
 #[test]
 fn handle_error_cases() {
-    // let (env, client, address) = &init();
+    let (env, client, address) = &init();
 
-    // let name = &name(env);
-    // let res = client.try_fetch(name, &None).unwrap_err();
+    let name = &name(env);
+    let res = client.try_fetch(name, &None).unwrap_err();
 
-    // println!("{res:#?}");
-    // assert!(matches!(res, Ok(Error::NoSuchContract)));
-    // let wasm_hash = env.install_contract_wasm(contract::WASM);
+    assert!(matches!(res, Ok(Error::NoSuchContractPublished)));
+    let wasm_hash = env.deployer().upload_contract_wasm(contract::WASM);
 
-    // let res = client.try_fetch(name, &None).unwrap_err();
-    // assert!(matches!(res, Ok(Error::NoSuchVersion)));
+    let res = client.try_fetch(name, &None).unwrap_err();
+    assert!(matches!(res, Ok(Error::NoSuchContractPublished)));
+    let bytes = Bytes::from_slice(env, contract::WASM);
+    client.publish(name, address, &bytes, &None, &None);
+    let res = client.try_fetch(name, &None).unwrap().unwrap();
+    assert_eq!(res.hash, wasm_hash);
 
-    // client.publish(name, address, &wasm_hash, &None, &None);
-    // let res = client.try_fetch(name, &None).unwrap().unwrap();
-    // assert_eq!(res, wasm_hash);
+    let other_address = Address::random(env);
+    let res = client.try_publish(name, &other_address, &bytes, &None, &None).unwrap_err();
 
-    // let other_address = Address::random(env);
-    // let res = client.try_register_name(&other_address, name).unwrap_err();
-    // assert!(matches!(res, Ok(Error::AlreadyRegistered)));
+    assert!(matches!(res, Ok(Error::AlreadyPublished)));
 
     // let res = client.try_deploy(name, &None, &String::from_slice(env, "hello"), &None);
 

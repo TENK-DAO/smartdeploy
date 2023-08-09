@@ -1,8 +1,13 @@
 
 [workspace]
 resolver = "2"
-members = ["crates/*", "examples/increment", "examples/errors"]
-# exclude = ["xtask"]
+members = [
+    "crates/*",
+    "examples/increment",
+    "examples/errors",
+    "examples/cross_contract/*",
+]
+exclude = ["xtask"]
 
 [profile.release-with-logs]
 inherits = "release"
@@ -25,10 +30,10 @@ lto = true
 
 
 [workspace.dependencies]
-loam-sdk = { path = "../../loam/crates/loam" }
-loam-sdk-core-riff = { path = "../../loam/crates/loam-core" }
-# loam-sdk = { git = "https://github.com/loambuild/loam-sdk", tag = "v0.4.3" }
-# loam-sdk-core-riff = { git = "https://github.com/loambuild/loam-sdk", tag = "v0.4.3" }
+# loam-sdk = { path = "../../loam/crates/loam" }
+# loam-sdk-core-riff = { path = "../../loam/crates/loam-core" }
+loam-sdk = { git = "https://github.com/loambuild/loam-sdk", tag = "v0.5.0" }
+loam-sdk-core-riff = { git = "https://github.com/loambuild/loam-sdk", tag = "v0.5.0" }
 clap = { version = "4.1.8", features = [
     "derive",
     "env",

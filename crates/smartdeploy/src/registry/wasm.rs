@@ -1,4 +1,4 @@
-use loam_sdk::soroban_sdk::{self, contracttype, env, vec, Address, BytesN, IntoKey, Map, String};
+use loam_sdk::soroban_sdk::{self, contracttype, env, vec, Address, IntoKey, Map, String};
 
 use crate::{
     error::Error,
@@ -54,7 +54,7 @@ impl IsPublishable for WasmRegistry {
         &mut self,
         contract_name: String,
         author: Address,
-        hash: BytesN<32>,
+        bytes: soroban_sdk::Bytes,
         repo: Option<String>,
         kind: Option<version::Update>,
     ) -> Result<(), Error> {
@@ -74,6 +74,7 @@ impl IsPublishable for WasmRegistry {
         } else {
             contract.get(Some(last_version))?.metadata
         };
+        let hash = env().deployer().upload_contract_wasm(bytes);
         let published_binary = PublishedWasm { hash, metadata };
         contract.versions.set(new_version, published_binary);
         self.set_contract(contract_name, contract);

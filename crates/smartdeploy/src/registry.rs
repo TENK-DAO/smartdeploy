@@ -37,7 +37,7 @@ pub trait IsPublishable {
         &mut self,
         contract_name: soroban_sdk::String,
         author: soroban_sdk::Address,
-        hash: soroban_sdk::BytesN<32>,
+        bytes: soroban_sdk::Bytes,
         repo: Option<soroban_sdk::String>,
         kind: Option<version::Update>,
     ) -> Result<(), Error>;

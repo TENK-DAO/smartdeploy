@@ -1,7 +1,8 @@
 #![no_std]
 
-use soroban_sdk::contractimpl;
+use loam_sdk::soroban_sdk::{self, contract, contractimpl};
 
+#[contract]
 pub struct ContractA;
 
 #[contractimpl]

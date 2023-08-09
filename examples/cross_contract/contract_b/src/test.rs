@@ -1,7 +1,8 @@
 #![cfg(test)]
+#![allow(clippy::similar_names)]
 
 use crate::{contract_a, ContractB, ContractBClient};
-use soroban_sdk::Env;
+use loam_sdk::soroban_sdk::Env;
 
 #[test]
 fn test() {
