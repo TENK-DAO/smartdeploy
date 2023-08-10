@@ -15,6 +15,10 @@ UPLOAD_FEE := '10000000'
 id:=`cat contract_id.txt`
 ROOT_DIR := 'target/contracts/smartdeploy'
 
+[private]
+@default: setup
+    @just build
+
 @soroban +args:
     {{soroban}} {{args}}
 
@@ -26,7 +30,7 @@ smartdeploy +args:
     @soroban contract invoke --id {{id}} -- {{args}}
 
 smartdeploy_raw +args:
-    @soroban --vv contract invoke --id {{id}} 
+    @soroban contract invoke --id {{id}} {{args}}
 
 @soroban_install name:
     @soroban contract install --wasm ./target/wasm32-unknown-unknown/release-with-logs/{{name}}.wasm
@@ -64,9 +68,9 @@ setup_default:
     chmod +x {{ FILE }}
 
 
-publish_all:
+publish_all: build
     #!/usr/bin/env bash
-    # just install_self;
+    just install_self;
     for name in $(cargo metadata --format-version 1 --no-deps | jq -r '.packages[].name')
     do
         if [ "$name" != "smartdeploy" ]; then
@@ -84,10 +88,15 @@ publish_all:
     @just install_contract {{ name }}
 
 @deploy contract_name deployed_name owner='default':
-    just smartdeploy deploy --contract_name {{contract_name}} --deployed_name {{deployed_name}} --owner {{owner}}
+    just smartdeploy_raw --source {{owner}} -- deploy --contract_name {{contract_name}} --deployed_name {{deployed_name}} --owner {{owner}}
 
 @publish name kind='Patch' author='default':
-    just smartdeploy_raw --fee {{UPLOAD_FEE}} -- --help
+    just smartdeploy_raw --fee {{UPLOAD_FEE}} --source {{author}} -- \
+        publish \
+        --contract_name {{name}} \
+        --bytes-file-path ./target/loam/{{name}}.wasm \
+        --kind {{kind}} \
+        --author {{author}} \
 
 # Delete non-wasm artifacts
 @clean:

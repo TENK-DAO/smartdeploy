@@ -1,14 +1,12 @@
 #![cfg(test)]
-use crate::{SorobanContract, SorobanContractClient, error::Error};
-use loam_sdk::soroban_sdk::{testutils::Address as _, Address, Env, String, Bytes};
+use crate::{error::Error, SorobanContract, SorobanContractClient};
+use loam_sdk::soroban_sdk::{testutils::Address as _, Address, Bytes, Env, String};
 extern crate std;
 
 // The contract that will be deployed by the Publisher contract.
 mod contract {
     use loam_sdk::soroban_sdk;
-    soroban_sdk::contractimport!(
-        file = "../../target/loam/smartdeploy.wasm"
-    );
+    soroban_sdk::contractimport!(file = "../../target/loam/smartdeploy.wasm");
 }
 
 fn init() -> (Env, SorobanContractClient<'static>, Address) {
@@ -40,7 +38,9 @@ fn handle_error_cases() {
     assert_eq!(res.hash, wasm_hash);
 
     let other_address = Address::random(env);
-    let res = client.try_publish(name, &other_address, &bytes, &None, &None).unwrap_err();
+    let res = client
+        .try_publish(name, &other_address, &bytes, &None, &None)
+        .unwrap_err();
 
     assert!(matches!(res, Ok(Error::AlreadyPublished)));
 

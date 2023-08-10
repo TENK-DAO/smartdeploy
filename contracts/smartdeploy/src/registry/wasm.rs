@@ -19,9 +19,7 @@ impl Default for WasmRegistry {
 }
 impl WasmRegistry {
     pub fn find_contract(&self, name: String) -> Result<PublishedContract, Error> {
-        self.0
-            .get(name)
-            .ok_or(Error::NoSuchContractPublished)
+        self.0.get(name).ok_or(Error::NoSuchContractPublished)
     }
 
     pub fn find_version(

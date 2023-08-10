@@ -4,7 +4,7 @@
 xtask = "run --package xtask --"
 bwl = "build --profile release-with-logs"
 install_soroban = "binstall -y --install-path ./target/bin soroban-cli --version 0.8.7"
-install_soroban_dev = "install --git https://github.com/ahalabs/soroban-tools --rev 0757fb22da4d9ab2979d09d200179fb3e8180b66 --debug --root ./target soroban-cli"
+install_soroban_dev = "install --git https://github.com/ahalabs/soroban-tools --rev 2966e7ac9cbcc9f408b80f4aa21c3b76ccf064c6 --debug --root ./target soroban-cli"
 install_loam = "install --git https://github.com/loambuild/loam-sdk --rev 9e8773367fae11dfe6dfe6277de9ff3b771faa2a --debug --root ./target loam-cli"
 # c = "check"
 # t = "test"

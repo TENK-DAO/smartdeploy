@@ -1,6 +1,7 @@
+#![allow(non_upper_case_globals)]
 use loam_sdk::soroban_sdk::{
-    self, contracttype, env, vec, Address, BytesN, IntoKey, IntoVal, Map, Val, String,
-    Vec, symbol_short,
+    self, contracttype, env, symbol_short, vec, Address, BytesN, IntoKey, IntoVal, Map, String,
+    Val, Vec,
 };
 
 use crate::{error::Error, registry::Publishable, util::hash_string, version::Version, Contract};

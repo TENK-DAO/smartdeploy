@@ -207,6 +207,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "795bc6e66a8e340f075fcf6227e417a2dc976b92b91f3cdc778bb858778b6747"
 
 [[package]]
+name = "contract-a"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riff",
+]
+
+[[package]]
+name = "contract-b"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riff",
+]
+
+[[package]]
 name = "core-foundation-sys"
 version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1082,22 +1098,6 @@ checksum = "a507befe795404456341dfab10cef66ead4c041f62b8b11bbb92bffe5d0953e0"
 
 [[package]]
 name = "smartdeploy"
-version = "0.0.0"
-dependencies = [
- "loam-sdk",
- "loam-sdk-core-riff",
-]
-
-[[package]]
-name = "soroban-cross-contract-a-contract"
-version = "0.0.0"
-dependencies = [
- "loam-sdk",
- "loam-sdk-core-riff",
-]
-
-[[package]]
-name = "soroban-cross-contract-b-contract"
 version = "0.0.0"
 dependencies = [
  "loam-sdk",
