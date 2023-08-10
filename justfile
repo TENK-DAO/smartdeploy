@@ -3,12 +3,13 @@ set dotenv-load
 
 export PATH := './target/bin:' + env_var('PATH')
 export SOROBAN_NETWORK := 'futurenet'
-TARGET_DIR := './target/wasm32-unknown-unknown/release-with-logs'
+TARGET_DIR := './target/loam'
 SMARTDEPLOY := TARGET_DIR / 'smartdeploy.wasm'
 BASE := TARGET_DIR / 'base.wasm'
 soroban := 'target/bin/soroban'
 loam := 'target/bin/loam'
 FILE := 'target/bin/soroban-smartdeploy'
+UPLOAD_FEE := '10000000'
 # smartdeploy := 'soroban contract invoke --id ' + env_var('DEFAULT_ID') + ' -- '
 # hash := if path_exists({{SMARTDEPLOY}}) == "true" {`soroban contract install --wasm ./target/wasm32-unknown-unknown/contracts/example_status_message.wasm --config-dir ./target` } else {""}
 id:=`cat contract_id.txt`
@@ -30,11 +31,12 @@ smartdeploy_raw +args:
 @soroban_install name:
     @soroban contract install --wasm ./target/wasm32-unknown-unknown/release-with-logs/{{name}}.wasm
 
-@generate: 
+@generate: build
     @just soroban contract bindings typescript \
         --contract-id {{id}} \
-        --contract-name smartdeploy \
-        --output-dir {{ ROOT_DIR }}
+        --wasm {{SMARTDEPLOY}} \
+        --output-dir {{ ROOT_DIR }}/smartdeploy \
+        --overwrite \
 
 target:
     echo {{TARGET_DIR}}
@@ -85,7 +87,7 @@ publish_all:
     just smartdeploy deploy --contract_name {{contract_name}} --deployed_name {{deployed_name}} --owner {{owner}}
 
 @publish name kind='Patch' author='default':
-    just smartdeploy publish --contract_name {{name}} --bytes-file-path ./target/loam/{{name}}.wasm --author {{author}}
+    just smartdeploy_raw --fee {{UPLOAD_FEE}} -- --help
 
 # Delete non-wasm artifacts
 @clean:

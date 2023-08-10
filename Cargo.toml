@@ -2,12 +2,19 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/*",
+    "contracts/*",
     "examples/increment",
     "examples/errors",
     "examples/cross_contract/*",
 ]
-exclude = ["xtask"]
+
+exclude = [
+    "contracts/*",
+    "examples/increment",
+    "examples/errors",
+    "examples/cross_contract/*",
+]
+
 
 [profile.release-with-logs]
 inherits = "release"
