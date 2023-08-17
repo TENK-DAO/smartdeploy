@@ -2,6 +2,7 @@
 [workspace]
 resolver = "2"
 members = [
+    "crates/*",
     "contracts/*",
     "examples/increment",
     "examples/errors",
@@ -9,6 +10,8 @@ members = [
 ]
 
 exclude = [
+    "crates/smartdeploy-macros",
+    "crates/smartdeploy-sdk",
     "contracts/*",
     "examples/increment",
     "examples/errors",

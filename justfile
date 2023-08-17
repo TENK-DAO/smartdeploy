@@ -63,6 +63,11 @@ setup_default:
 @deploy_self: build
     @./deploy.sh
 
+[private]
+@claim_self:
+    just smartdeploy claim_deployed_contract --deployed_name smartdeploy --id $(cat contract_id.txt)
+
+[private]
 @install_self:
     echo "#!/usr/bin/env bash \njust soroban contract invoke --id {{id}} -- \$@" > {{ FILE }}
     chmod +x {{ FILE }}
@@ -71,12 +76,11 @@ setup_default:
 publish_all: build
     #!/usr/bin/env bash
     just install_self;
-    for name in $(cargo metadata --format-version 1 --no-deps | jq -r '.packages[].name')
+    for name in $(loam build --ls)
     do
         if [ "$name" != "smartdeploy" ]; then
             echo $name;
             name="${name//-/_}";
-            # hash=$(just soroban_install $name);
             just publish_one $name
         fi
     done

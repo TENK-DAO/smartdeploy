@@ -19,6 +19,14 @@ impl Default for ContractRegistry {
 }
 
 impl IsDeployable for ContractRegistry {
+
+    fn claim_deployed_contract(&mut self, deployed_name: String, id: Address) -> Result<(), Error> {
+        if self.0.contains_key(deployed_name.clone()) {
+            return Err(Error::AlreadyClaimed);
+        }
+        self.0.set(deployed_name, id);
+        Ok(())
+    }
     fn deploy(
         &mut self,
         contract_name: String,

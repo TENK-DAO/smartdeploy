@@ -50,6 +50,6 @@ if test "$FILE_HASH" = ""; then
       --author $author \
       --repo https://github.com/tenk-dao/smart-deploy
     
-   $smartdeploy -- deploy --contract_name smartdeploy --owner default --deployed_name "smartdeploy"
+   just claim_self
 fi
 
