@@ -4,7 +4,7 @@ use super::ContractMetadata;
 
 /// Contains info about specific version of published binary
 #[contracttype]
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct PublishedWasm {
     pub hash: BytesN<32>,
     pub metadata: ContractMetadata,

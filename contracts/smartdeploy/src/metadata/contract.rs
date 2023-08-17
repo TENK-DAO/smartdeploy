@@ -37,12 +37,7 @@ impl PublishedContract {
 
 impl PublishedContract {
     pub fn most_recent_version(&self) -> Result<Version, Error> {
-        self.versions
-            .keys()
-            .last()
-            .transpose()
-            .unwrap()
-            .ok_or(Error::NoSuchVersion)
+        self.versions.keys().last().ok_or(Error::NoSuchVersion)
     }
 
     pub fn get(&self, version: Option<Version>) -> Result<PublishedWasm, Error> {
@@ -51,11 +46,7 @@ impl PublishedContract {
         } else {
             self.most_recent_version()?
         };
-        self.versions
-            .get(version)
-            .transpose()
-            .unwrap()
-            .ok_or(Error::NoSuchVersion)
+        self.versions.get(version).ok_or(Error::NoSuchVersion)
     }
 
     pub fn set(&mut self, version: Option<Version>, binary: PublishedWasm) -> Result<(), Error> {

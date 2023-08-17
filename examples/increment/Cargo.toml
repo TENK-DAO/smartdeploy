@@ -1,5 +1,5 @@
 [package]
-name = "increment"
+name = "example-increment"
 version = "0.0.0"
 authors = ["Stellar Development Foundation <info@stellar.org>"]
 license = "Apache-2.0"
@@ -17,3 +17,6 @@ loam-sdk-core-riff = { workspace = true }
 
 [dev_dependencies]
 loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }
+
+[package.metadata.loam]
+contract = true

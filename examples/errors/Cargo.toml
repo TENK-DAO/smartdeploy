@@ -17,3 +17,6 @@ loam-sdk-core-riff = { workspace = true }
 
 [dev_dependencies]
 loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }
+
+[package.metadata.loam]
+contract = true

@@ -37,7 +37,7 @@ pub trait IsPublishable {
         &mut self,
         contract_name: soroban_sdk::String,
         author: soroban_sdk::Address,
-        hash: soroban_sdk::BytesN<32>,
+        bytes: soroban_sdk::Bytes,
         repo: Option<soroban_sdk::String>,
         kind: Option<version::Update>,
     ) -> Result<(), Error>;
@@ -52,6 +52,9 @@ pub trait IsPublishable {
 
 #[riff]
 pub trait IsDeployable {
+    /// Claim a contract id of an already deployed contract
+    fn claim_deployed_contract(&mut self, deployed_name: soroban_sdk::String, id: soroban_sdk::Address) -> Result<(), Error>;
+
     /// Deploys a new published contract returning the deployed contract's id.
     /// If no salt provided it will use the current sequence number.
     fn deploy(

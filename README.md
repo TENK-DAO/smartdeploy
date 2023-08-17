@@ -38,11 +38,29 @@ At the moment only Unix OSes are supported (sorry!) in the follow steps.
 
 ### Setup local soroban binary
 
+This will install the correct binaries to `./target/bin`.
+
 ```bash
 just setup
 ```
 
+### Setting up smartdeploy itself
+
+To deploy your own Smartdeploy first run:
+
+```bash
+just clean
+```
+
+Then you can deploy it:
+
+```bash
+just deploy_self
+```
+
 ### Publish and deploy all the finished example contracts
+
+Once Smartdeploy is deployed
 
 ```bash
 just publish_all
@@ -73,4 +91,20 @@ or for short
 
 ```bash
 just s incriment --help
+```
+
+
+# Smartdeploy CLI
+
+Currently the smartdeploy CLI has a `call` subcommand which lets you use a deployed contract's name when invoking it.
+
+```bash
+cargo run -- call smartdeploy -- --help
+```
+
+Can list out deployed_contracts
+
+```bash
+cargo run -- call smartdeploy -- list_deployed_contracts
+
 ```

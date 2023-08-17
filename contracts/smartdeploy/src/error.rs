@@ -16,4 +16,7 @@ pub enum Error {
 
     /// Contract already deployed
     AlreadyDeployed = 5,
+
+    /// Contract already claimed
+    AlreadyClaimed = 6,
 }
