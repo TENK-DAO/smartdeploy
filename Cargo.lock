@@ -458,6 +458,7 @@ dependencies = [
 name = "contract-b"
 version = "0.0.0"
 dependencies = [
+ "contract-a",
  "loam-sdk",
  "loam-sdk-core-riff",
 ]
@@ -477,6 +478,14 @@ name = "core-foundation-sys"
 version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e496a50fda8aacccc86d7529e2c1e0892dbd0f898a6b5645b5561b89c3210efa"
+
+[[package]]
+name = "core-riff"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riff",
+]
 
 [[package]]
 name = "cpufeatures"
@@ -1397,7 +1406,7 @@ checksum = "57bcfdad1b858c2db7c38303a6d2ad4dfaf5eb53dfeb0910128b2c26d6158503"
 [[package]]
 name = "loam-build"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.5.0#9e8773367fae11dfe6dfe6277de9ff3b771faa2a"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.6.1#ee47f39b270569ce25eaead80da4a9859ee21868"
 dependencies = [
  "cargo_metadata 0.15.4",
  "thiserror",
@@ -1407,7 +1416,7 @@ dependencies = [
 [[package]]
 name = "loam-sdk"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.5.0#9e8773367fae11dfe6dfe6277de9ff3b771faa2a"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.6.1#ee47f39b270569ce25eaead80da4a9859ee21868"
 dependencies = [
  "loam-sdk-macro",
  "loam-soroban-sdk",
@@ -1416,7 +1425,7 @@ dependencies = [
 [[package]]
 name = "loam-sdk-core-riff"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.5.0#9e8773367fae11dfe6dfe6277de9ff3b771faa2a"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.6.1#ee47f39b270569ce25eaead80da4a9859ee21868"
 dependencies = [
  "loam-sdk",
 ]
@@ -1424,7 +1433,7 @@ dependencies = [
 [[package]]
 name = "loam-sdk-macro"
 version = "0.0.1"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.5.0#9e8773367fae11dfe6dfe6277de9ff3b771faa2a"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.6.1#ee47f39b270569ce25eaead80da4a9859ee21868"
 dependencies = [
  "Inflector",
  "cargo_metadata 0.15.4",
@@ -1439,7 +1448,7 @@ dependencies = [
 [[package]]
 name = "loam-soroban-sdk"
 version = "0.1.0"
-source = "git+https://github.com/loambuild/loam-sdk?tag=v0.5.0#9e8773367fae11dfe6dfe6277de9ff3b771faa2a"
+source = "git+https://github.com/loambuild/loam-sdk?tag=v0.6.1#ee47f39b270569ce25eaead80da4a9859ee21868"
 dependencies = [
  "loam-sdk-macro",
  "soroban-sdk 0.9.2",
@@ -2391,6 +2400,7 @@ checksum = "a507befe795404456341dfab10cef66ead4c041f62b8b11bbb92bffe5d0953e0"
 name = "smartdeploy"
 version = "0.0.0"
 dependencies = [
+ "core-riff",
  "loam-sdk",
  "loam-sdk-core-riff",
 ]

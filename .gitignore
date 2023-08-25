@@ -1,3 +1,4 @@
 /target/
 .soroban
+!./.soroban/network/standalone.toml
 

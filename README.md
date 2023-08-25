@@ -51,16 +51,8 @@ To deploy your own Smartdeploy first run:
 ```bash
 just clean
 ```
-
-Then you can deploy it:
-
-```bash
-just deploy_self
-```
-
 ### Publish and deploy all the finished example contracts
 
-Once Smartdeploy is deployed
 
 ```bash
 just publish_all

@@ -2,7 +2,6 @@
 set dotenv-load
 
 export PATH := './target/bin:' + env_var('PATH')
-export SOROBAN_NETWORK := 'futurenet'
 TARGET_DIR := './target/loam'
 SMARTDEPLOY := TARGET_DIR / 'smartdeploy.wasm'
 BASE := TARGET_DIR / 'base.wasm'
@@ -27,9 +26,9 @@ s name +args:
     @just soroban {{ name }} {{ args }}
 
 smartdeploy +args:
-    @soroban contract invoke --id {{id}} -- {{args}}
+    @just smartdeploy_raw -- {{args}}
 
-smartdeploy_raw +args:
+@smartdeploy_raw +args:
     @soroban contract invoke --id {{id}} {{args}}
 
 @soroban_install name:
@@ -52,7 +51,7 @@ build:
 
 [private]
 setup_default:
-   soroban config identity generate default --config-dir $CONFIG_DIR --network futurenet
+   soroban config identity generate default --config-dir $CONFIG_DIR
 
 @setup:
     echo {{ if path_exists(soroban) == "true" { "" } else { `cargo install_soroban_dev` } }}
@@ -65,7 +64,7 @@ setup_default:
 
 [private]
 @claim_self:
-    just smartdeploy claim_deployed_contract --deployed_name smartdeploy --id $(cat contract_id.txt)
+    just smartdeploy claim_deployed_contract --deployed_name smartdeploy --id {{ id }}
 
 [private]
 @install_self:
@@ -73,7 +72,7 @@ setup_default:
     chmod +x {{ FILE }}
 
 
-publish_all: build
+publish_all: deploy_self
     #!/usr/bin/env bash
     just install_self;
     for name in $(loam build --ls)
@@ -92,13 +91,20 @@ publish_all: build
     @just install_contract {{ name }}
 
 @deploy contract_name deployed_name owner='default':
-    just smartdeploy_raw --source {{owner}} -- deploy --contract_name {{contract_name}} --deployed_name {{deployed_name}} --owner {{owner}}
+    @just smartdeploy_raw --source {{owner}} -- deploy --contract_name {{contract_name}} --deployed_name {{deployed_name}} --owner {{owner}}
+
+@dev_deploy name file owner='default':
+    just smartdeploy_raw --fee {{UPLOAD_FEE}} --source {{owner}} -- \
+        dev_deploy \
+        --owner {{owner}}} \
+        --name {{name}} \
+        --wasm-file-path {{file}}} \
 
 @publish name kind='Patch' author='default':
     just smartdeploy_raw --fee {{UPLOAD_FEE}} --source {{author}} -- \
         publish \
         --contract_name {{name}} \
-        --bytes-file-path ./target/loam/{{name}}.wasm \
+        --wasm-file-path ./target/loam/{{name}}.wasm \
         --kind {{kind}} \
         --author {{author}} \
 
@@ -106,7 +112,9 @@ publish_all: build
 @clean:
     rm -rf .soroban/*.json hash.txt target/bin/soroban-*
 
-
+# Delete installed binaries
+@clean_installed_binaries:
+    rm target/bin/loam target/bin/soroban
 
 # List Published Contracts
 published_contracts start='0' limit='100':
@@ -120,4 +128,12 @@ deployed_contracts start='0' limit='100':
 
 @install_contract name:
     ./install_contract.sh {{name}}
+
+start_docker:
+    docker run --rm -it \
+    -p 8000:8000 \
+    --name stellar \
+    stellar/quickstart:soroban-dev@sha256:a6b03cf6b0433c99f2f799b719f0faadbb79684b1b763e7674ba749fb0f648ee \
+    --standalone \
+    --enable-soroban-rpc \
 

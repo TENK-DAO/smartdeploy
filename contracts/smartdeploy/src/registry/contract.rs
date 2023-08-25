@@ -1,12 +1,20 @@
 #![allow(non_upper_case_globals)]
-use loam_sdk::soroban_sdk::{
-    self, contracttype, env, symbol_short, vec, Address, BytesN, IntoKey, IntoVal, Map, String,
-    Val, Vec,
-};
+use loam_sdk::soroban_sdk::{self, contracttype, env, vec, Address, BytesN, IntoKey, Map, String};
 
 use crate::{error::Error, registry::Publishable, util::hash_string, version::Version, Contract};
 
-use super::IsDeployable;
+use super::{IsDeployable, IsDevDeployable};
+
+
+loam_sdk::import_contract!(core_riff);
+
+// Is the same as 
+
+// mod core_riff {
+//     use loam_sdk::soroban_sdk;
+//     loam_sdk::soroban_sdk::contractimport!(file = "../../target/loam/core_riff.wasm",);
+// }
+
 
 #[contracttype(export = false)]
 #[derive(IntoKey)]
@@ -19,7 +27,6 @@ impl Default for ContractRegistry {
 }
 
 impl IsDeployable for ContractRegistry {
-
     fn claim_deployed_contract(&mut self, deployed_name: String, id: Address) -> Result<(), Error> {
         if self.0.contains_key(deployed_name.clone()) {
             return Err(Error::AlreadyClaimed);
@@ -35,7 +42,6 @@ impl IsDeployable for ContractRegistry {
         owner: Address,
         salt: Option<BytesN<32>>,
     ) -> Result<Address, Error> {
-        let env = env();
         if self.0.contains_key(deployed_name.clone()) {
             return Err(Error::NoSuchContractDeployed);
         }
@@ -43,16 +49,9 @@ impl IsDeployable for ContractRegistry {
         owner.require_auth();
         let hash = Contract::fetch_hash(contract_name, version)?;
         let salt = salt.unwrap_or_else(|| hash_string(&deployed_name));
-        // Deploy the contract using the installed WASM code with given hash.
-        let id = env.deployer().with_current_contract(salt).deploy(hash);
-        // TODO: Invoke using a External API interface that is generated from Core Riff.
-        let init_fn = symbol_short!("owner_set");
-        let mut init_args: Vec<Val> = Vec::new(env);
-        init_args.push_back(owner.into_val(env));
-        // Invoke the init function with the given arguments.
-        let _res: Val = env.invoke_contract(&id, &init_fn, init_args);
-        self.0.set(deployed_name, id.clone());
-        Ok(id)
+        let address = deploy_and_init(&owner, salt, hash)?;
+        self.0.set(deployed_name, address.clone());
+        Ok(address)
     }
 
     fn fetch_contract_id(&self, deployed_name: String) -> Result<Address, Error> {
@@ -76,5 +75,42 @@ impl IsDeployable for ContractRegistry {
             res.push_back(item);
         }
         Ok(res)
+    }
+}
+
+fn deploy_and_init(
+    owner: &Address,
+    salt: BytesN<32>,
+    wasm_hash: BytesN<32>,
+) -> Result<Address, Error> {
+    // Deploy the contract using the installed WASM code with given hash.
+    let address = env()
+        .deployer()
+        .with_current_contract(salt)
+        .deploy(wasm_hash);
+    // Set the owner of the contract to the given owner.
+    let _ = core_riff::Client::new(env(), &address)
+        .try_owner_set(owner)
+        .map_err(|_| Error::InitFailed)?;
+    Ok(address)
+}
+
+impl IsDevDeployable for ContractRegistry {
+    fn dev_deploy(
+        &mut self,
+        name: soroban_sdk::String,
+        owner: soroban_sdk::Address,
+        wasm: soroban_sdk::Bytes,
+    ) -> Result<soroban_sdk::Address, Error> {
+        let wasm_hash = env().deployer().upload_contract_wasm(wasm);
+        if let Some(address) = self.0.get(name.clone()) {
+            let contract = core_riff::Client::new(env(), &address);
+            contract.redeploy(&wasm_hash);
+            return Ok(address);
+        }
+        let salt = hash_string(&name);
+        let id = deploy_and_init(&owner, salt, wasm_hash)?;
+        self.0.set(name, id.clone());
+        Ok(id)
     }
 }

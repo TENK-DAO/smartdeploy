@@ -19,4 +19,7 @@ pub enum Error {
 
     /// Contract already claimed
     AlreadyClaimed = 6,
+
+    /// Failed to initialize contract
+    InitFailed = 7,
 }

@@ -2,12 +2,7 @@
 
 use loam_sdk::soroban_sdk::{self, contract, contractimpl, Address, Env};
 
-mod contract_a {
-    use loam_sdk::soroban_sdk;
-    loam_sdk::soroban_sdk::contractimport!(
-        file = "../../../target/loam/contract_a.wasm",
-    );
-}
+loam_sdk::import_contract!(contract_a);
 
 #[contract]
 pub struct ContractB;

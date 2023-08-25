@@ -13,6 +13,7 @@ doctest = false
 [dependencies]
 loam-sdk = { workspace = true }
 loam-sdk-core-riff = { workspace = true }
+contract-a = { path = "../contract_a" }
 
 
 [dev_dependencies]
