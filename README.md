@@ -16,7 +16,7 @@ Currently smart contracts are `installed` to the network allowing them to be dep
 
 ### install `just`
 
-`just` is a task running for helping executing graphs of dependent tasks.
+[just](https://github.com/casey/just) is a task running for helping executing graphs of dependent tasks.
 
 ```bash
 cargo install just
@@ -46,13 +46,21 @@ just setup
 
 ### Setting up smartdeploy itself
 
+Currently standalone is the default network. (see [.env](./.env))
+
+You'll need docker installed. Then you can open a separate terminal and run:
+
+```bash
+just start_docker
+```
+
 To deploy your own Smartdeploy first run:
 
 ```bash
 just clean
 ```
-### Publish and deploy all the finished example contracts
 
+Then
 
 ```bash
 just publish_all
@@ -64,7 +72,7 @@ This command creates a new smartdeploy contract and publishes all the examples t
 just soroban --list
 ```
 
-should print:
+should print something like:
 
 ```
 Installed Plugins:
@@ -82,7 +90,7 @@ just soroban increment --help
 or for short
 
 ```bash
-just s incriment --help
+just s increment --help
 ```
 
 
