@@ -1,27 +1,23 @@
 [package]
-name = "smartdeploy"
-description = "A crate for managing and deploying smart contracts on the Soroban blockchain."
-documentation = "https://docs.rs/smartdeploy"
+name = "core-riff"
+description = "Smallest Redeployable Contract"
 version = "0.0.0"
 authors = ["Stellar Development Foundation <info@stellar.org>"]
 license = "Apache-2.0"
-rust-version = "1.69"
 edition = "2021"
+publish = false
 
 [lib]
 crate-type = ["cdylib"]
 doctest = false
 
 [dependencies]
-loam-sdk = { workspace = true }
+loam-sdk = { workspace = true, features = ["loam-soroban-sdk"] }
 loam-sdk-core-riff = { workspace = true }
-core-riff = { path = "../core" }
+
 
 [dev_dependencies]
 loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }
 
 [package.metadata.loam]
 contract = true
-
-# should add this here
-#[package.metadata.loam.dependencies]

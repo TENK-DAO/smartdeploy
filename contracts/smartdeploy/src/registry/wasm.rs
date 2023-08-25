@@ -52,7 +52,7 @@ impl IsPublishable for WasmRegistry {
         &mut self,
         contract_name: String,
         author: Address,
-        bytes: soroban_sdk::Bytes,
+        wasm: soroban_sdk::Bytes,
         repo: Option<String>,
         kind: Option<version::Update>,
     ) -> Result<(), Error> {
@@ -62,9 +62,11 @@ impl IsPublishable for WasmRegistry {
         contract.author.require_auth();
         let keys = contract.versions.keys();
         let last_version = keys.last().unwrap_or_default();
+
         last_version.log();
         let new_version = last_version.clone().update(&kind.unwrap_or_default());
         new_version.log();
+
         let metadata = if let Some(repo) = repo {
             ContractMetadata { repo }
         } else if new_version == INITAL_VERSION {
@@ -72,7 +74,7 @@ impl IsPublishable for WasmRegistry {
         } else {
             contract.get(Some(last_version))?.metadata
         };
-        let hash = env().deployer().upload_contract_wasm(bytes);
+        let hash = env().deployer().upload_contract_wasm(wasm);
         let published_binary = PublishedWasm { hash, metadata };
         contract.versions.set(new_version, published_binary);
         self.set_contract(contract_name, contract);

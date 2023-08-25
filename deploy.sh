@@ -1,12 +1,12 @@
 #!/bin/bash
 
-CURRENT_HASH=$(just soroban contract install \
-       --source default \
-       --wasm ./target/wasm32-unknown-unknown/release-with-logs/smartdeploy.wasm)
+
+
+CURRENT_HASH=$(just soroban contract install --source default --wasm ./target/loam/smartdeploy.wasm)
+author=$(just soroban config identity address default)
+echo $author
 
 FILE_HASH=""
-
-
 
 if test -e "./hash.txt"; then
   FILE_HASH=$(cat ./hash.txt)
@@ -37,19 +37,18 @@ fi
 
 
 
-author=$(just soroban config identity address default)
 ID=$(cat contract_id.txt)
 
+if test "$ID" = ""; then
+  echo "No ID found"
+  exit 1
+fi
 
-smartdeploy="just soroban --quiet contract invoke  --source default --id $ID"
+
+smartdeploy="just soroban --quiet contract invoke --id $ID"
 
 if test "$FILE_HASH" = ""; then
-    $smartdeploy --fee 500000 -- publish \
-      --contract_name smartdeploy \
-      --bytes-file-path ./target/loam/smartdeploy.wasm \
-      --author $author \
-      --repo https://github.com/tenk-dao/smart-deploy
-    
+   just publish smartdeploy
    just claim_self
 fi
 

@@ -37,7 +37,7 @@ pub trait IsPublishable {
         &mut self,
         contract_name: soroban_sdk::String,
         author: soroban_sdk::Address,
-        bytes: soroban_sdk::Bytes,
+        wasm: soroban_sdk::Bytes,
         repo: Option<soroban_sdk::String>,
         kind: Option<version::Update>,
     ) -> Result<(), Error>;
@@ -78,4 +78,16 @@ pub trait IsDeployable {
         start: Option<u32>,
         limit: Option<u32>,
     ) -> Result<soroban_sdk::Vec<(soroban_sdk::String, soroban_sdk::Address)>, Error>;
+}
+
+
+#[riff]
+pub trait IsDevDeployable {
+    /// Skips the publish step to deploy a contract directly, keeping the name
+    fn dev_deploy(
+        &mut self,
+        name: soroban_sdk::String,
+        owner: soroban_sdk::Address,
+        wasm: soroban_sdk::Bytes,
+    ) -> Result<soroban_sdk::Address, Error>;
 }
