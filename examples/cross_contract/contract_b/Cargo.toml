@@ -12,7 +12,7 @@ doctest = false
 
 [dependencies]
 loam-sdk = { workspace = true }
-loam-sdk-core-riff = { workspace = true }
+smartdeploy-sdk = { workspace = true }
 contract-a = { path = "../contract_a" }
 
 

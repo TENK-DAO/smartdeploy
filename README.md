@@ -96,6 +96,11 @@ just s increment --help
 
 # Smartdeploy CLI
 
+## Install
+```
+cargo install
+```
+
 Currently the smartdeploy CLI has a `call` subcommand which lets you use a deployed contract's name when invoking it.
 
 ```bash
@@ -106,5 +111,5 @@ Can list out deployed_contracts
 
 ```bash
 cargo run -- call smartdeploy -- list_deployed_contracts
-
 ```
+

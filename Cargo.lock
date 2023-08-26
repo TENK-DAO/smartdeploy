@@ -451,7 +451,7 @@ name = "contract-a"
 version = "0.0.0"
 dependencies = [
  "loam-sdk",
- "loam-sdk-core-riff",
+ "smartdeploy-sdk",
 ]
 
 [[package]]
@@ -460,7 +460,7 @@ version = "0.0.0"
 dependencies = [
  "contract-a",
  "loam-sdk",
- "loam-sdk-core-riff",
+ "smartdeploy-sdk",
 ]
 
 [[package]]
@@ -2435,6 +2435,22 @@ dependencies = [
  "thiserror",
  "tokio",
  "toml",
+]
+
+[[package]]
+name = "smartdeploy-macros"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.16",
+]
+
+[[package]]
+name = "smartdeploy-sdk"
+version = "0.1.0"
+dependencies = [
+ "smartdeploy-macros",
 ]
 
 [[package]]
