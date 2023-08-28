@@ -1,8 +1,6 @@
 #![no_std]
 
-use loam_sdk::soroban_sdk::{
-    self, contract, contractimpl, symbol_short, Address, BytesN, Env, Symbol,
-};
+use loam_sdk::soroban_sdk::{self, contract, contractimpl};
 
 #[contract]
 pub struct ContractA;
@@ -13,6 +11,5 @@ impl ContractA {
         x.checked_add(y).expect("no overflow")
     }
 }
-
 
 smartdeploy_sdk::core_riff!();

@@ -485,6 +485,7 @@ version = "0.0.0"
 dependencies = [
  "loam-sdk",
  "loam-sdk-core-riff",
+ "smartdeploy-sdk",
 ]
 
 [[package]]
@@ -667,6 +668,15 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "dev-core-riff"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riff",
+ "smartdeploy-sdk",
 ]
 
 [[package]]

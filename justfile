@@ -101,7 +101,7 @@ publish_all: deploy_self
         --wasm-file-path {{file}}} \
 
 @publish name kind='Patch' author='default':
-    just smartdeploy_raw --fee {{UPLOAD_FEE}} --source {{author}} -- \
+    @just smartdeploy_raw --fee {{UPLOAD_FEE}} --source {{author}} -- \
         publish \
         --contract_name {{name}} \
         --wasm-file-path ./target/loam/{{name}}.wasm \
