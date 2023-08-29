@@ -3,6 +3,7 @@
 
 
 CURRENT_HASH=$(just soroban contract install --source default --wasm ./target/loam/smartdeploy.wasm)
+echo current hash $CURRENT_HASH
 author=$(just soroban config identity address default)
 echo $author
 
@@ -43,6 +44,7 @@ if test "$ID" = ""; then
   echo "No ID found"
   exit 1
 fi
+echo $ID
 
 
 smartdeploy="just soroban --quiet contract invoke --id $ID"
