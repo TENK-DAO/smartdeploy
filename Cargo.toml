@@ -46,7 +46,7 @@ smartdeploy-sdk = { path = "./crates/smartdeploy-sdk", version = "0.1.0" }
 smartdeploy-macros = { path = "./crates/smartdeploy-macros", version = "0.1.0" }
 # loam-sdk = { path = "../../loam/crates/loam-sdk" }
 # loam-sdk-core-riff = { path = "../../loam/crates/loam-core" }
-loam-sdk =  "0.6.2"
+loam-sdk =  "0.6.3"
 loam-sdk-core-riff = "0.6.2"
 
 clap = { version = "4.1.8", features = [

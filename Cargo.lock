@@ -1386,9 +1386,9 @@ dependencies = [
 
 [[package]]
 name = "loam-sdk"
-version = "0.6.2"
+version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8475f81bdb5daae9c52ed99d708bce896029a27a84ba1589bcaeacbf570c4e4d"
+checksum = "b8e1da60bcbb6ff213178a7346fefacf347e39ee6397d5868fcdc9b33a23a902"
 dependencies = [
  "loam-sdk-macro",
  "loam-soroban-sdk",
