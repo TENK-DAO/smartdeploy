@@ -139,3 +139,5 @@ start_docker:
     --standalone \
     --enable-soroban-rpc \
 
+smartdeploy_id:
+    just smartdeploy fetch_contract_id --deployed_name smartdeploy | jq .

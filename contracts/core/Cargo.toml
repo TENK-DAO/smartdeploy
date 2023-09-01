@@ -13,7 +13,6 @@ doctest = false
 
 [dependencies]
 loam-sdk = { workspace = true, features = ["loam-soroban-sdk"] }
-loam-sdk-core-riff = { workspace = true }
 smartdeploy-sdk = { workspace = true }
 
 

@@ -1,5 +1,6 @@
 [package]
 name = "smartdeploy-sdk"
+description = "SmartDeploy SDK helps ensure soroban contracts can be redeployed"
 edition = "2021"
 version.workspace = true
 
