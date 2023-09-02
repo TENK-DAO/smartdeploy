@@ -56,8 +56,10 @@ setup_default:
 @setup:
     echo {{ if path_exists(soroban) == "true" { "" } else { `cargo install_soroban_dev` } }}
     echo {{ if path_exists(loam) == "true" { "" } else { `cargo install_loam` } }}
+    @just fund_default
+
+@fund_default:
     echo {{ if path_exists(env_var('CONFIG_DIR') / 'identity/default.toml') == "true" { "" } else { `just setup_default` } }}
-    
 
 @deploy_self: build
     @./deploy.sh
@@ -72,7 +74,7 @@ setup_default:
     chmod +x {{ FILE }}
 
 
-publish_all: deploy_self
+publish_all: fund_default deploy_self
     #!/usr/bin/env bash
     just install_self;
     for name in $(loam build --ls)
@@ -137,3 +139,5 @@ start_docker:
     --standalone \
     --enable-soroban-rpc \
 
+smartdeploy_id:
+    just smartdeploy fetch_contract_id --deployed_name smartdeploy | jq .

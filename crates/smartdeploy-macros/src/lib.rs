@@ -45,7 +45,7 @@ pub struct DevDeploy__;
 
 #[soroban_sdk::contractimpl]
 impl DevDeploy__ {
-    /// Redeploy the contract to the given wasm bytes
+    /// Redeploy the contract with the given wasm bytes
     pub fn dev_deploy(env: soroban_sdk::Env, wasm: loam_sdk::soroban_sdk::Bytes) {
         let wasm_hash = env.deployer().upload_contract_wasm(wasm);
         env.deployer().update_current_contract_wasm(wasm_hash);

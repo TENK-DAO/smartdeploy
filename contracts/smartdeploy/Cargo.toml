@@ -2,7 +2,7 @@
 name = "smartdeploy"
 description = "A crate for managing and deploying smart contracts on the Soroban blockchain."
 documentation = "https://docs.rs/smartdeploy"
-version = "0.0.0"
+version = "0.1.0"
 authors = ["Stellar Development Foundation <info@stellar.org>"]
 license = "Apache-2.0"
 rust-version = "1.69"
@@ -15,7 +15,7 @@ doctest = false
 [dependencies]
 loam-sdk = { workspace = true }
 loam-sdk-core-riff = { workspace = true }
-core-riff = { path = "../core" }
+core-riff = { path = "../core", version = "0.1.0" }
 
 [dev_dependencies]
 loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }

@@ -32,7 +32,7 @@ impl CoreRiff for Contract {
     type Impl = Owner;
 }
 
-soroban_contract!(WasmRegistry impl Publishable, Deployable = ContractRegistry, CoreRiff = Owner);
+soroban_contract!();
 
 #[cfg(test)]
 mod test;

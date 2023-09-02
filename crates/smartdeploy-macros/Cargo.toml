@@ -3,7 +3,7 @@ name = "smartdeploy-macros"
 description = "Smartdeploy macros"
 readme = "../../README.md"
 license = "Apache-2.0"
-version.workspace = true
+version = "0.1.0"
 edition = "2021"
 rust-version = "1.69"
 
@@ -12,7 +12,4 @@ proc-macro = true
 doctest = false
 
 [dependencies]
-
-syn = {version="2.0",features=["full"]}
 quote = "1.0"
-proc-macro2 = "1.0"

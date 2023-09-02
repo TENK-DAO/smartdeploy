@@ -1,4 +1,3 @@
 /target/
 .soroban
-!./.soroban/network/standalone.toml
-
+!.soroban/network/futurenet/contract_id.json
