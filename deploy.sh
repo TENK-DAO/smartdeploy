@@ -54,4 +54,6 @@ if test "$FILE_HASH" = ""; then
    just claim_self
 fi
 
+if test "$SOROBAN_NETWORK" = "futurenet"; then
 just smartdeploy_id > .soroban/network/$SOROBAN_NETWORK/smartdeploy.json
+fi
