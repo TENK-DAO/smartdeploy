@@ -2,7 +2,7 @@
 name = "smartdeploy-sdk"
 description = "SmartDeploy SDK helps ensure soroban contracts can be redeployed"
 edition = "2021"
-version.workspace = true
+version = "0.1.0"
 
 [lib]
 crate-type = ["rlib"]
@@ -10,4 +10,4 @@ crate-type = ["rlib"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-smartdeploy-macros = { workspace = true }
+smartdeploy-macros = { path = "../smartdeploy-macros", version = "0.1.0" }

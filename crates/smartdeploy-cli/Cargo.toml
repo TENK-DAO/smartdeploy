@@ -4,7 +4,7 @@ description = "Smartdeploy CLI"
 authors = ["Willem Wyndham <willem@ahalabs.dev>"]
 license = "Apache-2.0"
 readme = "README.md"
-version = "0.0.1"
+version = "0.1.0"
 edition = "2021"
 rust-version = "1.70"
 autobins = false
@@ -25,7 +25,7 @@ path = "src/lib.rs"
 doctest = false
 
 [dependencies]
-soroban-cli = { git = "https://github.com/ahalabs/soroban-tools", rev = "2966e7ac9cbcc9f408b80f4aa21c3b76ccf064c6"}
+soroban-cli = { package = "loam-soroban-cli", version = "0.9.5" }
 clap = { version = "4.1.8", features = [
     "derive",
     "env",

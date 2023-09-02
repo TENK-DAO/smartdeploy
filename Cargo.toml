@@ -18,9 +18,6 @@ exclude = [
     "examples/cross_contract/*",
 ]
 
-[workspace.package]
-version = "0.1.0"
-
 [profile.release-with-logs]
 inherits = "release"
 debug-assertions = true
@@ -42,12 +39,12 @@ lto = true
 
 
 [workspace.dependencies]
-smartdeploy-sdk = { path = "./crates/smartdeploy-sdk", version = "0.1.0" }
-smartdeploy-macros = { path = "./crates/smartdeploy-macros", version = "0.1.0" }
+smartdeploy-sdk = { path = "./crates/smartdeploy-sdk" }
+smartdeploy-macros = { path = "./crates/smartdeploy-macros" }
 # loam-sdk = { path = "../../loam/crates/loam-sdk" }
 # loam-sdk-core-riff = { path = "../../loam/crates/loam-core" }
-loam-sdk =  "0.6.3"
-loam-sdk-core-riff = "0.6.2"
+loam-sdk =  "0.6.4"
+loam-sdk-core-riff = "0.6.4"
 
 clap = { version = "4.1.8", features = [
     "derive",
