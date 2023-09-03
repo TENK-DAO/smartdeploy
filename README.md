@@ -11,7 +11,7 @@ The key idea behind smartdeploy is that contract should be redeployable and main
 First you need to add smartdeploy-sdk to your contract's `Cargo.toml`
 
 ```toml
-smartdeploy-sdk = { git = "https://github.com/TENK-DAO/smartdeploy", "tag" = "v0.1.0" }
+smartdeploy-sdk = "0.1.0"
 ```
 
 ### `soroban-cli`
