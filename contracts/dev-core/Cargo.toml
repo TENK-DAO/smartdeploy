@@ -23,5 +23,5 @@ loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }
 contract = true
 
 [features]
-default = []
+default = ["core_riff"]
 core_riff = []
