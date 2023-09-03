@@ -55,5 +55,5 @@ if test "$FILE_HASH" = ""; then
 fi
 
 if test "$SOROBAN_NETWORK" = "futurenet"; then
-just smartdeploy_id > .soroban/network/$SOROBAN_NETWORK/smartdeploy.json
+  just smartdeploy_id > ./crates/smartdeploy-cli/src/futurenet/smartdeploy.json
 fi
