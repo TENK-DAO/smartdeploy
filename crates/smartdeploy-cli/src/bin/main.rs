@@ -2,7 +2,7 @@ use clap::{CommandFactory, Parser};
 
 use smartdeploy_cli::Root;
 
-const CONTRACT_ID: &str = include_str!("../../../../.soroban/network/futurenet/smartdeploy.json");
+const CONTRACT_ID: &str = include_str!("../futurenet/smartdeploy.json");
 
 #[tokio::main]
 async fn main() {
