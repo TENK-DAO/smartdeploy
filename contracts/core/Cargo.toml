@@ -1,11 +1,10 @@
 [package]
 name = "core-riff"
-description = "Smallest Redeployable Contract"
+description = "Example of Redeployable Contract"
 version = "0.1.0"
 authors = ["Stellar Development Foundation <info@stellar.org>"]
 license = "Apache-2.0"
 edition = "2021"
-publish = false
 
 [lib]
 crate-type = ["cdylib"]

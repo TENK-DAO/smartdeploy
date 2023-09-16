@@ -59,7 +59,7 @@ setup_default:
     @just fund_default
 
 @fund_default:
-    echo {{ if path_exists(env_var('CONFIG_DIR') / '.soroban/identity/default.toml') == "true" { "" } else { `just setup_default` } }}
+    echo {{ if path_exists(env_var('CONFIG_DIR') / '.soroban/identity/default.toml') == "true" { `just soroban config identity fund default` } else { `just setup_default` } }}
 
 @deploy_self: build
     @./deploy.sh

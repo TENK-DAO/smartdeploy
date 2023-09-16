@@ -4,10 +4,10 @@
     clippy::missing_panics_doc
 )]
 pub mod commands;
+pub mod futurenet;
 
 
 use std::path::Path;
-
 pub use commands::Root;
 
 pub fn parse_cmd<T>(s: &str) -> Result<T, clap::Error>
