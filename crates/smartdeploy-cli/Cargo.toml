@@ -26,7 +26,8 @@ doctest = false
 
 [dependencies]
 # soroban-cli = { git = "https://github.com/stellar/soroban-tools", rev = "7d3b4175b1970f76455b4789797c2edc5f79e432" }
-soroban-cli = { path = "../../../soroban-cli/cmd/soroban-cli" }
+#soroban-cli = { path = "../../../soroban-cli/cmd/soroban-cli" }
+soroban-cli = "20.0.0-rc1"
 clap = { version = "4.1.8", features = [
     "derive",
     "env",
