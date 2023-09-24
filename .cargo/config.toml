@@ -3,9 +3,9 @@
 [alias] # command aliases
 xtask = "run --package xtask --"
 bwl = "build --profile release-with-logs"
-install_soroban = "binstall -y --install-path ./target/bin soroban-cli --version 20.0.0-rc1"
 install_soroban_dev = "install --git https://github.com/stellar/soroban-tools --rev 7d3b4175b1970f76455b4789797c2edc5f79e432 --debug --root ./target soroban-cli"
-install_loam = "install --git https://github.com/loambuild/loam-sdk --rev 89fa32899de46fad9b6fa2c24b1fbb943adce218 --debug --root ./target loam-cli"
+install_soroban = "binstall -y --install-path ./target/bin soroban-cli --version 20.0.0-rc3"
+install_loam = "install --version 0.6.5 --debug --root ./target loam-cli"
 # c = "check"
 # t = "test"
 # r = "run"
