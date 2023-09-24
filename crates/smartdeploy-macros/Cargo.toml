@@ -3,7 +3,7 @@ name = "smartdeploy-macros"
 description = "Smartdeploy macros"
 readme = "../../README.md"
 license = "Apache-2.0"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 rust-version = "1.69"
 
@@ -14,5 +14,5 @@ doctest = false
 [dependencies]
 quote = "1.0"
 syn = "2.0.37"
-smartdeploy-build = { path = "../smartdeploy-build", version = "0.1.0" }
+smartdeploy-build = { path = "../smartdeploy-build", version = "0.1.1" }
 stellar-strkey = "0.0.7"
