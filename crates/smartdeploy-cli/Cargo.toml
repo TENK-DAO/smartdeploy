@@ -25,9 +25,9 @@ path = "src/lib.rs"
 doctest = false
 
 [dependencies]
-# soroban-cli = { git = "https://github.com/stellar/soroban-tools", rev = "7d3b4175b1970f76455b4789797c2edc5f79e432" }
+soroban-cli = { git = "https://github.com/stellar/soroban-tools", rev = "b5b0b786d1900382335e76563d6deb7348503493" }
 #soroban-cli = { path = "../../../soroban-cli/cmd/soroban-cli" }
-soroban-cli = "20.0.0-rc1"
+# soroban-cli = "20.0.0-rc3"
 clap = { version = "4.1.8", features = [
     "derive",
     "env",

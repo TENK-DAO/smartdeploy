@@ -37,8 +37,8 @@ smartdeploy-sdk = { path = "./crates/smartdeploy-sdk" }
 smartdeploy-macros = { path = "./crates/smartdeploy-macros" }
 # loam-sdk = { path = "../../loam/crates/loam-sdk" }
 # loam-sdk-core-riff = { path = "../../loam/crates/loam-core" }
-loam-sdk-core-riff = { git = "https://github.com/loambuild/loam-sdk", rev = "89fa32899de46fad9b6fa2c24b1fbb943adce218" }
-loam-sdk = { git = "https://github.com/loambuild/loam-sdk", rev = "89fa32899de46fad9b6fa2c24b1fbb943adce218" }
+loam-sdk-core-riff = "0.6.5"
+loam-sdk = "0.6.5"
 clap = { version = "4.1.8", features = [
     "derive",
     "env",

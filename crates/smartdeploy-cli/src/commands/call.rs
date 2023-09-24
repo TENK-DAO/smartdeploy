@@ -1,6 +1,6 @@
 use clap::Parser;
 
-use soroban_cli::commands::contract::invoke;
+use soroban_cli::commands::{contract::invoke, global};
 
 #[derive(Parser, Debug, Clone)]
 pub struct Cmd {
@@ -22,10 +22,11 @@ impl Cmd {
             .into_iter()
             .map(Into::into)
             .collect::<Vec<_>>();
-        let id = contract_invoke.invoke().await?;
+        let global_args = &global::Args::default();
+        let id = contract_invoke.invoke(global_args).await?;
         let mut contract = self.call.clone();
         contract.contract_id = id.trim_matches('"').to_string();
-        contract.run().await?;
+        contract.run(global_args).await?;
         Ok(())
     }
 }

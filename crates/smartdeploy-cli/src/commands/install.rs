@@ -27,6 +27,8 @@ pub enum Error {
     Invoke(#[from] invoke::Error),
     #[error(transparent)]
     SmartdeployBuild(#[from] smartdeploy_build::Error),
+    #[error(transparent)]
+    Io(#[from] std::io::Error),
 }
 
 impl Cmd {
@@ -54,6 +56,7 @@ impl Cmd {
             target_dir()?
         };
         let out_file = wasm_location(&self.deployed_name, Some(&out_dir))?;
+        let id_file = out_file.parent().unwrap().join("contract_id.txt");
         let fetch_cmd = fetch::Cmd {
             contract_id: id.trim_matches('"').to_string(),
             out_file: Some(out_file),
@@ -64,6 +67,7 @@ impl Cmd {
             ..Default::default()
         };
         fetch_cmd.run().await?;
+        std::fs::write(id_file, contract_id)?;
         Ok(())
     }
 }
