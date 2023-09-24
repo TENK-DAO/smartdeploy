@@ -32,20 +32,13 @@ panic = "abort"
 codegen-units = 1
 lto = true
 
-# [workspace.dependencies.soroban-sdk]
-# version = "0.7.0"
-# git = "https://github.com/stellar/rs-soroban-sdk"
-# rev = "8abd3353c728f09ee1c8a2544f67a853e915afc2"
-
-
 [workspace.dependencies]
 smartdeploy-sdk = { path = "./crates/smartdeploy-sdk" }
 smartdeploy-macros = { path = "./crates/smartdeploy-macros" }
 # loam-sdk = { path = "../../loam/crates/loam-sdk" }
 # loam-sdk-core-riff = { path = "../../loam/crates/loam-core" }
-loam-sdk =  "0.6.4"
-loam-sdk-core-riff = "0.6.4"
-
+loam-sdk-core-riff = "0.6.5"
+loam-sdk = "0.6.5"
 clap = { version = "4.1.8", features = [
     "derive",
     "env",

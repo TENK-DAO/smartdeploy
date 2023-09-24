@@ -1,0 +1,14 @@
+[package]
+name = "smartdeploy-build"
+description = "Crate for using smartdeploy to bulid smart contracts on soroban"
+authors = ["Willem Wyndham <willem@ahalabs.dev>"]
+license = "Apache-2.0"
+readme = "../../README.md"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.70"
+
+
+[dependencies]
+thiserror = "1.0.31"
+loam-build = "0.6.5"

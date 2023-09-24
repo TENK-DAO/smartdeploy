@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     services:
       rpc:
-        image: stellar/quickstart:soroban-dev@sha256:a6b03cf6b0433c99f2f799b719f0faadbb79684b1b763e7674ba749fb0f648ee
+        image: stellar/quickstart:soroban-dev@sha256:2cd55fb75bb0777f0355b14a5426ffc870bb87ff1f9d1ea96d2bdcc58663c5f9
         ports:
           - 8000:8000
         env:

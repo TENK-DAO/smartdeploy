@@ -45,8 +45,8 @@ target:
     echo {{TARGET_DIR}}
     echo {{SMARTDEPLOY}}
 
-build:
-    loam build --profile release-with-logs --out-dir target/loam
+build +args='':
+    loam build --profile release-with-logs --out-dir target/loam {{args}}
 
 
 [private]
@@ -59,9 +59,10 @@ setup_default:
     @just fund_default
 
 @fund_default:
-    echo {{ if path_exists(env_var('CONFIG_DIR') / '.soroban/identity/default.toml') == "true" { "" } else { `just setup_default` } }}
+    echo {{ if path_exists(env_var('CONFIG_DIR') / '.soroban/identity/default.toml') == "true" { `just soroban config identity fund default` } else { `just setup_default` } }}
 
-@deploy_self: build
+@deploy_self:
+    just build --package smartdeploy
     @./deploy.sh
 
 [private]
@@ -76,13 +77,17 @@ setup_default:
 
 publish_all: fund_default deploy_self
     #!/usr/bin/env bash
+    set -e;
     just install_self;
     for name in $(loam build --ls)
     do
         if [ "$name" != "smartdeploy" ]; then
             echo $name;
+            just build --package $name;
             name="${name//-/_}";
             just publish_one $name
+            cargo run --quiet -- install $name
+
         fi
     done
 
@@ -116,7 +121,7 @@ publish_all: fund_default deploy_self
 
 # Delete installed binaries
 @clean_installed_binaries:
-    rm target/bin/loam target/bin/soroban
+    rm target/bin/loam target/bin/soroban target/bin/smartdeploy
 
 # List Published Contracts
 published_contracts start='0' limit='100':

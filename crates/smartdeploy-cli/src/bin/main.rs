@@ -1,13 +1,11 @@
 use clap::{CommandFactory, Parser};
 
-use smartdeploy_cli::Root;
+use smartdeploy_cli::{Root, futurenet};
 
-const CONTRACT_ID: &str = include_str!("../futurenet/smartdeploy.json");
 
 #[tokio::main]
 async fn main() {
-    let contract_id = CONTRACT_ID.trim_end().trim_matches('"');
-    std::env::set_var("SOROBAN_CONTRACT_ID", contract_id);
+    std::env::set_var("SOROBAN_CONTRACT_ID", futurenet::contract_id());
     std::env::set_var("SOROBAN_NETWORK", "futurenet");
     let mut root = Root::try_parse().unwrap_or_else(|e| {
         let mut cmd = Root::command();
