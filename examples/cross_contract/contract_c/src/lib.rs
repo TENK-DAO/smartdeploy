@@ -1,5 +1,4 @@
 #![no_std]
-
 use loam_sdk::soroban_sdk::{self, contract, contractimpl, Address, Env};
 
 smartdeploy_sdk::import_contract!(contract_a);
