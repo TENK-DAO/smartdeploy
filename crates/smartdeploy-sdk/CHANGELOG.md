@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-sdk-v0.1.0...smartdeploy-sdk-v0.1.1) - 2023-09-24
+
+### Added
+- add install command and update loam and soroban ([#14](https://github.com/TENK-DAO/smartdeploy/pull/14))
+
 ## [0.1.0](https://github.com/TENK-DAO/smartdeploy/releases/tag/smartdeploy-sdk-v0.1.0) - 2023-09-02
 
 ### Added
