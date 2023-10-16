@@ -20,14 +20,13 @@ export default function Home() {
 
       <main className={`${styles.main} ${inter.className}`}>
         
-
         <div className={styles.center}>
           <Image
             className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
+            src="/sd-logo-written.svg"
+            alt="SmartDeploy Logo"
+            width={340}
+            height={70}
             priority
           />
         </div>
@@ -91,25 +90,21 @@ export default function Home() {
           </a>
         </div>
 
-        <div className={styles.description}>
-
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
+        <div className={styles.tenkLogo}>
+          <a
+            href="https://tenk.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            By{' '}
+            <Image
+              src="/TENK_logo-det.svg"
+              alt="Tenk Logo"
+              width={100}
+              height={24}
+              priority
+            />
+          </a>
         </div>
 
       </main>

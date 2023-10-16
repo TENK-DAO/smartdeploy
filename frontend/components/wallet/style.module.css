@@ -30,7 +30,8 @@
     background-color: #211c8d;
     padding: 0.5rem;
     border-radius: 10px;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
 }
 
 .walletInfo a {
