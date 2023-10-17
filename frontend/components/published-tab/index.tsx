@@ -1,0 +1,93 @@
+import styles from './style.module.css';
+
+export default function PublishedTab() {
+    return(
+        <table className={styles.publishedTab}>
+            <caption>PUBLISHED CONTRACTS</caption>
+            <thead>
+                <tr>
+                    <th>Contract</th>
+                    <th>Author</th>
+                    <th>Version</th>
+                    <th>Hash</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Errorszzzzz</td>
+                    <td>k</td>
+                    <td>v0.0.1</td>
+                    <td>Icon</td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>k</td>
+                    <td>v0.0.1</td>
+                    <td>Icon</td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>k</td>
+                    <td>v0.0.1</td>
+                    <td>Icon</td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>k</td>
+                    <td>v0.0.1</td>
+                    <td>Icon</td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>k</td>
+                    <td>v0.0.1</td>
+                    <td>Icon</td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>k</td>
+                    <td>v0.0.1</td>
+                    <td>Icon</td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>k</td>
+                    <td>v0.0.1</td>
+                    <td>Icon</td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>k</td>
+                    <td>v0.0.1</td>
+                    <td>Icon</td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>k</td>
+                    <td>v0.0.1</td>
+                    <td>Icon</td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>k</td>
+                    <td>v0.0.1</td>
+                    <td>Icon</td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>k</td>
+                    <td>v0.0.1</td>
+                    <td>Icon</td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>k</td>
+                    <td>v0.0.1</td>
+                    <td>Icon</td>
+                </tr>
+            </tbody>
+
+        </table>
+        
+    )
+}

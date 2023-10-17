@@ -6,12 +6,13 @@
     top: 0rem;
     right: 0rem;
     padding: 2rem;
+    zoom: 133%;
 }
 
 .connectButton {
     flex: 1;
     padding: 0.5rem 0.9rem;
-    background-color: #211c8d;
+    background-color: #025bb1;
     color: #fff;
     border: none;
     border-radius: 0.9rem;
@@ -27,7 +28,7 @@
 .card {
     text-align: center;
     font-size: 0.8rem;
-    background-color: #211c8d;
+    background-color: #025bb1;
     padding: 0.5rem;
     border-radius: 10px;
     margin-right: 0.5rem;
@@ -43,6 +44,7 @@
 
     .walletInfo {
         position: absolute;
+        width: 15rem;
         top: 0;
         left: 50%;
         transform: translateX(-50%);
@@ -55,6 +57,7 @@
 
     .walletInfo {
         position: absolute;
+        width: 15rem;
         top: 0;
         left: 50%;
         transform: translateX(-50%);

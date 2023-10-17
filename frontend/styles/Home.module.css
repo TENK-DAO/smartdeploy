@@ -5,6 +5,7 @@
   align-items: center;
   padding: 6rem 6rem 1.5rem 6rem;
   min-height: 100vh;
+  zoom: 133%;
 }
 
 .tenkLogo {
@@ -70,6 +71,7 @@
   align-items: center;
   position: relative;
   padding: 1rem 0;
+  margin-bottom: 1rem;
 }
 
 .center::before {
@@ -77,7 +79,8 @@
   border-radius: 50%;
   width: 480px;
   height: 360px;
-  margin-left: -400px;
+  margin-left: -450px;
+  margin-top: -200px;
 }
 
 .center::after {
@@ -141,6 +144,8 @@
 
   .center {
     padding: 1rem 0 6rem;
+    margin-top: 2rem;
+    margin-bottom: -2rem;
   }
 
   .center::before {
@@ -161,6 +166,11 @@
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(2, 50%);
+  }
+
+  .center {
+    padding: 1rem 0 6rem;
+    margin-bottom: -2rem;
   }
 }
 
