@@ -6,6 +6,11 @@
   padding: 6rem 6rem 1.5rem 6rem;
   min-height: 100vh;
   zoom: 133%;
+
+  background: #07021e;
+  background: -webkit-linear-gradient(#07021e, rgb(3, 0, 14));
+  background:    -moz-linear-gradient(#07021e, rgb(3, 0, 14));
+  background:         linear-gradient(#07021e, rgb(3, 0, 14));
 }
 
 .tenkLogo {
