@@ -1,12 +1,24 @@
-.publishedTab {
+.publishedTabContainer {
+    margin-bottom: 3rem;
+}
+
+.publishedTabHead,
+.publishedTabContent {
     table-layout: fixed;
     border-collapse: collapse;
     margin-top: 0rem;
-    margin-bottom: 3rem;
     width: 55rem;
 }
 
-.publishedTab caption {
+.publishedTabContentContainer {
+    max-height: 12rem; 
+    overflow-y: scroll;
+}
+.publishedTabContentContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.publishedTabHead caption {
     background-color: #025cb159;
     font-size: 1.4rem;
     font-weight: bold;
@@ -16,46 +28,79 @@
     border-radius: 8px 8px 0 0;
 }
 
-.publishedTab thead {
+.contractCol {
+    width: 15%;
+}
+.authorCol {
+    width: 65%;
+}
+.versionCol {
+    width: 10%;
+}
+.hashCol {
+    width: 10%;
+}
+
+.publishedTabHead thead {
     background-color: #025cb159;
     color: #cccbcb;
     font-weight: bold;
     text-align: left;
 }
 
-.publishedTab thead th {
+.publishedTabHead thead th,
+.publishedTabContent tbody td {
     padding: 0.4rem 0.5rem;
-    width: 150px;
 }
 
-.publishedTab tr {
-    display: table;
-    width: 55rem;
-}
-
-.publishedTab tbody {
-    display: block;
-    height: 12rem; 
-    overflow-y: scroll;
-}
-.publishedTab tbody::-webkit-scrollbar {
-    display: none;
-}
-
-.publishedTab tbody td {
+.publishedTabContent tbody td {
     padding: 0.4rem 0.5rem;
-    width: 150px;
     color: rgb(169, 168, 168);
     font-size: 0.9rem;
     border-bottom: 1px solid #dddddd9b;
 }
 
-.publishedTab tbody tr:nth-of-type(even) {
+.publishedTabContent tbody tr:nth-of-type(even) {
     background-color: rgba(128, 128, 128, 0.328);
 }
 
+.contractCell {
+    overflow-x: scroll;
+}
+.contractCell::-webkit-scrollbar {
+    display: none;
+}
+.authorCell {
+    overflow-x: scroll;
+}
+.authorCell::-webkit-scrollbar {
+    display: none;
+}
+.versionCell {
+    overflow-x: scroll;
+}
+.versionCell::-webkit-scrollbar {
+    display: none;
+}
+.hashCell {
+    overflow-x: scroll;
+}
+.hashCell::-webkit-scrollbar {
+    display: none;
+}
+
+.publishedTab tbody {
+    display: inline-block;
+    height: 12rem; 
+    overflow-y: scroll;
+    width: 55rem;
+}
+.publishedTab tbody::-webkit-scrollbar {
+    display: none;
+}
+
+
 /* Mobile */
 @media (max-width: 700px) {
-
-        
+     
 }
