@@ -29,7 +29,7 @@
 }
 
 .contractCol {
-    width: 15%;
+    width: 18%;
 }
 .authorCol {
     width: 65%;
@@ -38,7 +38,7 @@
     width: 10%;
 }
 .hashCol {
-    width: 10%;
+    width: 7%;
 }
 
 .publishedTabHead thead {
@@ -65,37 +65,15 @@
 }
 
 .contractCell {
-    overflow-x: scroll;
+    text-overflow: ellipsis;
 }
 .contractCell::-webkit-scrollbar {
     display: none;
 }
-.authorCell {
+.publishedTabContentContainer td {
     overflow-x: scroll;
 }
-.authorCell::-webkit-scrollbar {
-    display: none;
-}
-.versionCell {
-    overflow-x: scroll;
-}
-.versionCell::-webkit-scrollbar {
-    display: none;
-}
-.hashCell {
-    overflow-x: scroll;
-}
-.hashCell::-webkit-scrollbar {
-    display: none;
-}
-
-.publishedTab tbody {
-    display: inline-block;
-    height: 12rem; 
-    overflow-y: scroll;
-    width: 55rem;
-}
-.publishedTab tbody::-webkit-scrollbar {
+.publishedTabContentContainer td::-webkit-scrollbar {
     display: none;
 }
 

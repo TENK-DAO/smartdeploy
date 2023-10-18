@@ -5,10 +5,12 @@ export default function PublishedTab() {
         <div className={styles.publishedTabContainer}>
             <table className={styles.publishedTabHead}>
                 <caption>PUBLISHED CONTRACTS</caption>
-                <col className={styles.contractCol}></col>
-                <col className={styles.authorCol}></col>
-                <col className={styles.versionCol}></col>
-                <col className={styles.hashCol}></col>
+                <colgroup>
+                    <col className={styles.contractCol}></col>
+                    <col className={styles.authorCol}></col>
+                    <col className={styles.versionCol}></col>
+                    <col className={styles.hashCol}></col>
+                </colgroup>
                 <thead>
                     <tr>
                         <th>Contract</th>
@@ -20,88 +22,67 @@ export default function PublishedTab() {
             </table>
             <div className={styles.publishedTabContentContainer}>
                 <table className={styles.publishedTabContent}>
-                    <col className={styles.contractCol}></col>
-                    <col className={styles.authorCol}></col>
-                    <col className={styles.versionCol}></col>
-                    <col className={styles.hashCol}></col>
+                    <colgroup>
+                        <col className={styles.contractCol}></col>
+                        <col className={styles.authorCol}></col>
+                        <col className={styles.versionCol}></col>
+                        <col className={styles.hashCol}></col>
+                    </colgroup>
                     <tbody>
                         <tr>
-                            <td className={styles.contractCell}>Errorzzzzzzzzzzzzzzzzzzzzzzzzs</td>
-                            <td className={styles.authorCell}>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td className={styles.versionCell}>v0.0.105256</td>
-                            <td className={styles.hashCell}>Icon</td>
-                        </tr>
-                        <tr>
-                            <td>vzpeivb</td>
-                            <td>C</td>
-                            <td>v0.0.1</td>
+                            <td className={styles.contractCell}>Errorrrrrrrrrrrrrrrrrrrrrrrr</td>
+                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
+                            <td>v0.0.105256</td>
                             <td>Icon</td>
                         </tr>
                         <tr>
-                            <td>Errors</td>
-                            <td>k</td>
-                            <td>v0.0.1</td>
+                            <td className={styles.contractCell}>Smart_Deploy</td>
+                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
+                            <td>v0.0.105256</td>
+                            <td>Icon</td>
+                        </tr>
+
+                        <tr>
+                            <td className={styles.contractCell}>Errorrrrrrrrr</td>
+                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
+                            <td>v0.0.105256</td>
                             <td>Icon</td>
                         </tr>
                         <tr>
-                            <td>Errors</td>
-                            <td>k</td>
-                            <td>v0.0.1</td>
+                            <td className={styles.contractCell}>Err</td>
+                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
+                            <td>v0.0.105256</td>
+                            <td>Icon</td>
+                        </tr>
+
+                        <tr>
+                            <td className={styles.contractCell}>Errorrrr</td>
+                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
+                            <td>v0.0.105256</td>
                             <td>Icon</td>
                         </tr>
                         <tr>
-                            <td>Errors</td>
-                            <td>k</td>
-                            <td>v0.0.1</td>
+                            <td className={styles.contractCell}>Errorrrrrrrr</td>
+                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
+                            <td>v0.0.105256</td>
+                            <td>Icon</td>
+                        </tr>
+
+                        <tr>
+                            <td className={styles.contractCell}>zeobv</td>
+                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
+                            <td>v0.0.105256</td>
                             <td>Icon</td>
                         </tr>
                         <tr>
-                            <td>Errors</td>
-                            <td>k</td>
-                            <td>v0.0.1</td>
-                            <td>Icon</td>
-                        </tr>
-                        <tr>
-                            <td>Errors</td>
-                            <td>k</td>
-                            <td>v0.0.1</td>
-                            <td>Icon</td>
-                        </tr>
-                        <tr>
-                            <td>Errors</td>
-                            <td>k</td>
-                            <td>v0.0.1</td>
-                            <td>Icon</td>
-                        </tr>
-                        <tr>
-                            <td>Errors</td>
-                            <td>k</td>
-                            <td>v0.0.1</td>
-                            <td>Icon</td>
-                        </tr>
-                        <tr>
-                            <td>Errors</td>
-                            <td>k</td>
-                            <td>v0.0.1</td>
-                            <td>Icon</td>
-                        </tr>
-                        <tr>
-                            <td>Errors</td>
-                            <td>k</td>
-                            <td>v0.0.1</td>
-                            <td>Icon</td>
-                        </tr>
-                        <tr>
-                            <td>Errors</td>
-                            <td>k</td>
-                            <td>v0.0.1</td>
+                            <td className={styles.contractCell}>Errorrrrrrrrrrrrrrrrrrrrrrrr</td>
+                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
+                            <td>v0.0.105256</td>
                             <td>Icon</td>
                         </tr>
                     </tbody>
-
                 </table>
             </div>
         </div>
-        
     )
 }
