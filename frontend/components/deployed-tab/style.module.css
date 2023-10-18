@@ -1,27 +1,27 @@
-.publishedTabContainer {
-    margin-bottom: 7rem;
+.deployedTabContainer {
+    margin-bottom: 3rem;
     border-radius: 10px;
     box-shadow:
         1.2rem 1.2rem 35px 22px rgba(2, 29, 104, 0.257);
 }
 
-.publishedTabHead,
-.publishedTabContent {
+.deployedTabHead,
+.deployedTabContent {
     table-layout: fixed;
     border-collapse: collapse;
     margin-top: 0rem;
     width: 55rem;
 }
 
-.publishedTabContentContainer {
-    max-height: 12rem; 
+.deployedTabContentContainer {
+    max-height: 40rem; 
     overflow-y: scroll;
 }
-.publishedTabContentContainer::-webkit-scrollbar {
+.deployedTabContentContainer::-webkit-scrollbar {
     display: none;
 }
 
-.publishedTabHead caption {
+.deployedTabHead caption {
     background-color: #025cb159;
     font-size: 1.4rem;
     font-weight: bold;
@@ -32,38 +32,35 @@
 }
 
 .contractCol {
-    width: 18%;
+    width: 23%;
 }
-.authorCol {
-    width: 65%;
+.addressCol {
+    width: 70%;
 }
-.versionCol {
-    width: 10%;
-}
-.hashCol {
+.copyCol {
     width: 7%;
 }
 
-.publishedTabHead thead {
+.deployedTabHead thead {
     background-color: #025cb159;
     color: #8d8c8c;
     font-weight: bold;
     text-align: left;
 }
 
-.publishedTabHead thead th,
-.publishedTabContent tbody td {
+.deployedTabHead thead th,
+.deployedTabContent tbody td {
     padding: 0.4rem 0.5rem;
 }
 
-.publishedTabContent tbody td {
+.deployedTabContent tbody td {
     padding: 0.4rem 0.5rem;
     color: rgb(169, 168, 168);
     font-size: 0.9rem;
     border-bottom: 1px solid #dddddd9b;
 }
 
-.publishedTabContent tbody tr:nth-of-type(even) {
+.deployedTabContent tbody tr:nth-of-type(even) {
     background-color: rgba(128, 128, 128, 0.328);
 }
 
@@ -73,10 +70,10 @@
 .contractCell::-webkit-scrollbar {
     display: none;
 }
-.publishedTabContentContainer td {
+.deployedTabContentContainer td {
     overflow-x: scroll;
 }
-.publishedTabContentContainer td::-webkit-scrollbar {
+.deployedTabContentContainer td::-webkit-scrollbar {
     display: none;
 }
 
