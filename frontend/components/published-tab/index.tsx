@@ -1,3 +1,4 @@
+import { FaRegClipboard } from "react-icons/fa";
 import styles from './style.module.css';
 
 export default function PublishedTab() {
@@ -32,53 +33,53 @@ export default function PublishedTab() {
                         <tr>
                             <td className={styles.contractCell}>Errorrrrrrrrrrrrrrrrrrrrrrrr</td>
                             <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.105256</td>
-                            <td>Icon</td>
+                            <td>v0.0.1256</td>
+                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
                         </tr>
                         <tr>
                             <td className={styles.contractCell}>Smart_Deploy</td>
                             <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.105256</td>
-                            <td>Icon</td>
+                            <td>v0.0.1256</td>
+                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
                         </tr>
 
                         <tr>
                             <td className={styles.contractCell}>Errorrrrrrrrr</td>
                             <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.105256</td>
-                            <td>Icon</td>
+                            <td>v0.0.1052</td>
+                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
                         </tr>
                         <tr>
                             <td className={styles.contractCell}>Err</td>
                             <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.105256</td>
-                            <td>Icon</td>
+                            <td>v0.0.5256</td>
+                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
                         </tr>
 
                         <tr>
                             <td className={styles.contractCell}>Errorrrr</td>
                             <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.105256</td>
-                            <td>Icon</td>
+                            <td>v0.0.15256</td>
+                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
                         </tr>
                         <tr>
                             <td className={styles.contractCell}>Errorrrrrrrr</td>
                             <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.105256</td>
-                            <td>Icon</td>
+                            <td>v0.0.10526</td>
+                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
                         </tr>
 
                         <tr>
                             <td className={styles.contractCell}>zeobv</td>
                             <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.105256</td>
-                            <td>Icon</td>
+                            <td>v0.0.10256</td>
+                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
                         </tr>
                         <tr>
                             <td className={styles.contractCell}>Errorrrrrrrrrrrrrrrrrrrrrrrr</td>
                             <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
                             <td>v0.0.105256</td>
-                            <td>Icon</td>
+                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
                         </tr>
                     </tbody>
                 </table>
