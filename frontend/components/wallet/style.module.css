@@ -2,15 +2,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 0rem;
-    right: 0rem;
-    padding: 2rem;
-    zoom: 133%;
+    float: right;
+    width: 40%;
 }
 
 .connectButton {
-    flex: 1;
     padding: 0.5rem 0.9rem;
     background-color: #025bb1;
     color: #fff;
@@ -37,9 +33,11 @@
 
 .walletInfo a {
     color: #c72cb0;
-  }
+}
+
 
 /* Mobile */
+/*
 @media (max-width: 700px) {
 
     .walletInfo {
@@ -51,8 +49,9 @@
     }
 
 }
-
+*/
 /* Tablet and Smaller Desktop */
+/*
 @media (min-width: 701px) and (max-width: 1120px) {
 
     .walletInfo {
@@ -64,3 +63,4 @@
     }
   
 }
+*/

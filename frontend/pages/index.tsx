@@ -5,6 +5,7 @@ import styles from '@/styles/Home.module.css'
 import WalletInfo from '@/components/wallet'
 import PublishedTab from '@/components/published-tab'
 import DeployedTab from '@/components/deployed-tab'
+import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,7 +19,47 @@ export default function Home() {
         <link rel="icon" href="/sd-logo-det.ico" />
       </Head>
 
-      <WalletInfo/>
+      <div className={styles.headerBar}>
+        <div className={styles.container}>
+          <div className={styles.social}>
+            <a
+              href="https://www.smartdeploy.dev/"
+              rel="noopener noreferrer"
+            >
+              <Image
+                className={styles.socialItem}
+                src="/sd-logo-written-header.svg"
+                alt="SmartDeploy Logo"
+                width={127}
+                height={26}
+                priority
+              />
+            </a>
+            <a
+              href="https://github.com/TENK-DAO/smartdeploy"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaGithub className={styles.socialItem} style={{ fill: 'rgb(161, 161, 163)' }}/>
+            </a>
+            <a
+              href="https://discord.com/invite/6fKqnSfr"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaDiscord className={styles.socialItem} style={{ fill: 'rgb(161, 161, 163)' }}/>
+            </a>
+            <a
+              href="https://twitter.com/TENKDAO"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaTwitter className={styles.socialItem} style={{ fill: 'rgb(161, 161, 163)' }}/>
+            </a>
+          </div>
+          <WalletInfo/>
+        </div>
+      </div>
 
       <main className={`${styles.main} ${inter.className}`}>
         
