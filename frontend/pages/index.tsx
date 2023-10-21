@@ -6,8 +6,15 @@ import WalletInfo from '@/components/wallet'
 import PublishedTab from '@/components/published-tab'
 import DeployedTab from '@/components/deployed-tab'
 import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
+import { Contract, networks } from 'smartdeploy-client';
 
 const inter = Inter({ subsets: ['latin'] })
+
+// Smartdeploy Contract Instance
+export const smartdeploy = new Contract({
+  ...networks.futurenet,
+  rpcUrl: 'https://rpc-futurenet.stellar.org:443',
+});
 
 export default function Home() {
   return (

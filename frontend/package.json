@@ -13,6 +13,7 @@
     "@stellar/freighter-api": "^1.7.1",
     "next": "13.5.4",
     "react": "^18",
+    "react-async": "^10.0.1",
     "react-dom": "^18",
     "react-icons": "^4.11.0",
     "uikit": "^3.17.4"

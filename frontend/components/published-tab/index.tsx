@@ -1,89 +1,119 @@
 import { FaRegClipboard } from "react-icons/fa";
 import styles from './style.module.css';
 
+import { smartdeploy } from "@/pages";
+import { Ok, Err } from 'smartdeploy-client'
+import { useAsync } from "react-async";
+
+interface PublishedContract {
+    name: string;
+    author: string;
+    version: string;
+    hash: string;
+}
+
+async function listAllPublishedContracts() {
+
+    return await smartdeploy
+                            .listPublishedContracts({start: undefined, limit: undefined})
+                            .then((response) => {
+
+                                if (response instanceof Ok) {
+
+                                    let publishedContracts: PublishedContract[] = [];
+
+                                    const contractArray =  response.unwrap();
+
+                                    contractArray.forEach(([name, publishedContract]) => {
+                                        
+                                        const version = publishedContract.versions.keys().next().value;
+                                        const major = version.major;
+                                        const minor = version.minor;
+                                        const patch = version.patch;
+                                        const versionString = `v.${major}.${minor}.${patch}`;
+
+                                        const hash = publishedContract.versions.values().next().value.hash.join('');
+                                        const parsedPublishedContract: PublishedContract = {
+                                            name: name,
+                                            author: publishedContract.author.toString(),
+                                            version: versionString,
+                                            hash: hash
+                                        }
+
+                                        publishedContracts.push(parsedPublishedContract);
+                                    });
+                                    
+                                    //console.log(publishedContracts);
+                                    return publishedContracts;
+
+                                } else if (response instanceof Err) {
+                                    response.unwrap();
+                                } else {
+                                    throw new Error("listPublishedContracts returns undefined. Impossible to fetch the published contracts.");
+                                }
+                            });
+
+}
+
+
+
 export default function PublishedTab() {
-    return(
-        <div className={styles.publishedTabContainer}>
-            <table className={styles.publishedTabHead}>
-                <caption>PUBLISHED CONTRACTS</caption>
-                <colgroup>
-                    <col className={styles.contractCol}></col>
-                    <col className={styles.authorCol}></col>
-                    <col className={styles.versionCol}></col>
-                    <col className={styles.hashCol}></col>
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>Contract</th>
-                        <th>Author</th>
-                        <th>Version</th>
-                        <th>Hash</th>
-                    </tr>
-                </thead>
-            </table>
-            <div className={styles.publishedTabContentContainer}>
-                <table className={styles.publishedTabContent}>
+
+    const { data, error, isPending } = useAsync({ promiseFn: listAllPublishedContracts});
+    
+    if (isPending) return "Loading...";
+
+    else if (error) { throw new Error("Error when trying to fetch Published Contracts");}
+
+    else if (data) {
+
+        const rows: JSX.Element[] = [];
+
+        data.forEach(publishedContract => {
+            rows.push(
+                <tr>
+                    <td className={styles.contractCell}>{publishedContract.name}</td>
+                    <td>{publishedContract.author}</td>
+                    <td>{publishedContract.version}</td>
+                    <td className={styles.clipboardIcon}><FaRegClipboard/></td>
+                </tr>
+            );
+        });
+        
+        return(
+            <div className={styles.publishedTabContainer}>
+                <table className={styles.publishedTabHead}>
+                    <caption>PUBLISHED CONTRACTS</caption>
                     <colgroup>
                         <col className={styles.contractCol}></col>
                         <col className={styles.authorCol}></col>
                         <col className={styles.versionCol}></col>
                         <col className={styles.hashCol}></col>
                     </colgroup>
-                    <tbody>
+                    <thead>
                         <tr>
-                            <td className={styles.contractCell}>Errorrrrrrrrrrrrrrrrrrrrrrrr</td>
-                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.1256</td>
-                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
+                            <th>Contract</th>
+                            <th>Author</th>
+                            <th>Version</th>
+                            <th>Hash</th>
                         </tr>
-                        <tr>
-                            <td className={styles.contractCell}>Smart_Deploy</td>
-                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.1256</td>
-                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
-                        </tr>
-
-                        <tr>
-                            <td className={styles.contractCell}>Errorrrrrrrrr</td>
-                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.1052</td>
-                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
-                        </tr>
-                        <tr>
-                            <td className={styles.contractCell}>Err</td>
-                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.5256</td>
-                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
-                        </tr>
-
-                        <tr>
-                            <td className={styles.contractCell}>Errorrrr</td>
-                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.15256</td>
-                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
-                        </tr>
-                        <tr>
-                            <td className={styles.contractCell}>Errorrrrrrrr</td>
-                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.10526</td>
-                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
-                        </tr>
-
-                        <tr>
-                            <td className={styles.contractCell}>zeobv</td>
-                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.10256</td>
-                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
-                        </tr>
-                        <tr>
-                            <td className={styles.contractCell}>Errorrrrrrrrrrrrrrrrrrrrrrrr</td>
-                            <td>CBG572OEPI6LNOUHCOCEUOCDII72UNUWNHCCGB4CHCHB52VQ3RI6NEOWK</td>
-                            <td>v0.0.105256</td>
-                            <td className={styles.clipboardIcon}><FaRegClipboard/></td>
-                        </tr>
-                    </tbody>
+                    </thead>
                 </table>
+                <div className={styles.publishedTabContentContainer}>
+                    <table className={styles.publishedTabContent}>
+                        <colgroup>
+                            <col className={styles.contractCol}></col>
+                            <col className={styles.authorCol}></col>
+                            <col className={styles.versionCol}></col>
+                            <col className={styles.hashCol}></col>
+                        </colgroup>
+                        <tbody>
+                            {rows}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
+    
 }
