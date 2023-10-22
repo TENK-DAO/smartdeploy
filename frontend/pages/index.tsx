@@ -79,6 +79,7 @@ export default function Home() {
             height={70}
             priority
           />
+          <p className={styles.smartdeployMessage}>A framework for publishing, deploying, invoking and upgrading Soroban smart contracts</p>
         </div>
 
         <PublishedTab/>

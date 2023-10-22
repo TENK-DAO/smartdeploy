@@ -82,6 +82,7 @@
 
 .center {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
@@ -112,6 +113,16 @@
   position: absolute;
   filter: blur(45px);
   transform: translateZ(0);
+}
+
+.smartdeployMessage {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.834);
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 0.3rem #ffffff70);
+  font-style: italic;
+  font-weight: bolder;
 }
 
 .footer {
@@ -181,47 +192,6 @@
 @media (prefers-reduced-motion) {
   .card:hover span {
     transform: none;
-  }
-}
-
-/* Mobile */
-@media (max-width: 700px) {
-  .content {
-    padding: 4rem;
-  }
-
-  .grid {
-    grid-template-columns: 1fr;
-    margin-bottom: 120px;
-    max-width: 320px;
-    text-align: center;
-  }
-
-  .card {
-    padding: 1rem 2.5rem;
-  }
-
-  .card h2 {
-    margin-bottom: 0.5rem;
-  }
-
-  .center {
-    padding: 1rem 0 6rem;
-    margin-top: 2rem;
-    margin-bottom: -2rem;
-  }
-
-  .center::before {
-    transform: none;
-    height: 300px;
-  }
-
-  .tenkLogo {
-    font-size: 0.8rem;
-  }
-
-  .tenkLogo a {
-    padding: 1rem;
   }
 }
 
