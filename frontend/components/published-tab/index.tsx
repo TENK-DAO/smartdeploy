@@ -61,7 +61,7 @@ export default function PublishedTab() {
 
     const { data, error, isPending } = useAsync({ promiseFn: listAllPublishedContracts});
     
-    if (isPending) return "Loading...";
+    if (isPending) return (<p className={styles.load}>Loading...</p>);
 
     else if (error) { throw new Error("Error when trying to fetch Published Contracts");}
 
@@ -69,9 +69,9 @@ export default function PublishedTab() {
 
         const rows: JSX.Element[] = [];
 
-        data.forEach(publishedContract => {
+        data.forEach((publishedContract, item) => {
             rows.push(
-                <tr>
+                <tr key={item}>
                     <td className={styles.contractCell}>{publishedContract.name}</td>
                     <td>{publishedContract.author}</td>
                     <td>{publishedContract.version}</td>

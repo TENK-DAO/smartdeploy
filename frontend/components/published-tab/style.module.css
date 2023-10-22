@@ -14,7 +14,7 @@
 }
 
 .publishedTabContentContainer {
-    max-height: 12rem; 
+    max-height: 14.2rem; 
     overflow-y: scroll;
 }
 .publishedTabContentContainer::-webkit-scrollbar {
@@ -84,8 +84,8 @@
     text-align: center;
 }
 
-
-/* Mobile */
-@media (max-width: 700px) {
-     
+.load {
+    color: #8d8c8cbb;
+    font-size: 1.5rem;
+    font-style: italic;
 }

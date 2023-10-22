@@ -81,8 +81,8 @@
     text-align: center;
 }
 
-
-/* Mobile */
-@media (max-width: 700px) {
-     
+.load {
+    color: #8d8c8cbb;
+    font-size: 1.5rem;
+    font-style: italic;
 }
