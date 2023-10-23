@@ -1,4 +1,4 @@
-import { FaRegClipboard } from "react-icons/fa";
+import { BsSendPlus } from 'react-icons/bs';
 import styles from './style.module.css';
 
 import { smartdeploy } from "@/pages";
@@ -6,6 +6,7 @@ import { Ok, Err } from 'smartdeploy-client'
 import { useAsync } from "react-async";
 
 interface PublishedContract {
+    index: number;
     name: string;
     author: string;
     version: string;
@@ -24,7 +25,7 @@ async function listAllPublishedContracts() {
 
                                     const contractArray =  response.unwrap();
 
-                                    contractArray.forEach(([name, publishedContract]) => {
+                                    contractArray.forEach(([name, publishedContract], i) => {
                                         
                                         const version = publishedContract.versions.keys().next().value;
                                         const major = version.major;
@@ -34,6 +35,7 @@ async function listAllPublishedContracts() {
 
                                         const hash = publishedContract.versions.values().next().value.hash.join('');
                                         const parsedPublishedContract: PublishedContract = {
+                                            index: i,
                                             name: name,
                                             author: publishedContract.author.toString(),
                                             version: versionString,
@@ -59,6 +61,11 @@ async function listAllPublishedContracts() {
 
 export default function PublishedTab() {
 
+    // Mettre en dehors de PublishedTab()
+    const deploy = async() => {
+
+    }
+
     const { data, error, isPending } = useAsync({ promiseFn: listAllPublishedContracts});
     
     if (isPending) return (<p className={styles.load}>Loading...</p>);
@@ -69,13 +76,13 @@ export default function PublishedTab() {
 
         const rows: JSX.Element[] = [];
 
-        data.forEach((publishedContract, item) => {
+        data.forEach((publishedContract) => {
             rows.push(
-                <tr key={item}>
+                <tr key={publishedContract.index}>
                     <td className={styles.contractCell}>{publishedContract.name}</td>
                     <td>{publishedContract.author}</td>
                     <td>{publishedContract.version}</td>
-                    <td className={styles.clipboardIcon}><FaRegClipboard/></td>
+                    <td className={styles.deployIconCell}><BsSendPlus className={styles.deployIcon} onClick={deploy}/></td>
                 </tr>
             );
         });
@@ -88,14 +95,14 @@ export default function PublishedTab() {
                         <col className={styles.contractCol}></col>
                         <col className={styles.authorCol}></col>
                         <col className={styles.versionCol}></col>
-                        <col className={styles.hashCol}></col>
+                        <col className={styles.deployCol}></col>
                     </colgroup>
                     <thead>
                         <tr>
                             <th>Contract</th>
                             <th>Author</th>
                             <th>Version</th>
-                            <th>Hash</th>
+                            <th>Deploy</th>
                         </tr>
                     </thead>
                 </table>
@@ -105,7 +112,7 @@ export default function PublishedTab() {
                             <col className={styles.contractCol}></col>
                             <col className={styles.authorCol}></col>
                             <col className={styles.versionCol}></col>
-                            <col className={styles.hashCol}></col>
+                            <col className={styles.deployCol}></col>
                         </colgroup>
                         <tbody>
                             {rows}

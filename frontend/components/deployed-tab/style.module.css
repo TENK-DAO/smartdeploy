@@ -32,13 +32,13 @@
 }
 
 .contractCol {
-    width: 23%;
+    width: 24%;
 }
 .addressCol {
-    width: 70%;
+    width: 67%;
 }
 .copyCol {
-    width: 7%;
+    width: 9%;
 }
 
 .deployedTabHead thead {
@@ -46,6 +46,9 @@
     color: #8d8c8c;
     font-weight: bold;
     text-align: left;
+}
+.copyThead {
+    text-align: center;
 }
 
 .deployedTabHead thead th,
@@ -77,8 +80,16 @@
     display: none;
 }
 
-.clipboardIcon {
+.clipboardIconCell {
     text-align: center;
+}
+.clipboardIcon:hover {
+    fill: rgba(184, 77, 27, 0.83);
+}
+.copiedMessage {
+    display: flex;
+    align-items: center;
+    font-size: 0.7rem;
 }
 
 .load {

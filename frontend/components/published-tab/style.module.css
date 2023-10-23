@@ -35,13 +35,13 @@
     width: 18%;
 }
 .authorCol {
-    width: 65%;
+    width: 64%;
 }
 .versionCol {
     width: 10%;
 }
-.hashCol {
-    width: 7%;
+.deployCol {
+    width: 8%;
 }
 
 .publishedTabHead thead {
@@ -80,8 +80,12 @@
     display: none;
 }
 
-.clipboardIcon {
+.deployIconCell {
     text-align: center;
+}
+
+.deployIcon:hover {
+    fill: rgba(184, 77, 27, 0.83);
 }
 
 .load {
