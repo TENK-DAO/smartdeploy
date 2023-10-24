@@ -5,6 +5,7 @@ import styles from '@/styles/Home.module.css'
 import WalletInfo from '@/components/wallet'
 import PublishedTab from '@/components/published-tab'
 import DeployedTab from '@/components/deployed-tab'
+import PopupDappInfo from '@/components/dapp-info-popup'
 import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
 import { Contract, networks } from 'smartdeploy-client';
 
@@ -25,6 +26,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/sd-logo-det.ico" />
       </Head>
+
+      
 
       <div className={styles.headerBar}>
         <div className={styles.container}>
@@ -82,9 +85,10 @@ export default function Home() {
           <p className={styles.smartdeployMessage}>A framework for publishing, deploying, invoking and upgrading Soroban smart contracts</p>
         </div>
 
+        <PopupDappInfo/>
         <PublishedTab/>
         <DeployedTab/>
-
+        
         <div className={styles.grid}>
           <a
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"

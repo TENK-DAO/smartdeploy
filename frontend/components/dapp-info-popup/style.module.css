@@ -1,0 +1,60 @@
+.popupContainer {
+    background-color: rgb(45, 49, 49);
+    color: whitesmoke;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 60rem;
+    border-radius: 10px;
+}
+.header {
+    width: 100%;
+    border-bottom: 1px solid gray;
+    font-size: 1.9rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 0.7rem;
+}
+.content {
+    width: 100%;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding-left: 0.7rem;
+}
+.content > p {
+    line-height: 1.5;
+    margin-bottom: 0.9rem;
+} 
+.content > p > a {
+    color: rgba(60, 139, 178, 0.944);
+    outline: none;
+}
+
+.mainMessage {
+    margin-bottom: 0.8rem;
+}
+
+.checkbox {
+    margin-right: 0.5rem;
+}
+.label {
+    font-size: 0.9rem;
+}
+
+.buttonContainer {
+    width: 100%;
+    padding-top: 0.5rem;
+    padding-bottom:  1rem;
+    text-align: center;
+}
+
+.understood {
+    padding: 0.2rem 2.5rem 0.2rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgb(0, 216, 250);
+    border: 1.5px solid rgb(0, 216, 250);
+    border-radius: 5px;
+}
+.understood:hover {
+    background-color: rgba(2, 111, 128, 0.316);
+}
