@@ -89,7 +89,7 @@ function ClipboardIconComponent(props: ClipboardIconComponentProps) {
                 </td>
             ) : (
                 <td className={styles.clipboardIconCell}>
-                    <p className={styles.copiedMessage}><MdDone style={{ marginRight: '0.2rem' }}/>{' '}Copied!</p>
+                    <p className={styles.copiedMessage}><MdDone style={{ marginRight: '0.2rem' }}/>Copied!</p>
                 </td>
             )}
         </>
@@ -97,10 +97,7 @@ function ClipboardIconComponent(props: ClipboardIconComponentProps) {
 }
 
 
-export default function DeployedTab() {
-
-    //const [copied, setCopied] = useState(false);
-    
+export default function DeployedTab() {   
 
     const { data, error, isPending } = useAsync({ promiseFn: listAllDeployedContracts});
 
