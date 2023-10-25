@@ -2,7 +2,7 @@ import { BsSendPlus } from 'react-icons/bs';
 import Popup from 'reactjs-popup';
 import styles from './style.module.css';
 
-import { smartdeploy } from "@/pages";
+import { smartdeploy, UserWalletInfoProps } from "@/pages";
 import { Ok, Err, Option, Version } from 'smartdeploy-client'
 import { useAsync } from "react-async";
 import { useState, Dispatch, SetStateAction } from 'react';
@@ -120,7 +120,7 @@ function DeployIconComponent(props: DeployIconComponentProps) {
 }
 
 
-export default function PublishedTab() {
+export default function PublishedTab(props: UserWalletInfoProps) {
 
     const { data, error, isPending } = useAsync({ promiseFn: listAllPublishedContracts});
     

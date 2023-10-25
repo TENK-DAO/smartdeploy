@@ -1,31 +1,28 @@
 import { Inter } from 'next/font/google'
 import { useEffect, useState } from 'react';
 import { isAllowed, setAllowed, getUserInfo, getPublicKey, isConnected, getNetwork } from '@stellar/freighter-api';
+import { UserWalletInfoProps } from '@/pages';
 import styles from './style.module.css';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function WalletInfo() {
+export default function WalletInfo(props: UserWalletInfoProps) {
 
     const [showWallet, setShowWallet] = useState(false);
-    const [connected, setConnected] = useState(false);
-    const [hasFreighter, setHasFreighter] = useState(true);
-    const [address, setAddress] = useState("");
-    const [network, setNetwork] = useState("");
 
     async function connect() {
         const freighterConnected = await isConnected();
         if (!freighterConnected) {
-            setHasFreighter(false);
+            props.data.setHasFreighter(false);
         }
         else {
             await setAllowed();
             if (await isAllowed()) {
                 const publicKey = await getPublicKey();
                 const network   = await getNetwork();
-                setAddress(publicKey);
-                setNetwork(network);
-                setConnected(true);
+                props.data.setAddress(publicKey);
+                props.data.setNetwork(network);
+                props.data.setConnected(true);
             }
         }
     }
@@ -34,8 +31,8 @@ export default function WalletInfo() {
         if (await isAllowed()) {
           const publicKey = await getUserInfo();
           const network   = await getNetwork();
-          setAddress(publicKey.publicKey);
-          setNetwork(network);
+          props.data.setAddress(publicKey.publicKey);
+          props.data.setNetwork(network);
         }
     }
 
@@ -52,14 +49,14 @@ export default function WalletInfo() {
         <div className={`${styles.walletInfo} ${inter.className}`}>
             {showWallet && (
                 <>
-                {!address && hasFreighter ? (
+                {!props.data.address && props.data.hasFreighter ? (
                     <button className={styles.connectButton} onClick={() => connect()}><b>Connect Wallet</b></button>
-                ) : !hasFreighter ? (
+                ) : !props.data.hasFreighter ? (
                     <p>You don't have <a href="https://www.freighter.app/" target="_blank">Freighter extension</a></p>
                 ) : (
                     <>
-                        <div className={styles.card}>{network}</div>
-                        <div className={styles.card}>{address.substring(0, 4) + "..." + address.slice(-4)}</div>
+                        <div className={styles.card}>{props.data.network}</div>
+                        <div className={styles.card}>{props.data.address.substring(0, 4) + "..." + props.data.address.slice(-4)}</div>
                     </>
                 )}
                 </>

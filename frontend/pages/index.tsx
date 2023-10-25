@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import { useState, Dispatch, SetStateAction } from 'react'
 import styles from '@/styles/Home.module.css'
 import WalletInfo from '@/components/wallet'
 import PublishedTab from '@/components/published-tab'
@@ -17,7 +18,40 @@ export const smartdeploy = new Contract({
   rpcUrl: 'https://rpc-futurenet.stellar.org:443',
 });
 
+export type UserWalletInfo = {
+  connected: boolean;
+  setConnected: Dispatch<SetStateAction<boolean>>;
+  hasFreighter: boolean;
+  setHasFreighter: Dispatch<SetStateAction<boolean>>;
+  address: string;
+  setAddress: Dispatch<SetStateAction<string>>;
+  network: string;
+  setNetwork: Dispatch<SetStateAction<string>>;
+}
+
+export type UserWalletInfoProps = {
+  data: UserWalletInfo;
+}
+
 export default function Home() {
+
+  // State variables from Freighter Wallet
+  const [connected, setConnected] = useState<boolean>(false);
+  const [hasFreighter, setHasFreighter] = useState<boolean>(true);
+  const [address, setAddress] = useState<string>("");
+  const [network, setNetwork] = useState<string>("");
+
+  const userWalletInfo: UserWalletInfo = {
+    connected: connected,
+    setConnected: setConnected,
+    hasFreighter: hasFreighter,
+    setHasFreighter: setHasFreighter,
+    address: address,
+    setAddress: setAddress,
+    network: network,
+    setNetwork: setNetwork,
+  }
+
   return (
     <>
       <Head>
@@ -67,7 +101,7 @@ export default function Home() {
               <FaTwitter className={styles.socialItem} style={{ fill: 'rgb(161, 161, 163)' }}/>
             </a>
           </div>
-          <WalletInfo/>
+          <WalletInfo data={userWalletInfo}/>
         </div>
       </div>
 
@@ -86,7 +120,7 @@ export default function Home() {
         </div>
 
         <PopupDappInfo/>
-        <PublishedTab/>
+        <PublishedTab data={userWalletInfo}/>
         <DeployedTab/>
         
         <div className={styles.grid}>
