@@ -28,7 +28,7 @@ export default function PopupDappInfo() {
   }, []);
 
   return (
-    <Popup  open={isOpen} closeOnDocumentClick={false} position="bottom right">
+    <Popup  open={isOpen} closeOnDocumentClick={false}>
         <div className={styles.popupContainer}>
           <div className={styles.header}> Important Information </div>
           <div className={styles.content}>

@@ -1,16 +1,25 @@
 import { BsSendPlus } from 'react-icons/bs';
+import Popup from 'reactjs-popup';
 import styles from './style.module.css';
 
 import { smartdeploy } from "@/pages";
-import { Ok, Err } from 'smartdeploy-client'
+import { Ok, Err, Option, Version } from 'smartdeploy-client'
 import { useAsync } from "react-async";
+import { useState, Dispatch, SetStateAction } from 'react';
 
 interface PublishedContract {
     index: number;
     name: string;
     author: string;
-    version: string;
+    version: Version;
+    version_string: string;
     hash: string;
+}
+
+type DeployIconComponentProps = {
+    contract_name: string;
+    version: Option<Version>;
+    version_string: string;
 }
 
 async function listAllPublishedContracts() {
@@ -27,7 +36,7 @@ async function listAllPublishedContracts() {
 
                                     contractArray.forEach(([name, publishedContract], i) => {
                                         
-                                        const version = publishedContract.versions.keys().next().value;
+                                        const version: Version = publishedContract.versions.keys().next().value;
                                         const major = version.major;
                                         const minor = version.minor;
                                         const patch = version.patch;
@@ -38,7 +47,8 @@ async function listAllPublishedContracts() {
                                             index: i,
                                             name: name,
                                             author: publishedContract.author.toString(),
-                                            version: versionString,
+                                            version: version,
+                                            version_string: versionString,
                                             hash: hash
                                         }
 
@@ -57,14 +67,60 @@ async function listAllPublishedContracts() {
 
 }
 
+//{contract_name, version, deployed_name, owner, salt}: 
+//{contract_name: string, version: Option<Version>, deployed_name: string, owner: string, salt: Option<Buffer>}
+async function deploy() {
+}
+
+function DeployIconComponent(props: DeployIconComponentProps) {
+
+    const [wouldDeployed, setWouldDeploy] = useState<boolean>(false);
+  
+    return (
+        <>
+            {!wouldDeployed ? (
+                <td className={styles.deployIconCell}>
+                    <BsSendPlus
+                        className={styles.deployIcon}
+                        onClick={() => setWouldDeploy(true) }
+                    />
+                </td>
+            ) : (
+                <>
+                    <td className={styles.deployIconCell}>
+                        <p className={styles.deployingMessage}>Deploying...</p>
+                    </td>
+                    <Popup  open={wouldDeployed} closeOnDocumentClick={false}>
+                        <div className={styles.popupContainer}>
+                            <button className={styles.close} onClick={() => setWouldDeploy(false)}>
+                                &times;
+                            </button>
+                            <div className={styles.header}>Deploy <span className={styles.nameColor}>{props.contract_name} ({props.version_string})</span> </div>
+                            <div className={styles.content}>
+                                <p className={styles.mainMessage}><b>You are about to create an instance of <span className={styles.nameColor}>{props.contract_name}</span> published contract where you will be the owner.</b><br/></p>
+                                <div className={styles.deployedNameDiv}>
+                                    <b>Please choose a contract instance name:</b>
+                                    <input className={styles.deployedNameInput} type="text" spellCheck={false} placeholder="deployed_name"></input>
+                                </div>
+                            </div>
+                            <div className={styles.buttonContainer}>
+                                <button className={styles.button} onClick={() => { deploy() }}>
+                                    Deploy
+                                </button>
+                                <button className={styles.button} onClick={() => setWouldDeploy(false)}>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </Popup>
+            </>
+            )}
+        </>
+    );
+}
 
 
 export default function PublishedTab() {
-
-    // Mettre en dehors de PublishedTab()
-    const deploy = async() => {
-
-    }
 
     const { data, error, isPending } = useAsync({ promiseFn: listAllPublishedContracts});
     
@@ -81,8 +137,12 @@ export default function PublishedTab() {
                 <tr key={publishedContract.index}>
                     <td className={styles.contractCell}>{publishedContract.name}</td>
                     <td>{publishedContract.author}</td>
-                    <td>{publishedContract.version}</td>
-                    <td className={styles.deployIconCell}><BsSendPlus className={styles.deployIcon} onClick={deploy}/></td>
+                    <td>{publishedContract.version_string}</td>
+                    <DeployIconComponent 
+                        contract_name={publishedContract.name}
+                        version={publishedContract.version}
+                        version_string={publishedContract.version_string}
+                    />
                 </tr>
             );
         });
