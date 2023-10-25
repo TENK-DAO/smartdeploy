@@ -1,17 +1,34 @@
 import Popup from 'reactjs-popup';
 import styles from './style.module.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 
 export default function PopupDappInfo() {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleOnchange = (e: ChangeEvent<HTMLInputElement>) => {
+    const hidePopUp = e.target.checked;
+    localStorage.setItem("hidePopUp", JSON.stringify(hidePopUp));
+  };
+
+  const clearStorage = () => {
+    localStorage.clear();
+  };
+
   useEffect(() => {
-    setIsOpen(true);
+    //clearStorage();
+    const hidePopUp = localStorage.getItem("hidePopUp");
+    if (hidePopUp === null) {
+      setIsOpen(true);
+    } else if (hidePopUp === "true") {
+      setIsOpen(false);
+    } else if (hidePopUp === "false") {
+      setIsOpen(true);
+    }
   }, []);
 
   return (
-    <Popup  open={isOpen} position="bottom right">
+    <Popup  open={isOpen} closeOnDocumentClick={false} position="bottom right">
         <div className={styles.popupContainer}>
           <div className={styles.header}> Important Information </div>
           <div className={styles.content}>
@@ -22,7 +39,7 @@ export default function PopupDappInfo() {
             2. Enable Experimental Mode (Freighter Settings → Preferences, enable Experimental Mode)<br/>
             3. Select Future Net in the top right.
             </p>
-            <input className={styles.checkbox} type="checkbox" id="maCaseACocher"></input>
+            <input className={styles.checkbox} type="checkbox" onChange={handleOnchange}></input>
             <label className={styles.label}>Don't show again</label>
           </div>
           <div className={styles.buttonContainer}>
@@ -39,37 +56,3 @@ export default function PopupDappInfo() {
     </Popup>
   )
 }
-
-/*
-
-{(close: any) => (
-          <div className={styles.modal}>
-            <button className={styles.close} onClick={close}>
-              &times;
-            </button>
-            <div className={styles.header}> Modal Title </div>
-            <div className={styles.content}>
-              {' '}
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
-              Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
-              delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
-              <br />
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
-              commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
-              explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
-            </div>
-            <div className={styles.actions}>
-              <button
-                className="button"
-                onClick={() => {
-                  console.log('modal closed ');
-                  close();
-                }}
-              >
-                Understood
-              </button>
-            </div>
-          </div>
-        )}
-
-*/

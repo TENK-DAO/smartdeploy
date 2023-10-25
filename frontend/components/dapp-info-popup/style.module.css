@@ -25,7 +25,7 @@
     margin-bottom: 0.9rem;
 } 
 .content > p > a {
-    color: rgba(60, 139, 178, 0.944);
+    color: rgb(0, 212, 250);
     outline: none;
 }
 
@@ -51,8 +51,9 @@
     padding: 0.2rem 2.5rem 0.2rem 2.5rem;
     font-size: 1.2rem;
     font-weight: bold;
-    color: rgb(0, 216, 250);
-    border: 1.5px solid rgb(0, 216, 250);
+    background-color: rgb(45, 49, 49);
+    color: rgb(0, 212, 250);
+    border: 1.5px solid rgb(0, 212, 250);
     border-radius: 5px;
 }
 .understood:hover {
