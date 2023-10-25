@@ -2,10 +2,11 @@ import { BsSendPlus } from 'react-icons/bs';
 import Popup from 'reactjs-popup';
 import styles from './style.module.css';
 
-import { smartdeploy, UserWalletInfoProps } from "@/pages";
+import { smartdeploy, UserWalletInfoProps, UserWalletInfo } from "@/pages";
+import { isConnected } from '@stellar/freighter-api';
 import { Ok, Err, Option, Version } from 'smartdeploy-client'
 import { useAsync } from "react-async";
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 interface PublishedContract {
     index: number;
@@ -17,6 +18,7 @@ interface PublishedContract {
 }
 
 type DeployIconComponentProps = {
+    userWalletInfo: UserWalletInfoProps;
     contract_name: string;
     version: Option<Version>;
     version_string: string;
@@ -69,16 +71,57 @@ async function listAllPublishedContracts() {
 
 //{contract_name, version, deployed_name, owner, salt}: 
 //{contract_name: string, version: Option<Version>, deployed_name: string, owner: string, salt: Option<Buffer>}
-async function deploy() {
+async function deploy(userWalletInfo: UserWalletInfo, deployed_name: string, setIsDeploying: Dispatch<SetStateAction<boolean>>, setDeployedName: Dispatch<SetStateAction<string>>) {
+    
+    // Check if the user has Freighter
+    if (!(await isConnected())) {
+        window.alert("Impossible to interact with Soroban: you don't have Freighter extension.\n You can install the extension here: https://www.freighter.app/");
+        setIsDeploying(false);
+    }
+    else {
+        // Check if the Wallet is connected
+        if (userWalletInfo.address === "") {
+            alert("Wallet not connected. Please, connect a Stellar account.");
+            setIsDeploying(false);
+        }
+        // Check is the network is Futurenet
+        else if (userWalletInfo.network !== "FUTURENET") {
+            alert("Wrong Network. Please, switch to Future Net.");
+            setIsDeploying(false);
+        }
+        else {
+            // Check if deployed name is empty
+            if (deployed_name === "") {
+                alert("Deployed name cannot be empty. Please, choose a deployed name.");
+                setIsDeploying(false);
+            }
+            // Check if deployed name contains spaces
+            else if (deployed_name.includes(' ')) {
+                alert("Deployed name cannot includes spaces. Please, remove the spaces.");
+                setIsDeploying(false);
+            }
+            // Now that everything is ok, deploy the contract
+            else {
+                setDeployedName("");
+                setIsDeploying(false);
+            }
+        }
+    }
 }
 
 function DeployIconComponent(props: DeployIconComponentProps) {
 
-    const [wouldDeployed, setWouldDeploy] = useState<boolean>(false);
+    const [wouldDeploy, setWouldDeploy]   = useState<boolean>(false); 
+    const [deployedName, setDeployedName] = useState<string>("");
+    const [isDeploying, setIsDeploying]   = useState<boolean>(false);
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setDeployedName(e.target.value);
+    }
   
     return (
         <>
-            {!wouldDeployed ? (
+            {!wouldDeploy ? (
                 <td className={styles.deployIconCell}>
                     <BsSendPlus
                         className={styles.deployIcon}
@@ -90,7 +133,7 @@ function DeployIconComponent(props: DeployIconComponentProps) {
                     <td className={styles.deployIconCell}>
                         <p className={styles.deployingMessage}>Deploying...</p>
                     </td>
-                    <Popup  open={wouldDeployed} closeOnDocumentClick={false}>
+                    <Popup  open={wouldDeploy} closeOnDocumentClick={false}>
                         <div className={styles.popupContainer}>
                             <button className={styles.close} onClick={() => setWouldDeploy(false)}>
                                 &times;
@@ -100,20 +143,40 @@ function DeployIconComponent(props: DeployIconComponentProps) {
                                 <p className={styles.mainMessage}><b>You are about to create an instance of <span className={styles.nameColor}>{props.contract_name}</span> published contract where you will be the owner.</b><br/></p>
                                 <div className={styles.deployedNameDiv}>
                                     <b>Please choose a contract instance name:</b>
-                                    <input className={styles.deployedNameInput} type="text" spellCheck={false} placeholder="deployed_name"></input>
+                                    <input 
+                                        className={styles.deployedNameInput} 
+                                        type="text" 
+                                        spellCheck={false} 
+                                        placeholder="deployed_name" 
+                                        value={deployedName}
+                                        onChange={handleInputChange}>
+                                    </input>
                                 </div>
                             </div>
                             <div className={styles.buttonContainer}>
-                                <button className={styles.button} onClick={() => { deploy() }}>
-                                    Deploy
-                                </button>
-                                <button className={styles.button} onClick={() => setWouldDeploy(false)}>
-                                    Cancel
-                                </button>
+                                {!isDeploying ? (
+                                    <>
+                                        <button className={styles.button} 
+                                                onClick={() => {
+                                                    setIsDeploying(true);
+                                                    deploy(props.userWalletInfo.data, deployedName, setIsDeploying, setDeployedName);
+                                                }}
+                                        >
+                                            Deploy
+                                        </button>
+                                        <button className={styles.button} onClick={() => setWouldDeploy(false)}>
+                                            Cancel
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button className={styles.buttonWhenDeploying}>
+                                        Deploying...
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </Popup>
-            </>
+                </>
             )}
         </>
     );
@@ -138,7 +201,8 @@ export default function PublishedTab(props: UserWalletInfoProps) {
                     <td className={styles.contractCell}>{publishedContract.name}</td>
                     <td>{publishedContract.author}</td>
                     <td>{publishedContract.version_string}</td>
-                    <DeployIconComponent 
+                    <DeployIconComponent
+                        userWalletInfo={props}
                         contract_name={publishedContract.name}
                         version={publishedContract.version}
                         version_string={publishedContract.version_string}

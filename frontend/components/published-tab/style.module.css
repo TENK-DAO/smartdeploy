@@ -163,6 +163,7 @@
     margin-right: 2rem;
     margin-left: 2rem;
     padding: 0.2rem 2.5rem 0.2rem 2.5rem;
+    width: 15rem;
     font-size: 1.2rem;
     font-weight: bold;
     background-color: rgb(45, 49, 49);
@@ -172,6 +173,18 @@
 }
 .button:hover {
     background-color: rgba(2, 111, 128, 0.316);
+}
+.buttonWhenDeploying {
+    margin-right: 2rem;
+    margin-left: 2rem;
+    padding: 0.2rem 2.5rem 0.2rem 2.5rem;
+    width: 15rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: rgb(45, 49, 49);
+    color: rgb(0, 212, 250);
+    border: 1.5px solid rgb(0, 212, 250);
+    border-radius: 5px; 
 }
   
 .close {
