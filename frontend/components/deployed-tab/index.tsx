@@ -62,6 +62,7 @@ async function copyAddr(setCopied: Dispatch<SetStateAction<boolean>> , addr: str
                              })
                              .catch((err) => {
                                 console.error("Failed to copy address: ", err);
+                                window.alert(err);
                              });
 }
 
