@@ -24,6 +24,14 @@ type DeployIconComponentProps = {
     version_string: string;
 }
 
+type DeployArgsObj = { 
+    contract_name: string,
+    version: Option<Version>,
+    deployed_name: string,
+    owner: string,
+    salt: Option<Buffer>
+};
+
 async function listAllPublishedContracts() {
 
     return await smartdeploy
@@ -69,9 +77,12 @@ async function listAllPublishedContracts() {
 
 }
 
-//{contract_name, version, deployed_name, owner, salt}: 
-//{contract_name: string, version: Option<Version>, deployed_name: string, owner: string, salt: Option<Buffer>}
-async function deploy(userWalletInfo: UserWalletInfo, deployed_name: string, setIsDeploying: Dispatch<SetStateAction<boolean>>, setDeployedName: Dispatch<SetStateAction<string>>) {
+async function deploy(
+    userWalletInfo: UserWalletInfo,
+    setIsDeploying: Dispatch<SetStateAction<boolean>>,
+    setDeployedName: Dispatch<SetStateAction<string>>,
+    argsObj: DeployArgsObj
+) {
     
     // Check if the user has Freighter
     if (!(await isConnected())) {
@@ -91,18 +102,34 @@ async function deploy(userWalletInfo: UserWalletInfo, deployed_name: string, set
         }
         else {
             // Check if deployed name is empty
-            if (deployed_name === "") {
+            if (argsObj.deployed_name === "") {
                 alert("Deployed name cannot be empty. Please, choose a deployed name.");
                 setIsDeploying(false);
             }
             // Check if deployed name contains spaces
-            else if (deployed_name.includes(' ')) {
+            else if (argsObj.deployed_name.includes(' ')) {
                 alert("Deployed name cannot includes spaces. Please, remove the spaces.");
                 setIsDeploying(false);
             }
             // Now that everything is ok, deploy the contract
             else {
                 setDeployedName("");
+
+                let deployedAddr = await smartdeploy
+                                                    //.deploy(argsObj, { responseType: 'full', secondsToWait: 0 })
+                                                    .deploy(argsObj)
+                                                    .then((response) => {
+                                                        console.log(response);
+                                                        if (response instanceof Ok) {return response.unwrap()}
+                                                        else if (response instanceof Err) {response.unwrap()}
+                                                        else if (response === undefined) {console.log("deployed address is UNDEFINED")}
+                                                        else { console.log("Neither Ok, nor Err, nor undefined")}
+                                                    })
+                                                    .catch((err) => {
+                                                        console.error("Failed to deploy the contract: ", err);
+                                                        window.alert(err);
+                                                    });
+                console.log(deployedAddr);                                
                 setIsDeploying(false);
             }
         }
@@ -158,8 +185,23 @@ function DeployIconComponent(props: DeployIconComponentProps) {
                                     <>
                                         <button className={styles.button} 
                                                 onClick={() => {
+
                                                     setIsDeploying(true);
-                                                    deploy(props.userWalletInfo.data, deployedName, setIsDeploying, setDeployedName);
+
+                                                    const argsObj: DeployArgsObj = {
+                                                        contract_name: props.contract_name,
+                                                        version: props.version,
+                                                        deployed_name: deployedName,
+                                                        owner: props.userWalletInfo.data.address,
+                                                        salt: undefined
+                                                    }
+
+                                                    deploy(
+                                                        props.userWalletInfo.data,
+                                                        setIsDeploying,
+                                                        setDeployedName,
+                                                        argsObj
+                                                    );
                                                 }}
                                         >
                                             Deploy
@@ -246,5 +288,4 @@ export default function PublishedTab(props: UserWalletInfoProps) {
             </div>
         )
     }
-    
 }
