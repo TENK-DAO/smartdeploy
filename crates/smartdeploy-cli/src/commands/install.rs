@@ -5,10 +5,11 @@ use clap::Parser;
 use smartdeploy_build::{target_dir, wasm_location};
 use soroban_cli::commands::{
     config::network,
-    contract::{fetch, invoke}, global,
+    contract::{fetch, invoke},
+    global,
 };
 
-use crate::futurenet;
+use crate::testnet;
 
 #[derive(Parser, Debug, Clone)]
 pub struct Cmd {
@@ -33,14 +34,16 @@ pub enum Error {
 
 impl Cmd {
     pub async fn run(&self) -> Result<(), Error> {
-        let contract_id = futurenet::contract_id();
+        let contract_id = testnet::contract_id();
+        let network = network::Args {
+            rpc_url: Some(testnet::rpc_url()),
+            network_passphrase: Some(testnet::network_passphrase()),
+            ..Default::default()
+        };
         let mut cmd = invoke::Cmd {
             contract_id: contract_id.to_string(),
             config: soroban_cli::commands::config::Args {
-                network: network::Args {
-                    network: Some("futurenet".to_owned()),
-                    ..Default::default()
-                },
+                network: network.clone(),
                 ..Default::default()
             },
             ..Default::default()
@@ -60,10 +63,7 @@ impl Cmd {
         let fetch_cmd = fetch::Cmd {
             contract_id: id.trim_matches('"').to_string(),
             out_file: Some(out_file),
-            network: network::Args {
-                network: Some("futurenet".to_owned()),
-                ..Default::default()
-            },
+            network,
             ..Default::default()
         };
         fetch_cmd.run().await?;

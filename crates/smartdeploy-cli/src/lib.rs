@@ -4,7 +4,7 @@
     clippy::missing_panics_doc
 )]
 pub mod commands;
-pub mod futurenet;
+pub mod testnet;
 
 
 use std::path::Path;

@@ -1,7 +1,9 @@
+# shellcheck disable=all
 # Load in `.env`
 set dotenv-load
 
 export PATH := './target/bin:' + env_var('PATH')
+export SOROBAN_NETWORK := env_var('SOROBAN_NETWORK')
 TARGET_DIR := './target/loam'
 SMARTDEPLOY := TARGET_DIR / 'smartdeploy.wasm'
 BASE := TARGET_DIR / 'base.wasm'
@@ -51,15 +53,16 @@ build +args='':
 
 [private]
 setup_default:
-   soroban config identity generate default --config-dir $CONFIG_DIR
+   -soroban config identity generate default --config-dir $CONFIG_DIR
 
 @setup:
-    echo {{ if path_exists(soroban) == "true" { "" } else { `cargo install_soroban_dev` } }}
+    echo {{ if path_exists(soroban) == "true" { "" } else { `cargo install_soroban` } }}
     echo {{ if path_exists(loam) == "true" { "" } else { `cargo install_loam` } }}
-    @just fund_default
+    echo {{ if path_exists(env_var('CONFIG_DIR') / '.soroban/identity/default.toml') == "true" { "" } else { `just setup_default` } }}
+
 
 @fund_default:
-    echo {{ if path_exists(env_var('CONFIG_DIR') / '.soroban/identity/default.toml') == "true" { `just soroban config identity fund default` } else { `just setup_default` } }}
+    soroban config identity fund default
 
 @deploy_self:
     just build --package smartdeploy
@@ -78,6 +81,7 @@ setup_default:
 publish_all: fund_default deploy_self
     #!/usr/bin/env bash
     set -e;
+    echo $SOROBAN_NETWORK;
     just install_self;
     for name in $(loam build --ls)
     do
@@ -87,7 +91,6 @@ publish_all: fund_default deploy_self
             name="${name//-/_}";
             just publish_one $name
             cargo run --quiet -- install $name
-
         fi
     done
 
@@ -95,7 +98,6 @@ publish_all: fund_default deploy_self
 @publish_one name:
     @just publish {{ name }}
     @just deploy {{ name }} {{ name }}
-    @just install_contract {{ name }}
 
 @deploy contract_name deployed_name owner='default':
     @just smartdeploy_raw --source {{owner}} -- deploy --contract_name {{contract_name}} --deployed_name {{deployed_name}} --owner {{owner}}
@@ -117,7 +119,7 @@ publish_all: fund_default deploy_self
 
 # Delete non-wasm artifacts
 @clean:
-    rm -rf .soroban/*.json hash.txt target/bin/soroban-*
+    rm -rf .soroban/*.json hash.txt target/bin/soroban-* target/smartdeploy/*
 
 # Delete installed binaries
 @clean_installed_binaries:

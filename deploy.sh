@@ -47,13 +47,13 @@ fi
 echo $ID
 
 
-smartdeploy="just soroban --quiet contract invoke --id $ID"
+# smartdeploy="just soroban --quiet contract invoke --id $ID"
 
 if test "$FILE_HASH" = ""; then
    just publish smartdeploy
    just claim_self
 fi
 
-if test "$SOROBAN_NETWORK" = "futurenet"; then
-  just smartdeploy_id > ./crates/smartdeploy-cli/src/futurenet/smartdeploy.json
+if test "$SOROBAN_NETWORK" = "testnet"; then
+  just smartdeploy_id > ./crates/smartdeploy-cli/src/testnet/smartdeploy.json
 fi

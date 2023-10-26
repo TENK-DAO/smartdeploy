@@ -32,6 +32,7 @@ jobs:
           target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
     - uses: taiki-e/install-action@just
+    - uses: taiki-e/install-action@cargo-binstall
     - run: rustup update
     - run: rustup target add wasm32-unknown-unknown
     - run: just setup
