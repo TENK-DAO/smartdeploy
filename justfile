@@ -56,7 +56,7 @@ setup_default:
    -soroban config identity generate default --config-dir $CONFIG_DIR
 
 @setup:
-    echo {{ if path_exists(soroban) == "true" { "" } else { `cargo install_soroban` } }}
+    cargo binstall -y --install-path ./target/bin soroban-cli --version 20.0.0-rc.4.1
     echo {{ if path_exists(loam) == "true" { "" } else { `cargo install_loam` } }}
     echo {{ if path_exists(env_var('CONFIG_DIR') / '.soroban/identity/default.toml') == "true" { "" } else { `just setup_default` } }}
 
