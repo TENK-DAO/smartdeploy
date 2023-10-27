@@ -27,6 +27,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: "curl --fail-with-body -X POST \"http://localhost:8000/soroban/rpc\" -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":8675309,\"method\":\"getNetwork\"}'"
+    - run: "curl http://localhost:8000/friendbot?addr=GBD4MQEG4Z2BLHWMLLBBFAG3DXI76W6KP5QBVT65UPW2K6IJ3FXJGUWY"
     - uses: actions/cache@v3
       with:
         path: |
