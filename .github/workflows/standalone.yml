@@ -19,6 +19,9 @@ jobs:
           ENABLE_LOGS: true
           NETWORK: local
           ENABLE_SOROBAN_RPC: true
+        options: >-
+          --health-start-period 1m
+          --no-healthcheck
     steps:
     - uses: actions/checkout@v3
     - run: "curl --fail-with-body -X POST \"http://localhost:8000/soroban/rpc\" -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":8675309,\"method\":\"getNetwork\"}'"
