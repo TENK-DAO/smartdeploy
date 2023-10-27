@@ -143,7 +143,7 @@ start_docker:
     -p 8000:8000 \
     --name stellar \
     stellar/quickstart:soroban-dev@sha256:c1030a6ee75c31ba6807b8feddded2af23789b5f2c9be3ac55a550630a35ef42 \
-    --standalone \
+    --local \
     --enable-soroban-rpc \
 
 smartdeploy_id:
