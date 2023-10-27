@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-22.04
     services:
       rpc:
-        image: stellar/quickstart:soroban-dev@sha256:c1030a6ee75c31ba6807b8feddded2af23789b5f2c9be3ac55a550630a35ef42
+        image: stellar/quickstart:testing
         ports:
           - 8000:8000
         env:
