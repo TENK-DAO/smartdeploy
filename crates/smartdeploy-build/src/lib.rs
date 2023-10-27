@@ -8,6 +8,8 @@ use loam_build::get_target_dir;
 pub enum Error {
     #[error(transparent)]
     LoamBuild(#[from] loam_build::Error),
+    #[error("Missing contract_id for {0}")]
+    MissingContractId(String),
 }
 
 
@@ -20,6 +22,13 @@ pub fn wasm_location(name: &str, out_dir: Option<&Path>) -> Result<PathBuf, Erro
     let mut out_file = out_dir.join(name).join("index");
     out_file.set_extension("wasm");
     Ok(out_file)
+}
+
+pub fn contract_id(name: &str, out_dir: Option<&Path>) -> Result<String, Error> {
+    let wasm = wasm_location(name, out_dir)?;
+    let parent = wasm.parent().ok_or_else(|| Error::MissingContractId(name.to_owned()))?;
+    let id_file = parent.join("contract_id.txt");
+    std::fs::read_to_string(id_file).map_err(|_| Error::MissingContractId(name.to_owned()))
 }
 
 fn manifest() -> PathBuf {

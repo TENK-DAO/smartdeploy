@@ -8,12 +8,12 @@ jobs:
     runs-on: ubuntu-20.04
     services:
       rpc:
-        image: stellar/quickstart:soroban-dev@sha256:2cd55fb75bb0777f0355b14a5426ffc870bb87ff1f9d1ea96d2bdcc58663c5f9
+        image: stellar/quickstart:soroban-dev@sha256:c1030a6ee75c31ba6807b8feddded2af23789b5f2c9be3ac55a550630a35ef42
         ports:
           - 8000:8000
         env:
           ENABLE_LOGS: true
-          NETWORK: standalone
+          NETWORK: local
           ENABLE_SOROBAN_RPC: true
         options: >-
           --health-cmd "curl -X POST \"http://localhost:8000/soroban/rpc\""
@@ -32,6 +32,7 @@ jobs:
           target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
     - uses: taiki-e/install-action@just
+    - uses: taiki-e/install-action@cargo-binstall
     - run: rustup update
     - run: rustup target add wasm32-unknown-unknown
     - run: just setup

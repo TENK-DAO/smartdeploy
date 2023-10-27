@@ -1,10 +1,9 @@
 # paths = ["/path/to/override"] # path dependency overrides
 
 [alias] # command aliases
-xtask = "run --package xtask --"
 bwl = "build --profile release-with-logs"
-install_soroban_dev = "install --git https://github.com/stellar/soroban-tools --rev 7d3b4175b1970f76455b4789797c2edc5f79e432 --debug --root ./target soroban-cli"
-install_soroban = "binstall -y --install-path ./target/bin soroban-cli --version 20.0.0-rc3"
+install_soroban_dev = "install --git https://github.com/stellar/soroban-tools --tag v20.0.0-rc.4.1  --debug --root ./target soroban-cli"
+install_soroban = "binstall -y --install-path ./target/bin soroban-cli --version 20.0.0-rc.4.1"
 install_loam = "install --version 0.6.5 --debug --root ./target loam-cli"
 # c = "check"
 # t = "test"
@@ -28,6 +27,7 @@ rustflags = [
     "-Aclippy::missing_panics_doc",
     "-Aclippy::missing_errors_doc",
     "-Aclippy::module-name-repetitions",
+    "-Aclippy::ignored_unit_patterns"
     # "-Aclippy::missing_safety_doc",
     # "-Aclippy::inline_always",
     # "-Aclippy::default_trait_access",
