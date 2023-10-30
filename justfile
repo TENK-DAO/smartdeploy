@@ -17,8 +17,10 @@ id:=`cat contract_id.txt`
 ROOT_DIR := 'target/contracts/smartdeploy'
 
 [private]
-@default: setup
-    @just build
+@default: setup build
+    soroban config network add standalone \
+        --rpc-url http://localhost:8000/soroban/rpc \
+        --network-passphrase "Standalone Network ; February 2017"
 
 @soroban +args:
     {{soroban}} {{args}}
@@ -143,7 +145,7 @@ start_docker:
     -p 8000:8000 \
     --name stellar \
     stellar/quickstart:soroban-dev@sha256:c1030a6ee75c31ba6807b8feddded2af23789b5f2c9be3ac55a550630a35ef42 \
-    --standalone \
+    --local \
     --enable-soroban-rpc \
 
 smartdeploy_id:
