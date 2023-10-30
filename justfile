@@ -17,8 +17,10 @@ id:=`cat contract_id.txt`
 ROOT_DIR := 'target/contracts/smartdeploy'
 
 [private]
-@default: setup
-    @just build
+@default: setup build
+    soroban config network add standalone \
+        --rpc-url http://localhost:8000/soroban/rpc \
+        --network-passphrase "Standalone Network ; February 2017"
 
 @soroban +args:
     {{soroban}} {{args}}
