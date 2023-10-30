@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-sdk-v0.1.1...smartdeploy-sdk-v0.1.2) - 2023-10-30
+
+### Other
+- release ([#17](https://github.com/TENK-DAO/smartdeploy/pull/17))
+
 ## [0.1.1](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-sdk-v0.1.0...smartdeploy-sdk-v0.1.1) - 2023-09-24
 
 ### Added

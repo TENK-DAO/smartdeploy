@@ -4,7 +4,7 @@ description = "Crate for using smartdeploy to bulid smart contracts on soroban"
 authors = ["Willem Wyndham <willem@ahalabs.dev>"]
 license = "Apache-2.0"
 readme = "../../README.md"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 rust-version = "1.70"
 

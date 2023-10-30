@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-macros-v0.1.2...smartdeploy-macros-v0.1.3) - 2023-10-30
+
+### Other
+- updated the following local packages: smartdeploy-build
+
 ## [0.1.2](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-macros-v0.1.1...smartdeploy-macros-v0.1.2) - 2023-09-24
 
 ### Other
