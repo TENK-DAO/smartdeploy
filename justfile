@@ -92,7 +92,7 @@ publish_all: fund_default deploy_self
             just build --package $name;
             name="${name//-/_}";
             just publish_one $name
-            cargo run --quiet -- install $name
+            cargo r -- install $name
         fi
     done
 

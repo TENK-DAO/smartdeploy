@@ -10,3 +10,6 @@ pub fn hash_string(s: &String) -> BytesN<32> {
     b.copy_from_slice(0, bytes);
     env.crypto().sha256(&b)
 }
+
+
+pub const MAX_BUMP: u32 = 535_679;

@@ -53,6 +53,7 @@ impl Cmd {
             .map(Into::into)
             .collect::<Vec<_>>();
         let id = cmd.invoke(&global::Args::default()).await?;
+        let contract_id = id.trim_matches('"');
         let out_dir = if let Some(out_dir) = self.out_dir.clone() {
             out_dir
         } else {
@@ -61,7 +62,7 @@ impl Cmd {
         let out_file = wasm_location(&self.deployed_name, Some(&out_dir))?;
         let id_file = out_file.parent().unwrap().join("contract_id.txt");
         let fetch_cmd = fetch::Cmd {
-            contract_id: id.trim_matches('"').to_string(),
+            contract_id: contract_id.to_owned(),
             out_file: Some(out_file),
             network,
             ..Default::default()
