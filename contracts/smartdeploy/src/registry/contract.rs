@@ -1,7 +1,7 @@
 #![allow(non_upper_case_globals)]
-use loam_sdk::soroban_sdk::{self, contracttype, env, vec, Address, BytesN, IntoKey, Map, String};
+use loam_sdk::soroban_sdk::{self, contracttype, env, vec, Address, BytesN, Map, String, Lazy, Symbol, symbol_short};
 
-use crate::{error::Error, registry::Publishable, util::hash_string, version::Version, Contract};
+use crate::{error::Error, registry::Publishable, util::{hash_string, MAX_BUMP}, version::Version, Contract};
 
 use super::{IsDeployable, IsDevDeployable};
 
@@ -17,12 +17,28 @@ loam_sdk::import_contract!(core_riff);
 
 
 #[contracttype(export = false)]
-#[derive(IntoKey)]
 pub struct ContractRegistry(pub Map<String, Address>);
 
 impl Default for ContractRegistry {
     fn default() -> Self {
         Self(Map::new(env()))
+    }
+}
+
+fn key() -> Symbol {
+    symbol_short!("contractR")
+}
+
+
+impl Lazy for ContractRegistry {
+    fn get_lazy() -> Option<Self> {
+        env().storage().persistent().get(&key())
+    }
+
+    fn set_lazy(self) {
+        let key = &key();
+        env().storage().persistent().set(key, &self);
+        env().storage().persistent().bump(key, MAX_BUMP, MAX_BUMP);
     }
 }
 

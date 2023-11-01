@@ -1,16 +1,35 @@
-use loam_sdk::soroban_sdk::{self, contracttype, env, vec, Address, IntoKey, Map, String};
+use loam_sdk::soroban_sdk::{
+    self, contracttype, env, symbol_short, vec, Address, Lazy, Map, String, Symbol,
+};
 
 use crate::{
     error::Error,
     metadata::{ContractMetadata, PublishedContract, PublishedWasm},
+    util::MAX_BUMP,
     version::{self, Version, INITAL_VERSION},
 };
 
 use super::IsPublishable;
 
 #[contracttype(export = false)]
-#[derive(IntoKey)]
+
 pub struct WasmRegistry(Map<String, PublishedContract>);
+
+fn key() -> Symbol {
+    symbol_short!("wasmReg")
+}
+
+impl Lazy for WasmRegistry {
+    fn get_lazy() -> Option<Self> {
+        env().storage().persistent().get(&key())
+    }
+
+    fn set_lazy(self) {
+        let key = &key();
+        env().storage().persistent().set(key, &self);
+        env().storage().persistent().bump(key, MAX_BUMP, MAX_BUMP);
+    }
+}
 
 impl Default for WasmRegistry {
     fn default() -> Self {
