@@ -2,8 +2,6 @@ use std::path::{Path, PathBuf};
 
 use loam_build::get_target_dir;
 
-
-
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error(transparent)]
@@ -11,7 +9,6 @@ pub enum Error {
     #[error("Missing contract_id for {0}")]
     MissingContractId(String),
 }
-
 
 pub fn wasm_location(name: &str, out_dir: Option<&Path>) -> Result<PathBuf, Error> {
     let out_dir = if let Some(out_dir) = out_dir {
@@ -26,13 +23,16 @@ pub fn wasm_location(name: &str, out_dir: Option<&Path>) -> Result<PathBuf, Erro
 
 pub fn contract_id(name: &str, out_dir: Option<&Path>) -> Result<String, Error> {
     let wasm = wasm_location(name, out_dir)?;
-    let parent = wasm.parent().ok_or_else(|| Error::MissingContractId(name.to_owned()))?;
+    let parent = wasm
+        .parent()
+        .ok_or_else(|| Error::MissingContractId(name.to_owned()))?;
     let id_file = parent.join("contract_id.txt");
     std::fs::read_to_string(id_file).map_err(|_| Error::MissingContractId(name.to_owned()))
 }
 
 fn manifest() -> PathBuf {
-    std::path::PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").unwrap()).join("Cargo.toml")
+    std::path::PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| ".".to_owned()))
+        .join("Cargo.toml")
 }
 
 pub fn target_dir() -> Result<PathBuf, Error> {
