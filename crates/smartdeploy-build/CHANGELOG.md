@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-build-v0.2.0...smartdeploy-build-v0.2.1) - 2023-11-04
+
+### Fixed
+- default cargo manifest directory to pwd
+
 ## [0.2.0](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-build-v0.1.1...smartdeploy-build-v0.2.0) - 2023-10-30
 
 ### Added

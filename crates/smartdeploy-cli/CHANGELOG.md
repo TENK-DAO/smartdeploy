@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-cli-v0.3.1...smartdeploy-cli-v0.3.2) - 2023-11-04
+
+### Other
+- updated the following local packages: smartdeploy-build
+
 ## [0.3.1](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-cli-v0.3.0...smartdeploy-cli-v0.3.1) - 2023-11-01
 
 ### Added
