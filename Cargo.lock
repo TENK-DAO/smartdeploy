@@ -890,6 +890,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "example-increment-init"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-sdk-core-riff",
+]
+
+[[package]]
 name = "fastrand"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1584,7 +1592,7 @@ dependencies = [
  "soroban-spec-rust",
  "soroban-spec-tools",
  "soroban-spec-typescript",
- "stellar-strkey",
+ "stellar-strkey 0.0.7",
  "strsim",
  "termcolor",
  "termcolor_output",
@@ -2339,7 +2347,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9afe34ccbd1fb6fa0b2fc7cccb037bd3d3f1e484c3befe1b713d7611884f336a"
 dependencies = [
  "slip10",
- "stellar-strkey",
+ "stellar-strkey 0.0.7",
  "thiserror",
  "tiny-bip39",
 ]
@@ -2549,10 +2557,16 @@ dependencies = [
  "assert_cmd",
  "assert_fs",
  "clap",
+ "ed25519-dalek 2.0.0",
+ "heck",
+ "loam-sdk",
  "loam-soroban-cli",
  "predicates 2.1.5",
  "shlex",
  "smartdeploy-build",
+ "soroban-spec",
+ "soroban-spec-tools",
+ "stellar-strkey 0.0.8",
  "thiserror",
  "tokio",
 ]
@@ -2563,7 +2577,7 @@ version = "0.1.4"
 dependencies = [
  "quote",
  "smartdeploy-build",
- "stellar-strkey",
+ "stellar-strkey 0.0.7",
  "syn 2.0.37",
 ]
 
@@ -2643,7 +2657,7 @@ dependencies = [
  "soroban-native-sdk-macros",
  "soroban-wasmi",
  "static_assertions",
- "stellar-strkey",
+ "stellar-strkey 0.0.7",
 ]
 
 [[package]]
@@ -2701,7 +2715,7 @@ dependencies = [
  "soroban-env-host",
  "soroban-ledger-snapshot",
  "soroban-sdk-macros",
- "stellar-strkey",
+ "stellar-strkey 0.0.7",
 ]
 
 [[package]]
@@ -2779,7 +2793,7 @@ dependencies = [
  "itertools 0.10.5",
  "serde_json",
  "soroban-spec",
- "stellar-strkey",
+ "stellar-strkey 0.0.7",
  "stellar-xdr",
  "thiserror",
  "wasmparser 0.90.0",
@@ -2853,6 +2867,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0c0689070126ca7f2effc2c5726584446db52190f0cef043c02eb4040a711c11"
 dependencies = [
  "base32",
+ "thiserror",
+]
+
+[[package]]
+name = "stellar-strkey"
+version = "0.0.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "12d2bf45e114117ea91d820a846fd1afbe3ba7d717988fee094ce8227a3bf8bd"
+dependencies = [
+ "base32",
+ "crate-git-revision 0.0.6",
  "thiserror",
 ]
 

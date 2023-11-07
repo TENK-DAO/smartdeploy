@@ -1,20 +1,26 @@
 #![allow(non_upper_case_globals)]
-use loam_sdk::soroban_sdk::{self, contracttype, env, vec, Address, BytesN, Map, String, Lazy, Symbol, symbol_short};
+use loam_sdk::soroban_sdk::{
+    self, contracttype, env, symbol_short, vec, Address, BytesN, Lazy, Map, String, Symbol, Val,
+};
 
-use crate::{error::Error, registry::Publishable, util::{hash_string, MAX_BUMP}, version::Version, Contract};
+use crate::{
+    error::Error,
+    registry::Publishable,
+    util::{hash_string, MAX_BUMP},
+    version::Version,
+    Contract,
+};
 
 use super::{IsDeployable, IsDevDeployable};
 
-
 loam_sdk::import_contract!(core_riff);
 
-// Is the same as 
+// Is the same as
 
 // mod core_riff {
 //     use loam_sdk::soroban_sdk;
 //     loam_sdk::soroban_sdk::contractimport!(file = "../../target/loam/core_riff.wasm",);
 // }
-
 
 #[contracttype(export = false)]
 pub struct ContractRegistry(pub Map<String, Address>);
@@ -28,7 +34,6 @@ impl Default for ContractRegistry {
 fn key() -> Symbol {
     symbol_short!("contractR")
 }
-
 
 impl Lazy for ContractRegistry {
     fn get_lazy() -> Option<Self> {
@@ -57,6 +62,7 @@ impl IsDeployable for ContractRegistry {
         deployed_name: String,
         owner: Address,
         salt: Option<BytesN<32>>,
+        init: Option<(Symbol, soroban_sdk::Vec<soroban_sdk::Val>)>,
     ) -> Result<Address, Error> {
         if self.0.contains_key(deployed_name.clone()) {
             return Err(Error::NoSuchContractDeployed);
@@ -66,6 +72,9 @@ impl IsDeployable for ContractRegistry {
         let hash = Contract::fetch_hash(contract_name, version)?;
         let salt = salt.unwrap_or_else(|| hash_string(&deployed_name));
         let address = deploy_and_init(&owner, salt, hash)?;
+        if let  Some((init_fn, args)) = init {
+            let _ = env().invoke_contract::<Val>(&address, &init_fn, args);
+        }
         self.0.set(deployed_name, address.clone());
         Ok(address)
     }

@@ -1,7 +1,6 @@
 use clap::{CommandFactory, Parser};
 
-use smartdeploy_cli::{Root, testnet};
-
+use smartdeploy_cli::{testnet, Root};
 
 #[tokio::main]
 async fn main() {

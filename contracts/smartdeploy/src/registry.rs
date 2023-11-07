@@ -64,6 +64,7 @@ pub trait IsDeployable {
         deployed_name: soroban_sdk::String,
         owner: soroban_sdk::Address,
         salt: Option<soroban_sdk::BytesN<32>>,
+        init: Option<(soroban_sdk::Symbol, soroban_sdk::Vec<soroban_sdk::Val>)>,
     ) -> Result<soroban_sdk::Address, Error>;
 
     /// Fetch contract id
