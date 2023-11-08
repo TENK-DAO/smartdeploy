@@ -23,11 +23,11 @@ ROOT_DIR := 'target/contracts/smartdeploy'
         --network-passphrase "Standalone Network ; February 2017"
 
 @soroban +args:
-    {{soroban}} {{args}}
+   soroban {{args}}
 
 # Execute plugin
 s name +args:
-    @just soroban {{ name }} {{ args }}
+    @soroban {{ name }} {{ args }}
 
 smartdeploy +args:
     @just smartdeploy_raw -- {{args}}
@@ -39,7 +39,7 @@ smartdeploy +args:
     @soroban contract install --wasm ./target/wasm32-unknown-unknown/release-with-logs/{{name}}.wasm
 
 @generate: build
-    @just soroban contract bindings typescript \
+    @soroban contract bindings typescript \
         --contract-id {{id}} \
         --wasm {{SMARTDEPLOY}} \
         --output-dir {{ ROOT_DIR }}/smartdeploy \
@@ -58,7 +58,7 @@ setup_default:
    -soroban config identity generate default --config-dir $CONFIG_DIR
 
 @setup:
-    cargo binstall -y --install-path ./target/bin soroban-cli --version 20.0.0-rc.4.1
+    echo {{ if path_exists(soroban) == "true" { "" } else { `cargo install_soroban_dev` } }}
     echo {{ if path_exists(loam) == "true" { "" } else { `cargo install_loam` } }}
     echo {{ if path_exists(env_var('CONFIG_DIR') / '.soroban/identity/default.toml') == "true" { "" } else { `just setup_default` } }}
 
@@ -76,7 +76,7 @@ setup_default:
 
 [private]
 @install_self:
-    echo "#!/usr/bin/env bash \njust soroban contract invoke --id {{id}} -- \$@" > {{ FILE }}
+    echo "#!/usr/bin/env bash \nsoroban contract invoke --id {{id}} -- \$@" > {{ FILE }}
     chmod +x {{ FILE }}
 
 
