@@ -7,6 +7,7 @@ members = [
     "examples/increment",
     "examples/errors",
     "examples/cross_contract/*",
+    "examples/increment-init"
 ]
 
 exclude = [

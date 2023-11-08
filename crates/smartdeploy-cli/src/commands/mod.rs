@@ -3,6 +3,7 @@ use std::str::FromStr;
 use clap::{command, CommandFactory, FromArgMatches, Parser};
 
 pub mod call;
+pub mod deploy;
 pub mod install;
 
 
@@ -44,6 +45,7 @@ impl Root {
         match &mut self.cmd {
             Cmd::Call(call_info) => call_info.run().await?,
             Cmd::Install(i) => i.run().await?,
+            Cmd::Deploy(deploy) => deploy.run().await?,
         };
         Ok(())
     }
@@ -59,8 +61,10 @@ impl FromStr for Root {
 
 #[derive(Parser, Debug)]
 pub enum Cmd {
-    /// call contracts
+    /// call deployed contracts
     Call(Box<call::Cmd>),
+    /// deploy contract from deployed wasm
+    Deploy(Box<deploy::Cmd>),
     /// install contracts
     Install(install::Cmd),
     
@@ -71,6 +75,8 @@ pub enum Error {
     // TODO: stop using Debug for displaying errors
     #[error(transparent)]
     Call(#[from] call::Error),
+    #[error(transparent)]
+    Deploy(#[from] deploy::Error),
     #[error(transparent)]
     Install(#[from] install::Error),
 }
