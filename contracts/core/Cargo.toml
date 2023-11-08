@@ -13,7 +13,7 @@ doctest = false
 
 [dependencies]
 loam-sdk = { workspace = true, features = ["loam-soroban-sdk"] }
-smartdeploy-sdk = { path = "../../crates/smartdeploy-sdk", version = "0.1.2" }
+smartdeploy-sdk = { path = "../../crates/smartdeploy-sdk", version = "0.1.3" }
 
 
 [dev_dependencies]
