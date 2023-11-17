@@ -84,9 +84,13 @@ pub fn import_contract(tokens: TokenStream) -> TokenStream {
             use soroban_sdk::TryFromVal;
             soroban_sdk::contractimport!(file = #file);
 
-            pub fn new(env: &Env) -> Client {
+            pub fn address(env: &Env) -> soroban_sdk::Address {
                 let bytes: soroban_sdk::BytesN<32> = soroban_sdk::Bytes::from_slice(&env, &[#(#id),*]).try_into().unwrap();
-                let contract_id =  &soroban_sdk::Address::from_contract_id(&bytes);
+                soroban_sdk::Address::from_contract_id(&bytes)
+            }
+
+            pub fn new(env: &Env) -> Client {
+                let contract_id =  &address(env);
                 Client::new(env, contract_id)
             }
         }

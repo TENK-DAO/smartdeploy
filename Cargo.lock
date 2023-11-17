@@ -2557,6 +2557,7 @@ dependencies = [
  "assert_cmd",
  "assert_fs",
  "clap",
+ "dotenvy",
  "ed25519-dalek 2.0.0",
  "heck",
  "loam-sdk",
@@ -2752,9 +2753,9 @@ dependencies = [
 
 [[package]]
 name = "soroban-spec-json"
-version = "20.0.0-rc3"
+version = "20.0.0-rc4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a653b46a0c8075483efa85312d7053e6291cff8f99fdc8ef1d39d7b09a75e037"
+checksum = "8f562402230eed7948609d6b7c2de1937127070ab0c2f4dde62980e32c37aa51"
 dependencies = [
  "serde",
  "serde_derive",
@@ -2801,9 +2802,9 @@ dependencies = [
 
 [[package]]
 name = "soroban-spec-typescript"
-version = "20.0.0-rc3"
+version = "20.0.0-rc4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "27b9e4683a20da28d0b3a73db8fbbf0e58cc17d5758c813a036dc7ff82e70d7f"
+checksum = "01891cd62cb54a4fc7c6cc72e64cd109187b4ad5d028470ff8d0654643dbe3f2"
 dependencies = [
  "base64 0.21.4",
  "heck",
