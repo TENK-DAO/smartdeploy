@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-cli-v0.4.0...smartdeploy-cli-v0.4.1) - 2023-11-17
+
+### Added
+- allow setting different smartdeploy contract id ([#29](https://github.com/TENK-DAO/smartdeploy/pull/29))
+
 ## [0.4.0](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-cli-v0.3.2...smartdeploy-cli-v0.4.0) - 2023-11-08
 
 ### Added
