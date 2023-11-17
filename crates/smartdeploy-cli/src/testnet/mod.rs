@@ -6,12 +6,16 @@ use soroban_cli::{
 
 const CONTRACT_ID: &str = include_str!("./smartdeploy.json");
 
-pub fn contract_id() -> &'static str {
-    CONTRACT_ID.trim_end().trim_matches('"')
+pub fn contract_id() -> String {
+    if let Ok(contract_id) = std::env::var("SMARTDEPLOY_CONTRACT_ID") {
+        contract_id
+    } else {
+        CONTRACT_ID.trim_end().trim_matches('"').to_owned()
+    }
 }
 
 pub fn contract_id_strkey() -> stellar_strkey::Contract {
-    stellar_strkey::Contract::from_string(contract_id()).unwrap()
+    stellar_strkey::Contract::from_string(&contract_id()).unwrap()
 }
 
 pub fn contract_address() -> ScAddress {
@@ -28,7 +32,7 @@ pub fn network_passphrase() -> String {
 
 pub fn build_invoke_cmd(slop: &[&str]) -> invoke::Cmd {
     invoke::Cmd {
-        contract_id: contract_id().to_owned(),
+        contract_id: contract_id(),
         wasm: None,
         cost: false,
         unlimited_budget: false,

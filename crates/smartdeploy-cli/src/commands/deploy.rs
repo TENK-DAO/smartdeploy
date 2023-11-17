@@ -104,8 +104,6 @@ impl Cmd {
         // Get the account sequence number
         let public_strkey =
             stellar_strkey::ed25519::PublicKey(key.verifying_key().to_bytes()).to_string();
-        let account_details = client.get_account(&public_strkey).await?;
-        let sequence: i64 = account_details.seq_num.into();
 
         let (function_symbol_arg, final_args) = build_host_function_parameters(
             &self.deployed_name,
@@ -139,6 +137,8 @@ impl Cmd {
             .unwrap(),
         };
 
+        let account_details = client.get_account(&public_strkey).await?;
+        let sequence: i64 = account_details.seq_num.into();
         let tx = build_invoke_contract_tx(invoke_contract_args, sequence + 1, self.fee.fee, &key)?;
         let (
             _,
