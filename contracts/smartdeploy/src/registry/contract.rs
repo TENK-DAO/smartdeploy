@@ -108,7 +108,7 @@ fn deploy_and_init(
     salt: BytesN<32>,
     wasm_hash: BytesN<32>,
 ) -> Result<Address, Error> {
-    // Deploy the contract using the installed WASM code with given hash.
+    // Deploy the contract using the installed Wasm code with given hash.
     let address = env()
         .deployer()
         .with_current_contract(salt)

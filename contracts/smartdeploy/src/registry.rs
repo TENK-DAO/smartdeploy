@@ -25,7 +25,7 @@ pub trait IsPublishable {
     /// Most recent version of the published contract
     fn current_version(&self, contract_name: soroban_sdk::String) -> Result<Version, Error>;
 
-    /// Fetch detailts of the published binary
+    /// Fetch details of the published binary
     fn fetch(
         &self,
         contract_name: soroban_sdk::String,
@@ -42,7 +42,7 @@ pub trait IsPublishable {
         kind: Option<version::Update>,
     ) -> Result<(), Error>;
 
-    /// Paginate the published contracts. Defaults: strart=0, limit=rest
+    /// Paginate the published contracts. Defaults: start = 0, limit = rest
     fn list_published_contracts(
         &self,
         start: Option<u32>,
@@ -73,7 +73,7 @@ pub trait IsDeployable {
         deployed_name: soroban_sdk::String,
     ) -> Result<soroban_sdk::Address, Error>;
 
-    /// Paginate the deployed contracts. Defaults: strart=0, limit=rest
+    /// Paginate the deployed contracts. Defaults: start = 0, limit = rest
     fn list_deployed_contracts(
         &self,
         start: Option<u32>,

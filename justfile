@@ -22,6 +22,10 @@ ROOT_DIR := 'target/contracts/smartdeploy'
         --rpc-url http://localhost:8000/soroban/rpc \
         --network-passphrase "Standalone Network ; February 2017"
 
+# check clippy and cargo-spellcheck
+check:
+    cargo spellcheck -c ./.config/spellcheck.toml
+
 @soroban +args:
    soroban {{args}}
 
