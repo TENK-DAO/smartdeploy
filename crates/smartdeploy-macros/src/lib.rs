@@ -22,7 +22,7 @@ pub fn core_riff(_: TokenStream) -> TokenStream {
                 env.storage().instance().set(&Self::owner_key(), &new_owner);
             }
 
-            /// Redeploy the contract to a wasm hash
+            /// Redeploy the contract to a Wasm hash
             pub fn redeploy(env: soroban_sdk::Env, wasm_hash: soroban_sdk::BytesN<32>) {
                 Self::owner_get(env.clone()).as_ref().map(soroban_sdk::Address::require_auth);
                 env.deployer().update_current_contract_wasm(wasm_hash);
@@ -45,7 +45,7 @@ pub fn dev_deploy(_: TokenStream) -> TokenStream {
 
     #[soroban_sdk::contractimpl]
     impl DevDeploy__ {
-        /// Redeploy the contract with the given wasm bytes
+        /// Redeploy the contract with the given Wasm bytes
         pub fn dev_deploy(env: soroban_sdk::Env, wasm: soroban_sdk::Bytes) {
             let wasm_hash = env.deployer().upload_contract_wasm(wasm);
             env.deployer().update_current_contract_wasm(wasm_hash);

@@ -63,7 +63,7 @@ impl FromStr for Root {
 pub enum Cmd {
     /// call deployed contracts
     Call(Box<call::Cmd>),
-    /// deploy contract from deployed wasm
+    /// deploy contract from deployed Wasm
     Deploy(Box<deploy::Cmd>),
     /// install contracts
     Install(install::Cmd),
