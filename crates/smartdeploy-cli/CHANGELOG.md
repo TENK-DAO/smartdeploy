@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.2](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-cli-v0.4.1...smartdeploy-cli-v0.4.2) - 2023-11-29
+
+### Fixed
+- *(CLI)* allow not passing deploy args ([#33](https://github.com/TENK-DAO/smartdeploy/pull/33))
+
+### Other
+- update README with cool features ([#31](https://github.com/TENK-DAO/smartdeploy/pull/31))
+
 ## [0.4.1](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-cli-v0.4.0...smartdeploy-cli-v0.4.1) - 2023-11-17
 
 ### Added
