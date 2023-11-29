@@ -2552,7 +2552,7 @@ dependencies = [
 
 [[package]]
 name = "smartdeploy-cli"
-version = "0.4.1"
+version = "0.4.2"
 dependencies = [
  "assert_cmd",
  "assert_fs",
@@ -2574,7 +2574,7 @@ dependencies = [
 
 [[package]]
 name = "smartdeploy-macros"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "quote",
  "smartdeploy-build",
@@ -2584,7 +2584,7 @@ dependencies = [
 
 [[package]]
 name = "smartdeploy-sdk"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "smartdeploy-macros",
 ]
