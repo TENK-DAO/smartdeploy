@@ -105,13 +105,25 @@ impl Cmd {
         let public_strkey =
             stellar_strkey::ed25519::PublicKey(key.verifying_key().to_bytes()).to_string();
 
-        let (function_symbol_arg, final_args) = build_host_function_parameters(
-            &self.deployed_name,
-            &self.spec_entries().await?,
-            &self.slop,
-        )?;
-
         let contract_address = contract_address();
+
+        let args = if self.slop.is_empty() {
+            ScVal::Void
+        } else {
+            let (function_symbol_arg, final_args) = build_host_function_parameters(
+                &self.deployed_name,
+                &self.spec_entries().await?,
+                &self.slop,
+            )?;
+            ScVal::Vec(Some(
+                vec![
+                    ScVal::Symbol(function_symbol_arg),
+                    ScVal::Vec(Some(final_args.try_into().unwrap())),
+                ]
+                .try_into()
+                .unwrap(),
+            ))
+        };
 
         let invoke_contract_args = InvokeContractArgs {
             contract_address: contract_address.clone(),
@@ -124,14 +136,7 @@ impl Cmd {
                     xdr::PublicKey::PublicKeyTypeEd25519(Uint256(key.verifying_key().to_bytes())),
                 ))),
                 ScVal::Void,
-                ScVal::Vec(Some(
-                    vec![
-                        ScVal::Symbol(function_symbol_arg),
-                        ScVal::Vec(Some(final_args.try_into().unwrap())),
-                    ]
-                    .try_into()
-                    .unwrap(),
-                )),
+                args,
             ]
             .try_into()
             .unwrap(),
