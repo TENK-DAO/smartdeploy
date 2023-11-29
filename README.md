@@ -1,9 +1,14 @@
 # SmartDeploy
 
+
 A framework for publishing, developing, deploying, and upgrading Soroban smart contracts.
 
 You can think of it as a package manager for Smart Contracts.
 
+## For Testers
+To test it out try using cloning and following along here: https://github.com/TENK-DAO/soroban-examples
+
+## Example
 Consider the following contract:
 
 ```rs
