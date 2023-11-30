@@ -25,7 +25,7 @@ smartdeploy_sdk::core_riff!();
 
 The last line `smartdeploy_sdk::core_riff` ensures that the contract is redeployable.
 
-After building you can publish and deploy the contract. 
+After building you can publish the contract:
 
 ```bash
 smartdeploy call smartdeploy --fee 10000 -- \
@@ -33,10 +33,19 @@ smartdeploy call smartdeploy --fee 10000 -- \
                                 --contract-name contract-a \
                                 --wasm-file-path .../contract_a.wasm \
                                 --author default
+```
+
+This invokes the smartdeploy contract directly and calling the method `publish`. It also uses `--wasm-file-path` read in the bytes of the file as the arg.
+
+To deploy you can use the deploy subcommand which, as we'll see later, creates a CLI interface for calling a custom init function of the contract in the same transaction as the deploy.
+
+```
 smartdeploy deploy --published-name contract_a \
                    --deployed-name contract_a \
                    --source default
 ```
+
+
 
 Now let's say that we have a second contract b
 
@@ -130,7 +139,7 @@ With the contract's id we can create client directly without the need to track d
 contract_b::new(&env)
 ```
 
-And we can address the address directly
+And we can access the address directly
 
 ```rs
 contract_a::address(&env)
