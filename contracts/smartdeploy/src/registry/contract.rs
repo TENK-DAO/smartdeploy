@@ -22,6 +22,14 @@ loam_sdk::import_contract!(core_riff);
 //     loam_sdk::soroban_sdk::contractimport!(file = "../../target/loam/core_riff.wasm",);
 // }
 
+#[contracttype]
+pub struct DeployEventData {
+    contract_name: String,
+    version: Option<Version>,
+    deployer: Address,
+    contract_id: Address,
+}
+
 #[contracttype(export = false)]
 pub struct ContractRegistry(pub Map<String, Address>);
 
@@ -69,13 +77,20 @@ impl IsDeployable for ContractRegistry {
         }
         // signed by owner
         owner.require_auth();
-        let hash = Contract::fetch_hash(contract_name, version)?;
+        let hash = Contract::fetch_hash(contract_name.clone(), version.clone())?;
         let salt = salt.unwrap_or_else(|| hash_string(&deployed_name));
         let address = deploy_and_init(&owner, salt, hash)?;
         if let  Some((init_fn, args)) = init {
             let _ = env().invoke_contract::<Val>(&address, &init_fn, args);
         }
         self.0.set(deployed_name, address.clone());
+        let deploy_datas = DeployEventData {
+            contract_name,
+            version,
+            deployer: owner,
+            contract_id: address.clone(),
+        };
+        env().events().publish((symbol_short!("deploy"),), deploy_datas);
         Ok(address)
     }
 
