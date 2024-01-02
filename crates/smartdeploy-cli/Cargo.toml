@@ -27,7 +27,8 @@ doctest = false
 [dependencies]
 # soroban-cli = { git = "https://github.com/stellar/soroban-tools", rev = "b5b0b786d1900382335e76563d6deb7348503493" }
 #soroban-cli = { path = "../../../soroban-cli/cmd/soroban-cli" }
-soroban-cli = {package = "loam-soroban-cli", version = "20.0.0-rc3" }
+#soroban-cli = {package = "loam-soroban-cli", version = "20.0.0-rc3" }
+soroban-cli = "20.1.1"
 clap = { version = "4.1.8", features = [
     "derive",
     "env",
@@ -40,8 +41,8 @@ tokio = { version = "1", features = ["full"] }
 shlex = "1.1.0"
 smartdeploy-build = { path = "../smartdeploy-build", version = "0.2.1" }
 loam-sdk = { workspace = true }
-soroban-spec = "20.0.0-rc2"
-soroban-spec-tools = "20.0.0-rc3"
+soroban-spec = "20.0.3"
+soroban-spec-tools = "20.1.1"
 heck = "0.4.1"
 ed25519-dalek = "2.0.0"
 stellar-strkey = "0.0.8"
