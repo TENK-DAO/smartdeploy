@@ -27,7 +27,7 @@ impl Lazy for WasmRegistry {
     fn set_lazy(self) {
         let key = &key();
         env().storage().persistent().set(key, &self);
-        env().storage().persistent().bump(key, MAX_BUMP, MAX_BUMP);
+        env().storage().persistent().extend_ttl(key, MAX_BUMP, MAX_BUMP);
     }
 }
 

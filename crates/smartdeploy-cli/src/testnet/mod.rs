@@ -35,7 +35,6 @@ pub fn build_invoke_cmd(slop: &[&str]) -> invoke::Cmd {
         contract_id: contract_id(),
         wasm: None,
         cost: false,
-        unlimited_budget: false,
         slop: slop.iter().map(Into::into).collect(),
         config: soroban_cli::commands::config::Args {
             network: network::Args {

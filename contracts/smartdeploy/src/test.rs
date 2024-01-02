@@ -12,12 +12,12 @@ mod contract {
 fn init() -> (Env, SorobanContractClient<'static>, Address) {
     let env = Env::default();
     let client = SorobanContractClient::new(&env, &env.register_contract(None, SorobanContract));
-    let address = Address::random(&env);
+    let address = Address::generate(&env);
     (env, client, address)
 }
 
 pub fn name(env: &Env) -> String {
-    String::from_slice(env, "publisher")
+    String::from_str(env, "publisher")
 }
 
 #[test]
@@ -37,7 +37,7 @@ fn handle_error_cases() {
     let res = client.try_fetch(name, &None).unwrap().unwrap();
     assert_eq!(res.hash, wasm_hash);
 
-    let other_address = Address::random(env);
+    let other_address = Address::generate(env);
     let res = client
         .try_publish(name, &other_address, &bytes, &None, &None)
         .unwrap_err();

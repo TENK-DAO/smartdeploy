@@ -3,7 +3,7 @@
 [alias] # command aliases
 bwl = "build --profile release-with-logs"
 install_soroban = "binstall -y --install-path ./target/bin soroban-cli --version 20.0.0-rc.4.1"
-install_soroban_dev = "install --git https://github.com/stellar/soroban-tools --rev d3f0dc53aee5b5f2791ad9a9d615312f6560aad4  --debug --root ./target soroban-cli"
+install_soroban_dev = "install --git https://github.com/stellar/soroban-tools --rev v20.1.1 --debug --root ./target soroban-cli"
 install_loam = "install --version 0.6.5 --debug --root ./target loam-cli"
 # c = "check"
 # t = "test"

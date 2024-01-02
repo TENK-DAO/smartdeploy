@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CURRENT_HASH=$(soroban contract install --source default --wasm ./target/loam/smartdeploy.wasm --ignore-checks)
+CURRENT_HASH=$(soroban contract install --source default --network testnet --wasm ./target/loam/smartdeploy.wasm)
 echo current hash "$CURRENT_HASH"
 author=$(soroban config identity address default)
 echo "$author"
