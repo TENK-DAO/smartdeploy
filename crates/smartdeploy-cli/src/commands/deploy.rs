@@ -182,7 +182,7 @@ fn build_host_function_parameters(
         .max_term_width(300);
 
     for ScSpecFunctionV0 { name, .. } in spec.find_functions()? {
-        cmd = cmd.subcommand(build_custom_cmd(&name.to_string_lossy(), &spec)?);
+        cmd = cmd.subcommand(build_custom_cmd(&name.to_utf8_string_lossy(), &spec)?);
     }
     cmd.build();
     let mut matches_ = cmd.get_matches_from(slop);
@@ -194,7 +194,7 @@ fn build_host_function_parameters(
         .inputs
         .iter()
         .map(|i| {
-            let name = i.name.to_string().unwrap();
+            let name = i.name.to_string();
             if let Some(mut val) = matches_.get_raw(&name) {
                 let mut s = val.next().unwrap().to_string_lossy().to_string();
                 if matches!(i.type_, ScSpecTypeDef::Address) {
@@ -246,7 +246,7 @@ fn build_custom_cmd(name: &str, spec: &Spec) -> Result<clap::Command, Error> {
     let inputs_map = &func
         .inputs
         .iter()
-        .map(|i| (i.name.to_string().unwrap(), i.type_.clone()))
+        .map(|i| (i.name.to_string(), i.type_.clone()))
         .collect::<HashMap<String, ScSpecTypeDef>>();
     let name: &'static str = Box::leak(name.to_string().into_boxed_str());
     let mut cmd = clap::Command::new(name)
@@ -258,7 +258,7 @@ fn build_custom_cmd(name: &str, spec: &Spec) -> Result<clap::Command, Error> {
         cmd = cmd.alias(kebab_name);
     }
     let func = spec.find_function(name).unwrap();
-    let doc: &'static str = Box::leak(func.doc.to_string_lossy().into_boxed_str());
+    let doc: &'static str = Box::leak(func.doc.to_utf8_string_lossy().into_boxed_str());
     let long_doc: &'static str = Box::leak(arg_file_help(doc).into_boxed_str());
 
     cmd = cmd.about(Some(doc)).long_about(long_doc);

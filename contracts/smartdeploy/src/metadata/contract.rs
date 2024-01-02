@@ -9,7 +9,7 @@ pub struct ContractMetadata {
 impl Default for ContractMetadata {
     fn default() -> Self {
         Self {
-            repo: String::from_slice(env(), ""),
+            repo: String::from_str(env(), ""),
         }
     }
 }
