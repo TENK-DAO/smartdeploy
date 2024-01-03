@@ -11,8 +11,8 @@ use crate::{
     Contract,
 };
 
-//use crate::WasmRegistry;
-//
+use crate::WasmRegistry;
+
 use super::{IsDeployable, IsDevDeployable};
 
 loam_sdk::import_contract!(core_riff);
@@ -24,14 +24,14 @@ loam_sdk::import_contract!(core_riff);
 //     loam_sdk::soroban_sdk::contractimport!(file = "../../target/loam/core_riff.wasm",);
 // }
 
-//#[contracttype]
-//pub struct DeployEventData {
-//    published_name: String,
-//    deployed_name: String,
-//    version: Version,
-//    deployer: Address,
-//    contract_id: Address,
-//}
+#[contracttype]
+pub struct DeployEventData {
+    published_name: String,
+    deployed_name: String,
+    version: Version,
+    deployer: Address,
+    contract_id: Address,
+}
 
 #[contracttype(export = false)]
 pub struct ContractRegistry(pub Map<String, Address>);
@@ -89,18 +89,21 @@ impl IsDeployable for ContractRegistry {
         self.0.set(deployed_name.clone(), address.clone());
 
         // Publish a deploy event
-        //let version = version.unwrap_or_else(|| {
-        //    let published_contract = WasmRegistry::get_lazy().unwrap().find_contract(contract_name.clone()).unwrap();
-        //    published_contract.most_recent_version().unwrap()
-        //});
-        //let deploy_datas = DeployEventData {
-        //    published_name: contract_name,
-        //    deployed_name,
-        //    version,
-        //    deployer: owner,
-        //    contract_id: address.clone(),
-        //};
-        //env().events().publish((symbol_short!("deploy"),), deploy_datas);
+        let version = version.map_or_else(
+            || {
+                let published_contract = WasmRegistry::get_lazy().unwrap().find_contract(contract_name.clone())?;
+                published_contract.most_recent_version()
+            },
+            Ok,
+        )?;
+        let deploy_datas = DeployEventData {
+            published_name: contract_name,
+            deployed_name,
+            version,
+            deployer: owner,
+            contract_id: address.clone(),
+        };
+        env().events().publish((symbol_short!("deploy"),), deploy_datas);
 
         Ok(address)
     }
