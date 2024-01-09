@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-cli-v0.4.2...smartdeploy-cli-v0.5.0) - 2024-01-09
+
+### Added
+- [**breaking**] Redeploy smartdeploy on testnet
+
+### Fixed
+- Adapt code to soroban-cli version 20.1.1
+
 ## [0.4.2](https://github.com/TENK-DAO/smartdeploy/compare/smartdeploy-cli-v0.4.1...smartdeploy-cli-v0.4.2) - 2023-11-29
 
 ### Fixed
