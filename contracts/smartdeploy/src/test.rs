@@ -1,6 +1,11 @@
 #![cfg(test)]
+use super::*;
 use crate::{error::Error, SorobanContract, SorobanContractClient};
-use loam_sdk::soroban_sdk::{testutils::Address as _, Address, Bytes, Env, String};
+use loam_sdk::soroban_sdk::{
+    testutils::{ Address as _, Events },
+    Address, Bytes, Env, String, IntoVal,
+    vec, symbol_short,
+};
 extern crate std;
 
 // The contract that will be deployed by the Publisher contract.
@@ -50,6 +55,39 @@ fn handle_error_cases() {
 
     // let res = client.try_deploy(name, &None, &String::from_slice(env, "hello"), &None);
     // std::println!("{res:?}");
+}
+
+#[test]
+fn publish_event() {
+
+    let (env, client, address) = &init();
+    env.mock_all_auths();
+    
+    let name = String::from_str(env, "contract_a");
+
+    let bytes = Bytes::from_slice(env, contract::WASM);
+    
+    client.publish(&name, address, &bytes, &None, &None);
+
+    let data =  registry::wasm::PublishEventData {
+        published_name: name,
+        author: address.clone(),
+        wasm: bytes,
+        repo: metadata::ContractMetadata::default(),
+        kind: version::Update::default(),
+    };
+
+    assert_eq!(
+        env.events().all(),
+        vec![
+            &env,
+            (
+                client.address.clone(),
+                (symbol_short!("publish"),).into_val(env),
+                data.into_val(env)
+            ),
+        ]
+    );
 }
 
 // #[test]

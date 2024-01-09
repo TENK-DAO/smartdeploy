@@ -11,6 +11,15 @@ use crate::{
 
 use super::IsPublishable;
 
+#[contracttype]
+pub struct PublishEventData {
+    pub published_name: String,
+    pub author: Address,
+    pub wasm: soroban_sdk::Bytes,
+    pub repo: ContractMetadata,
+    pub kind: version::Update,
+}
+
 #[contracttype(export = false)]
 
 pub struct WasmRegistry(Map<String, PublishedContract>);
@@ -77,13 +86,13 @@ impl IsPublishable for WasmRegistry {
     ) -> Result<(), Error> {
         let mut contract = self
             .find_contract(contract_name.clone())
-            .unwrap_or_else(|_| PublishedContract::new(author));
+            .unwrap_or_else(|_| PublishedContract::new(author.clone()));
         contract.author.require_auth();
         let keys = contract.versions.keys();
         let last_version = keys.last().unwrap_or_default();
 
         last_version.log();
-        let new_version = last_version.clone().update(&kind.unwrap_or_default());
+        let new_version = last_version.clone().update(&kind.clone().unwrap_or_default());
         new_version.log();
 
         let metadata = if let Some(repo) = repo {
@@ -93,10 +102,21 @@ impl IsPublishable for WasmRegistry {
         } else {
             contract.get(Some(last_version))?.metadata
         };
-        let hash = env().deployer().upload_contract_wasm(wasm);
-        let published_binary = PublishedWasm { hash, metadata };
+        let hash = env().deployer().upload_contract_wasm(wasm.clone());
+        let published_binary = PublishedWasm { hash, metadata: metadata.clone() };
         contract.versions.set(new_version, published_binary);
-        self.set_contract(contract_name, contract);
+        self.set_contract(contract_name.clone(), contract);
+
+        // Publish a publish event
+        let publish_datas = PublishEventData {
+            published_name: contract_name,
+            author,
+            wasm,
+            repo: metadata,
+            kind: kind.unwrap_or_default(),
+        };
+        env().events().publish((symbol_short!("publish"),), publish_datas);
+
         Ok(())
     }
 
