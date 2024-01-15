@@ -7,18 +7,10 @@ use crate::{
     metadata::{ContractMetadata, PublishedContract, PublishedWasm},
     util::MAX_BUMP,
     version::{self, Version, INITAL_VERSION},
+    events::{Publish, EventPublishable},
 };
 
 use super::IsPublishable;
-
-#[contracttype]
-pub struct PublishEventData {
-    pub published_name: String,
-    pub author: Address,
-    pub wasm: soroban_sdk::Bytes,
-    pub repo: ContractMetadata,
-    pub kind: version::Update,
-}
 
 #[contracttype(export = false)]
 
@@ -108,14 +100,14 @@ impl IsPublishable for WasmRegistry {
         self.set_contract(contract_name.clone(), contract);
 
         // Publish a publish event
-        let publish_datas = PublishEventData {
+        let publish_data = Publish {
             published_name: contract_name,
             author,
             wasm,
             repo: metadata,
             kind: kind.unwrap_or_default(),
         };
-        env().events().publish((symbol_short!("publish"),), publish_datas);
+        publish_data.publish_event(env());
 
         Ok(())
     }

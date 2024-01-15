@@ -4,7 +4,7 @@ use crate::{error::Error, SorobanContract, SorobanContractClient};
 use loam_sdk::soroban_sdk::{
     testutils::{ Address as _, Events },
     Address, Bytes, Env, String, IntoVal,
-    vec, symbol_short,
+    vec,
 };
 extern crate std;
 
@@ -58,23 +58,35 @@ fn handle_error_cases() {
 }
 
 #[test]
-fn publish_event() {
+fn publish_deploy_events() {
 
     let (env, client, address) = &init();
     env.mock_all_auths();
     
-    let name = String::from_str(env, "contract_a");
+    let published_name = String::from_str(env, "contract_a");
 
     let bytes = Bytes::from_slice(env, contract::WASM);
     
-    client.publish(&name, address, &bytes, &None, &None);
+    client.publish(&published_name, address, &bytes, &None, &None);
 
-    let data =  registry::wasm::PublishEventData {
-        published_name: name,
+    let publish_data =  events::Publish {
+        published_name: published_name.clone(),
         author: address.clone(),
         wasm: bytes,
         repo: metadata::ContractMetadata::default(),
         kind: version::Update::default(),
+    };
+
+    let deployed_name = String::from_str(env, "deployed_contract_a");
+
+    let contract_id = client.deploy(&published_name, &Some(version::INITAL_VERSION), &deployed_name, address, &None, &None);
+
+    let deploy_data =  events::Deploy {
+        published_name,
+        deployed_name,
+        version: version::INITAL_VERSION,
+        deployer: address.clone(),
+        contract_id,
     };
 
     assert_eq!(
@@ -83,8 +95,13 @@ fn publish_event() {
             &env,
             (
                 client.address.clone(),
-                (symbol_short!("publish"),).into_val(env),
-                data.into_val(env)
+                (String::from_str(env, "Publish"),).into_val(env),
+                publish_data.into_val(env)
+            ),
+            (
+                client.address.clone(),
+                (String::from_str(env, "Deploy"),).into_val(env),
+                deploy_data.into_val(env)
             ),
         ]
     );

@@ -8,6 +8,7 @@ use crate::{
     registry::Publishable,
     util::{hash_string, MAX_BUMP},
     version::Version,
+    events::{Deploy, EventPublishable},
     Contract,
 };
 
@@ -24,14 +25,6 @@ loam_sdk::import_contract!(core_riff);
 //     loam_sdk::soroban_sdk::contractimport!(file = "../../target/loam/core_riff.wasm",);
 // }
 
-#[contracttype]
-pub struct DeployEventData {
-    published_name: String,
-    deployed_name: String,
-    version: Version,
-    deployer: Address,
-    contract_id: Address,
-}
 
 #[contracttype(export = false)]
 pub struct ContractRegistry(pub Map<String, Address>);
@@ -96,14 +89,14 @@ impl IsDeployable for ContractRegistry {
             },
             Ok,
         )?;
-        let deploy_datas = DeployEventData {
+        let deploy_data = Deploy {
             published_name: contract_name,
             deployed_name,
             version,
             deployer: owner,
             contract_id: address.clone(),
         };
-        env().events().publish((symbol_short!("deploy"),), deploy_datas);
+        deploy_data.publish_event(env());
 
         Ok(address)
     }
