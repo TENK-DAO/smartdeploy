@@ -10,6 +10,7 @@ pub mod metadata;
 pub mod registry;
 pub mod util;
 pub mod version;
+pub mod events;
 
 use error::Error;
 use version::Version;

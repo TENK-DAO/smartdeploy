@@ -70,7 +70,7 @@ impl Version {
 }
 
 #[contracttype]
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub enum Update {
     #[default]
     Patch,
