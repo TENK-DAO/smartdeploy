@@ -94,8 +94,8 @@ impl IsPublishable for WasmRegistry {
         } else {
             contract.get(Some(last_version))?.metadata
         };
-        let hash = env().deployer().upload_contract_wasm(wasm.clone());
-        let published_binary = PublishedWasm { hash, metadata: metadata.clone() };
+        let hash = env().deployer().upload_contract_wasm(wasm);
+        let published_binary = PublishedWasm { hash: hash.clone(), metadata: metadata.clone() };
         contract.versions.set(new_version, published_binary);
         self.set_contract(contract_name.clone(), contract);
 
@@ -103,7 +103,7 @@ impl IsPublishable for WasmRegistry {
         let publish_data = Publish {
             published_name: contract_name,
             author,
-            wasm,
+            hash,
             repo: metadata,
             kind: kind.unwrap_or_default(),
         };

@@ -72,7 +72,7 @@ fn publish_deploy_events() {
     let publish_data =  events::Publish {
         published_name: published_name.clone(),
         author: address.clone(),
-        wasm: bytes,
+        hash: env.deployer().upload_contract_wasm(bytes),
         repo: metadata::ContractMetadata::default(),
         kind: version::Update::default(),
     };

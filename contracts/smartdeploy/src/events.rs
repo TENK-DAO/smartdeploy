@@ -12,7 +12,7 @@ use crate::{
 pub struct Publish {
     pub published_name: String,
     pub author: Address,
-    pub wasm: soroban_sdk::Bytes,
+    pub hash: soroban_sdk::BytesN<32>,
     pub repo: ContractMetadata,
     pub kind: Update,
 }
