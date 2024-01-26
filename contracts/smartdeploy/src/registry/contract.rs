@@ -5,6 +5,7 @@ use loam_sdk::soroban_sdk::{
 
 use crate::{
     error::Error,
+    events::{Deploy, EventPublishable},
     registry::Publishable,
     util::{hash_string, MAX_BUMP},
     version::Version,
@@ -23,16 +24,6 @@ loam_sdk::import_contract!(core_riff);
 //     loam_sdk::soroban_sdk::contractimport!(file = "../../target/loam/core_riff.wasm",);
 // }
 
-#[contracttype]
-pub struct DeployEventData {
-    published_name: String,
-    deployed_name: String,
-    version: Version,
-    deployer: Address,
-    contract_id: Address,
-}
-#[contracttype(export = false)]
-pub struct ContractRegistry(pub Map<String, ContractType>);
 
 #[contracttype(export = false)]
 #[derive(Clone)]
@@ -103,19 +94,21 @@ impl IsDeployable for ContractRegistry {
         // Publish a deploy event
         let version = version.map_or_else(
             || {
-                let published_contract = WasmRegistry::get_lazy().unwrap().find_contract(contract_name.clone())?;
+                let published_contract = WasmRegistry::get_lazy()
+                    .unwrap()
+                    .find_contract(contract_name.clone())?;
                 published_contract.most_recent_version()
             },
             Ok,
         )?;
-        let deploy_datas = DeployEventData {
+        Deploy {
             published_name: contract_name,
             deployed_name,
             version,
             deployer: owner,
             contract_id: address.clone(),
-        };
-        env().events().publish((symbol_short!("deploy"),), deploy_datas);
+        }
+        .publish_event(env());
 
         Ok(address)
     }
