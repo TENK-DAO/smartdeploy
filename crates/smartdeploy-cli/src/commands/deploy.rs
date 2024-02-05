@@ -198,8 +198,8 @@ fn build_host_function_parameters(
             if let Some(mut val) = matches_.get_raw(&name) {
                 let mut s = val.next().unwrap().to_string_lossy().to_string();
                 if matches!(i.type_, ScSpecTypeDef::Address) {
-                    let cmd = commands::config::identity::address::Cmd {
-                        name: Some(s.clone()),
+                    let cmd = commands::keys::address::Cmd {
+                        name: s.clone(),
                         hd_path: Some(0),
                         locator: config::locator::Args::default(),
                     };
