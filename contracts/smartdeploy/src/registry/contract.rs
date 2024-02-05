@@ -9,11 +9,10 @@ use crate::{
     util::{hash_string, MAX_BUMP},
     version::Version,
     Contract,
+    WasmRegistry,
 };
 
-use crate::WasmRegistry;
-
-use super::{IsDeployable, IsDevDeployable};
+use super::{IsClaimable, IsDeployable, IsDevDeployable};
 
 loam_sdk::import_contract!(core_riff);
 
@@ -32,9 +31,29 @@ pub struct DeployEventData {
     deployer: Address,
     contract_id: Address,
 }
+#[contracttype(export = false)]
+pub struct ContractRegistry(pub Map<String, ContractType>);
 
 #[contracttype(export = false)]
-pub struct ContractRegistry(pub Map<String, Address>);
+#[derive(Clone)]
+pub enum ContractType {
+    ContractById(Address),
+    ContractByIdAndOwner(Address, Address),
+}
+
+impl ContractType {
+    pub fn contract_id(&self) -> &Address {
+        match self {
+            Self::ContractById(id) | Self::ContractByIdAndOwner(id, _) => id,
+        }
+    }
+    pub fn owner(&self) -> Option<&Address> {
+        match self {
+            Self::ContractByIdAndOwner(_, owner) => Some(owner),
+            Self::ContractById(_) => None,
+        }
+    }
+}
 
 impl Default for ContractRegistry {
     fn default() -> Self {
@@ -59,13 +78,6 @@ impl Lazy for ContractRegistry {
 }
 
 impl IsDeployable for ContractRegistry {
-    fn claim_deployed_contract(&mut self, deployed_name: String, id: Address) -> Result<(), Error> {
-        if self.0.contains_key(deployed_name.clone()) {
-            return Err(Error::AlreadyClaimed);
-        }
-        self.0.set(deployed_name, id);
-        Ok(())
-    }
     fn deploy(
         &mut self,
         contract_name: String,
@@ -86,7 +98,7 @@ impl IsDeployable for ContractRegistry {
         if let  Some((init_fn, args)) = init {
             let _ = env().invoke_contract::<Val>(&address, &init_fn, args);
         }
-        self.0.set(deployed_name.clone(), address.clone());
+        self.0.set(deployed_name.clone(), ContractType::ContractById(address.clone()));
 
         // Publish a deploy event
         let version = version.map_or_else(
@@ -112,6 +124,7 @@ impl IsDeployable for ContractRegistry {
         self.0
             .get(deployed_name)
             .ok_or(Error::NoSuchContractDeployed)
+            .map(|contract| contract.contract_id().clone())
     }
 
     fn list_deployed_contracts(
@@ -126,9 +139,57 @@ impl IsDeployable for ContractRegistry {
             .take(limit.unwrap_or_else(|| self.0.len()) as usize);
         let mut res = vec![env()];
         for item in items {
-            res.push_back(item);
+            res.push_back((item.0, item.1.contract_id().clone()));
         }
         Ok(res)
+    }
+}
+
+impl IsClaimable for ContractRegistry {
+    fn claim_already_deployed_contract(
+        &mut self,
+        deployed_name: soroban_sdk::String,
+        id: soroban_sdk::Address,
+        owner: soroban_sdk::Address,
+    ) -> Result<(), Error> {
+        owner.require_auth();
+        if self.0.contains_key(deployed_name.clone()) {
+            return Err(Error::AlreadyClaimed);
+        }
+        self.0.set(deployed_name, ContractType::ContractByIdAndOwner(id, owner));
+        Ok(())
+    }
+
+    fn get_claimed_owner(
+        &self,
+        deployed_name: soroban_sdk::String
+    ) -> Result<Option<Address>, Error> {
+        self.0
+            .get(deployed_name)
+            .ok_or(Error::NoSuchContractDeployed)
+            .map(|contract| contract.owner().cloned())
+    }
+
+    fn redeploy_claimed_contract(
+        &self,
+        binary_name: Option<soroban_sdk::String>,
+        version: Option<Version>,
+        deployed_name: soroban_sdk::String,
+        redeploy_fn: Option<(soroban_sdk::Symbol, soroban_sdk::Vec<soroban_sdk::Val>)>,
+    ) -> Result<(), Error> {
+        self.get_claimed_owner(deployed_name.clone())?
+            .ok_or(Error::NoOwnerSet)?
+            .require_auth();
+        let contract_id = self.fetch_contract_id(deployed_name)?;
+        if let Some(binary_name) = binary_name {
+            let hash = Contract::fetch_hash(binary_name, version)?;
+            env().deployer().update_current_contract_wasm(hash);
+        } else if let Some((fn_name, args)) = redeploy_fn {
+            let _ = env().invoke_contract::<Val>(&contract_id, &fn_name, args);
+        } else {
+            return Err(Error::RedeployDeployedFailed);
+        }
+        Ok(())
     }
 }
 
@@ -157,14 +218,15 @@ impl IsDevDeployable for ContractRegistry {
         wasm: soroban_sdk::Bytes,
     ) -> Result<soroban_sdk::Address, Error> {
         let wasm_hash = env().deployer().upload_contract_wasm(wasm);
-        if let Some(address) = self.0.get(name.clone()) {
-            let contract = core_riff::Client::new(env(), &address);
+        if let Some(contract_state) = self.0.get(name.clone()) {
+            let address = contract_state.contract_id();
+            let contract = core_riff::Client::new(env(), address);
             contract.redeploy(&wasm_hash);
-            return Ok(address);
+            return Ok(address.clone());
         }
         let salt = hash_string(&name);
         let id = deploy_and_init(&owner, salt, wasm_hash)?;
-        self.0.set(name, id.clone());
+        self.0.set(name, ContractType::ContractById(id.clone()));
         Ok(id)
     }
 }

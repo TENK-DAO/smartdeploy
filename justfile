@@ -75,8 +75,11 @@ setup_default:
     @./deploy.sh
 
 [private]
-@claim_self:
-    just smartdeploy claim_deployed_contract --deployed_name smartdeploy --id {{ id }}
+@claim_self owner='default':
+    just smartdeploy claim_already_deployed_contract --deployed_name smartdeploy --id {{ id }} --owner {{owner}}
+
+@set_owner owner:
+    @just smartdeploy_raw -- owner_set --new_owner {{ owner }} 
 
 [private]
 @install_self:

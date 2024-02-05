@@ -47,6 +47,7 @@ echo $ID
 if test "$FILE_HASH" = ""; then
   just publish smartdeploy
   just claim_self
+  just set_owner default
 fi
 
 if test "$SOROBAN_NETWORK" = "testnet"; then
