@@ -4,7 +4,7 @@ use clap::Parser;
 
 use smartdeploy_build::{target_dir, wasm_location};
 use soroban_cli::commands::{
-    config::network,
+    network,
     contract::{fetch, invoke},
     global,
 };
