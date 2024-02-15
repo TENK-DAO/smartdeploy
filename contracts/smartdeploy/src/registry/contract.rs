@@ -24,6 +24,8 @@ loam_sdk::import_contract!(core_riff);
 //     loam_sdk::soroban_sdk::contractimport!(file = "../../target/loam/core_riff.wasm",);
 // }
 
+#[contracttype(export = false)]
+pub struct ContractRegistry(pub Map<String, ContractType>);
 
 #[contracttype(export = false)]
 #[derive(Clone)]
