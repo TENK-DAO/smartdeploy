@@ -2,7 +2,7 @@
 use loam_sdk::{soroban_contract, soroban_sdk};
 use loam_sdk_core_riff::{owner::Owner, CoreRiff};
 use registry::{
-    contract::ContractRegistry, wasm::WasmRegistry, Deployable, DevDeployable, Publishable,
+    contract::ContractRegistry, wasm::WasmRegistry, Deployable, DevDeployable, Publishable, Claimable,
 };
 
 pub mod error;
@@ -21,6 +21,10 @@ impl Publishable for Contract {
 }
 
 impl Deployable for Contract {
+    type Impl = ContractRegistry;
+}
+
+impl Claimable for Contract {
     type Impl = ContractRegistry;
 }
 

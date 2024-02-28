@@ -52,9 +52,6 @@ pub trait IsPublishable {
 
 #[riff]
 pub trait IsDeployable {
-    /// Claim a contract id of an already deployed contract
-    fn claim_deployed_contract(&mut self, deployed_name: soroban_sdk::String, id: soroban_sdk::Address) -> Result<(), Error>;
-
     /// Deploys a new published contract returning the deployed contract's id.
     /// If no salt provided it will use the current sequence number.
     fn deploy(
@@ -81,6 +78,31 @@ pub trait IsDeployable {
     ) -> Result<soroban_sdk::Vec<(soroban_sdk::String, soroban_sdk::Address)>, Error>;
 }
 
+#[riff]
+pub trait IsClaimable {
+    /// Claim a contract id of an already deployed contract
+    fn claim_already_deployed_contract(
+        &mut self,
+        deployed_name: soroban_sdk::String,
+        id: soroban_sdk::Address,
+        owner: soroban_sdk::Address,
+    ) -> Result<(), Error>;
+
+    /// Get the owner of a claimed deployed contract
+    fn get_claimed_owner(
+        &self,
+        deployed_name: soroban_sdk::String
+    ) -> Result<Option<soroban_sdk::Address>, Error>;
+
+    /// Redeploy a claimed deployed contract to a new wasm. Defaults: use redeploy from coreriff
+    fn redeploy_claimed_contract(
+        &self,
+        binary_name: Option<soroban_sdk::String>,
+        version: Option<Version>,
+        deployed_name: soroban_sdk::String,
+        redeploy_fn: Option<(soroban_sdk::Symbol, soroban_sdk::Vec<soroban_sdk::Val>)>,
+    ) -> Result<(), Error>;
+}
 
 #[riff]
 pub trait IsDevDeployable {
