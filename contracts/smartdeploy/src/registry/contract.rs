@@ -5,7 +5,7 @@ use loam_sdk::soroban_sdk::{
 
 use crate::{
     error::Error,
-    events::{Deploy, EventPublishable},
+    events::{Deploy, Claim, EventPublishable},
     registry::Publishable,
     util::{hash_string, MAX_BUMP},
     version::Version,
@@ -151,7 +151,15 @@ impl IsClaimable for ContractRegistry {
         if self.0.contains_key(deployed_name.clone()) {
             return Err(Error::AlreadyClaimed);
         }
-        self.0.set(deployed_name, ContractType::ContractByIdAndOwner(id, owner));
+        self.0.set(deployed_name.clone(), ContractType::ContractByIdAndOwner(id.clone(), owner.clone()));
+
+        // Publish a Claim event
+        Claim {
+            deployed_name,
+            claimer: owner,
+            contract_id: id,
+        }
+        .publish_event(env());
         Ok(())
     }
 

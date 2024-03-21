@@ -25,6 +25,14 @@ pub struct Deploy {
     pub contract_id: Address,
 }
 
+#[contracttype]
+#[derive(IntoKey)]
+pub struct Claim {
+    pub deployed_name: String,
+    pub claimer: Address,
+    pub contract_id: Address,
+}
+
 pub trait EventPublishable {
     /// Publish an event on the blockchain
     fn publish_event(self, env: &Env);
