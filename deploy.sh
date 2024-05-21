@@ -42,6 +42,8 @@ if test "$ID" = ""; then
 fi
 echo $ID
 
+./subscribe_events.sh $ID
+
 # smartdeploy="soroban --quiet contract invoke --id $ID"
 
 if test "$FILE_HASH" = ""; then
