@@ -1,6 +1,5 @@
 
-name: local
-
+name: Tests
 on:
   push:
     branches: [main, release/**]
@@ -8,11 +7,15 @@ on:
 
 jobs:
   test:
-    name: Test CLI
+    name: test RPC
     runs-on: ubuntu-22.04
+    env:
+        SOROBAN_RPC_URL: http://localhost:8000/soroban/rpc
+        SOROBAN_NETWORK_PASSPHRASE: "Standalone Network ; February 2017"
+        SOROBAN_ACCOUNT: default
     services:
       rpc:
-        image: stellar/quickstart:testing
+        image: stellar/quickstart:v423-testing
         ports:
           - 8000:8000
         env:
@@ -26,7 +29,6 @@ jobs:
           --health-retries 50
     steps:
     - uses: actions/checkout@v3
-    - run: "curl --fail-with-body -X POST \"http://localhost:8000/soroban/rpc\" -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":8675309,\"method\":\"getNetwork\"}'"
     - uses: actions/cache@v3
       with:
         path: |
@@ -36,11 +38,13 @@ jobs:
           ~/.cargo/git/db/
           target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-    - uses: taiki-e/install-action@just
-    - uses: taiki-e/install-action@cargo-binstall
     - run: rustup update
     - run: rustup target add wasm32-unknown-unknown
+    - uses: taiki-e/install-action@just
+    - uses: taiki-e/install-action@nextest
+    - uses: cargo-bins/cargo-binstall@main
     - run: just setup
+    - run: cargo nextest run
     - run: just clean
     - run: just publish_all
     - run: just deployed_contracts
