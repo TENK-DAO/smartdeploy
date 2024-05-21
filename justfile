@@ -3,7 +3,6 @@
 set dotenv-load
 
 export PATH := './target/bin:' + env_var('PATH')
-export SOROBAN_NETWORK := env_var('SOROBAN_NETWORK')
 TARGET_DIR := './target/loam'
 SMARTDEPLOY := TARGET_DIR / 'smartdeploy.wasm'
 BASE := TARGET_DIR / 'base.wasm'
