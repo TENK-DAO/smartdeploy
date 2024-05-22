@@ -28,7 +28,10 @@ impl Lazy for WasmRegistry {
     fn set_lazy(self) {
         let key = &key();
         env().storage().persistent().set(key, &self);
-        env().storage().persistent().extend_ttl(key, MAX_BUMP, MAX_BUMP);
+        env()
+            .storage()
+            .persistent()
+            .extend_ttl(key, MAX_BUMP, MAX_BUMP);
     }
 }
 
@@ -84,7 +87,9 @@ impl IsPublishable for WasmRegistry {
         let last_version = keys.last().unwrap_or_default();
 
         last_version.log();
-        let new_version = last_version.clone().update(&kind.clone().unwrap_or_default());
+        let new_version = last_version
+            .clone()
+            .update(&kind.clone().unwrap_or_default());
         new_version.log();
 
         let metadata = if let Some(repo) = repo {
@@ -95,7 +100,10 @@ impl IsPublishable for WasmRegistry {
             contract.get(Some(last_version))?.metadata
         };
         let hash = env().deployer().upload_contract_wasm(wasm);
-        let published_binary = PublishedWasm { hash: hash.clone(), metadata: metadata.clone() };
+        let published_binary = PublishedWasm {
+            hash: hash.clone(),
+            metadata: metadata.clone(),
+        };
         contract.versions.set(new_version, published_binary);
         self.set_contract(contract_name.clone(), contract);
 

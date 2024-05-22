@@ -26,6 +26,4 @@ impl IsRiff for Impl {
     fn init(&mut self, num: u32) {
         self.0 = num;
     }
-
-
 }

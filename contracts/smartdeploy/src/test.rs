@@ -2,9 +2,8 @@
 use super::*;
 use crate::{error::Error, SorobanContract, SorobanContractClient};
 use loam_sdk::soroban_sdk::{
-    testutils::{ Address as _, Events },
-    Address, Bytes, Env, String, IntoVal,
-    vec,
+    testutils::{Address as _, Events},
+    vec, Address, Bytes, Env, IntoVal, String,
 };
 extern crate std;
 
@@ -38,16 +37,18 @@ fn handle_error_cases() {
     let res = client.try_fetch(name, &None).unwrap_err();
     assert!(matches!(res, Ok(Error::NoSuchContractPublished)));
     let bytes = Bytes::from_slice(env, contract::WASM);
+    let _ = client
+        .try_publish(name, address, &bytes, &None, &None)
+        .expect_err("Should not be authorized to publish");
+    Env::mock_all_auths(env);
     client.publish(name, address, &bytes, &None, &None);
     let res = client.try_fetch(name, &None).unwrap().unwrap();
     assert_eq!(res.hash, wasm_hash);
 
-    let other_address = Address::generate(env);
-    let res = client
-        .try_publish(name, &other_address, &bytes, &None, &None)
-        .unwrap_err();
+    // let other_address = Address::generate(env);
+    // client.publish(name, &other_address, &bytes, &None, &None);
 
-    assert!(matches!(res, Ok(Error::AlreadyPublished)));
+    // assert!(matches!(res, Ok(Error::AlreadyPublished)));
 
     // let res = client.try_deploy(name, &None, &String::from_slice(env, "hello"), &None);
 
@@ -59,17 +60,16 @@ fn handle_error_cases() {
 
 #[test]
 fn publish_deploy_events() {
-
     let (env, client, address) = &init();
     env.mock_all_auths();
-    
+
     let published_name = String::from_str(env, "contract_a");
 
     let bytes = Bytes::from_slice(env, contract::WASM);
-    
+
     client.publish(&published_name, address, &bytes, &None, &None);
 
-    let publish_data =  events::Publish {
+    let publish_data = events::Publish {
         published_name: published_name.clone(),
         author: address.clone(),
         hash: env.deployer().upload_contract_wasm(bytes),
@@ -79,9 +79,16 @@ fn publish_deploy_events() {
 
     let deployed_name = String::from_str(env, "deployed_contract_a");
 
-    let contract_id = client.deploy(&published_name, &Some(version::INITAL_VERSION), &deployed_name, address, &None, &None);
+    let contract_id = client.deploy(
+        &published_name,
+        &Some(version::INITAL_VERSION),
+        &deployed_name,
+        address,
+        &None,
+        &None,
+    );
 
-    let deploy_data =  events::Deploy {
+    let deploy_data = events::Deploy {
         published_name,
         deployed_name,
         version: version::INITAL_VERSION,

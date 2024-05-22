@@ -58,7 +58,7 @@ build +args='':
 
 [private]
 setup_default:
-   -soroban config identity generate default
+   -soroban keys generate default
 
 @setup:
     cargo binstall -y --install-path ./target/bin soroban-cli  --version 21.0.0-preview.1
@@ -67,7 +67,7 @@ setup_default:
 
 
 @fund_default:
-    soroban config identity fund default
+    soroban keys fund default
 
 @deploy_self:
     just build --package smartdeploy

@@ -26,6 +26,6 @@ pub enum Error {
     /// Failed to redeploy a deployed contract with no coreriff macro
     RedeployDeployedFailed = 8,
 
-    /// Contract doesn't have owner, impossible to perform the operation 
+    /// Contract doesn't have owner, impossible to perform the operation
     NoOwnerSet = 9,
 }

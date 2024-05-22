@@ -44,6 +44,7 @@ jobs:
     - uses: taiki-e/install-action@nextest
     - uses: cargo-bins/cargo-binstall@main
     - run: just setup
+    - run: just build
     - run: cargo nextest run
     - run: just clean
     - run: just publish_all

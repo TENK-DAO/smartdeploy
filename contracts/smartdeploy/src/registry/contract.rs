@@ -5,12 +5,11 @@ use loam_sdk::soroban_sdk::{
 
 use crate::{
     error::Error,
-    events::{Deploy, Claim, EventPublishable},
+    events::{Claim, Deploy, EventPublishable},
     registry::Publishable,
     util::{hash_string, MAX_BUMP},
     version::Version,
-    Contract,
-    WasmRegistry,
+    Contract, WasmRegistry,
 };
 
 use super::{IsClaimable, IsDeployable, IsDevDeployable};
@@ -66,7 +65,10 @@ impl Lazy for ContractRegistry {
     fn set_lazy(self) {
         let key = &key();
         env().storage().persistent().set(key, &self);
-        env().storage().persistent().extend_ttl(key, MAX_BUMP, MAX_BUMP);
+        env()
+            .storage()
+            .persistent()
+            .extend_ttl(key, MAX_BUMP, MAX_BUMP);
     }
 }
 
@@ -88,10 +90,13 @@ impl IsDeployable for ContractRegistry {
         let hash = Contract::fetch_hash(contract_name.clone(), version.clone())?;
         let salt = salt.unwrap_or_else(|| hash_string(&deployed_name));
         let address = deploy_and_init(&owner, salt, hash)?;
-        if let  Some((init_fn, args)) = init {
+        if let Some((init_fn, args)) = init {
             let _ = env().invoke_contract::<Val>(&address, &init_fn, args);
         }
-        self.0.set(deployed_name.clone(), ContractType::ContractById(address.clone()));
+        self.0.set(
+            deployed_name.clone(),
+            ContractType::ContractById(address.clone()),
+        );
 
         // Publish a deploy event
         let version = version.map_or_else(
@@ -151,7 +156,10 @@ impl IsClaimable for ContractRegistry {
         if self.0.contains_key(deployed_name.clone()) {
             return Err(Error::AlreadyClaimed);
         }
-        self.0.set(deployed_name.clone(), ContractType::ContractByIdAndOwner(id.clone(), owner.clone()));
+        self.0.set(
+            deployed_name.clone(),
+            ContractType::ContractByIdAndOwner(id.clone(), owner.clone()),
+        );
 
         // Publish a Claim event
         Claim {
@@ -165,7 +173,7 @@ impl IsClaimable for ContractRegistry {
 
     fn get_claimed_owner(
         &self,
-        deployed_name: soroban_sdk::String
+        deployed_name: soroban_sdk::String,
     ) -> Result<Option<Address>, Error> {
         self.0
             .get(deployed_name)

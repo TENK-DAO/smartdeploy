@@ -1,6 +1,6 @@
 use loam_sdk::soroban_sdk::xdr::{Hash, ScAddress};
 use soroban_cli::{
-    commands::{network, contract::invoke},
+    commands::{contract::invoke, network},
     rpc::{self, Client},
 };
 
