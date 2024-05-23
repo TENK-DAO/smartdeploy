@@ -14,6 +14,7 @@ doctest = false
 loam-sdk = { workspace = true }
 smartdeploy-sdk = { workspace = true }
 contract-a = { path = "../contract_a" }
+contract-b = { path = "../contract_b" }
 
 
 [dev_dependencies]

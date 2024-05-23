@@ -11,5 +11,4 @@ pub fn hash_string(s: &String) -> BytesN<32> {
     env.crypto().sha256(&b)
 }
 
-
 pub const MAX_BUMP: u32 = 535_679;

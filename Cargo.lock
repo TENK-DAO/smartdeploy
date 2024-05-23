@@ -436,6 +436,7 @@ name = "contract-c"
 version = "0.0.0"
 dependencies = [
  "contract-a",
+ "contract-b",
  "loam-sdk",
  "smartdeploy-sdk",
 ]
@@ -2497,7 +2498,7 @@ dependencies = [
 
 [[package]]
 name = "smartdeploy-cli"
-version = "0.5.0"
+version = "0.5.1"
 dependencies = [
  "assert_cmd",
  "assert_fs",

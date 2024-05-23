@@ -91,7 +91,7 @@ pub trait IsClaimable {
     /// Get the owner of a claimed deployed contract
     fn get_claimed_owner(
         &self,
-        deployed_name: soroban_sdk::String
+        deployed_name: soroban_sdk::String,
     ) -> Result<Option<soroban_sdk::Address>, Error>;
 
     /// Redeploy a claimed deployed contract to a new wasm. Defaults: use redeploy from coreriff

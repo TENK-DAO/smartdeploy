@@ -30,4 +30,15 @@ curl    -X POST \
             }' \
         $MERCURY_BACKEND_ENDPOINT/event
 
+# Subscribe to the "Claim" event
+# XDR built with JS: sorobanClient.xdr.ScVal.scvString("Claim").toXDR("base64")
+curl    -X POST \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer $MERCURY_JWT_TOKEN" \
+        -d '{
+            "contract_id": "'"$1"'",
+            "topic1": "AAAADgAAAAVDbGFpbQAAAA=="
+            }' \
+        $MERCURY_BACKEND_ENDPOINT/event
+
 echo "\n\nSuccessfully subscribed to the events"

@@ -3,7 +3,6 @@
 set dotenv-load
 
 export PATH := './target/bin:' + env_var('PATH')
-export SOROBAN_NETWORK := env_var('SOROBAN_NETWORK')
 TARGET_DIR := './target/loam'
 SMARTDEPLOY := TARGET_DIR / 'smartdeploy.wasm'
 BASE := TARGET_DIR / 'base.wasm'
@@ -59,16 +58,16 @@ build +args='':
 
 [private]
 setup_default:
-   -soroban config identity generate default --config-dir $CONFIG_DIR
+   -soroban keys generate default
 
 @setup:
-    echo {{ if path_exists(soroban) == "true" { "" } else { `cargo install_soroban_dev` } }}
-    echo {{ if path_exists(loam) == "true" { "" } else { `cargo install_loam` } }}
-    echo {{ if path_exists(env_var('CONFIG_DIR') / '.soroban/identity/default.toml') == "true" { "" } else { `just setup_default` } }}
+    cargo binstall -y --install-path ./target/bin soroban-cli  --version 21.0.0-preview.1
+    cargo install --git https://github.com/loambuild/loam-sdk --rev 7eb6541d67160ac7bad3eeee5f72b8c94f4101de --debug --root ./target loam-cli
+    just setup_default
 
 
 @fund_default:
-    soroban config identity fund default
+    soroban keys fund default
 
 @deploy_self:
     just build --package smartdeploy
@@ -90,7 +89,6 @@ setup_default:
 publish_all: fund_default deploy_self
     #!/usr/bin/env bash
     set -e;
-    echo $SOROBAN_NETWORK;
     just install_self;
     for name in $(loam build --ls)
     do

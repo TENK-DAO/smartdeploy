@@ -4,9 +4,8 @@ use clap::Parser;
 
 use smartdeploy_build::{target_dir, wasm_location};
 use soroban_cli::commands::{
-    network,
     contract::{fetch, invoke},
-    global,
+    global, network,
 };
 
 use crate::testnet;
