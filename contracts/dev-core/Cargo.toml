@@ -1,5 +1,5 @@
 [package]
-name = "dev-core-riff"
+name = "dev-core-subcontract"
 description = "Smallest Redeployable Contract"
 version = "0.1.0"
 authors = ["Stellar Development Foundation <info@stellar.org>"]
@@ -23,5 +23,5 @@ loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }
 contract = true
 
 [features]
-default = ["core_riff"]
-core_riff = []
+default = ["core_subcontract"]
+core_subcontract = []

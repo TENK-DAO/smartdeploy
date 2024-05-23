@@ -20,7 +20,7 @@ pub enum DataKey {
 #[derive(Clone)]
 #[contracttype]
 pub struct Offer {
-    // Owner of this offer. Sells sell_token to get buy_token.
+    // Admin of this offer. Sells sell_token to get buy_token.
     pub seller: Address,
     pub sell_token: BytesN<32>,
     pub buy_token: BytesN<32>,

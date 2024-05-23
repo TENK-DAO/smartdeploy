@@ -1,5 +1,5 @@
 [package]
-name = "core-riff"
+name = "core-subcontract"
 description = "Example of Redeployable Contract"
 version = "0.1.0"
 authors = ["Stellar Development Foundation <info@stellar.org>"]

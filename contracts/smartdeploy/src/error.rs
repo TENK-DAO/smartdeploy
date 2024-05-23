@@ -23,9 +23,9 @@ pub enum Error {
     /// Failed to initialize contract
     InitFailed = 7,
 
-    /// Failed to redeploy a deployed contract with no coreriff macro
+    /// Failed to redeploy a deployed contract with no core macro
     RedeployDeployedFailed = 8,
 
-    /// Contract doesn't have owner, impossible to perform the operation
-    NoOwnerSet = 9,
+    /// Contract doesn't have Admin, impossible to perform the operation
+    NoAdminSet = 9,
 }

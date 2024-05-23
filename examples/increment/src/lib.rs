@@ -1,7 +1,7 @@
 #![no_std]
 
-use loam_sdk::{soroban_contract, soroban_sdk};
-use loam_sdk_core_riff::{owner::Owner, CoreRiff};
+use loam_sdk::soroban_contract;
+use loam_subcontract_core::{Admin, Core};
 
 pub mod counter;
 pub use counter::Riff;
@@ -12,8 +12,8 @@ impl Riff for Contract {
     type Impl = counter::Impl;
 }
 
-impl CoreRiff for Contract {
-    type Impl = Owner;
+impl Core for Contract {
+    type Impl = Admin;
 }
 
 soroban_contract!();

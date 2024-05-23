@@ -1,6 +1,6 @@
 #![no_std]
 use loam_sdk::{soroban_contract, soroban_sdk};
-use loam_sdk_core_riff::{owner::Owner, CoreRiff};
+use loam_subcontract_core::{Admin, Core};
 use registry::{
     contract::ContractRegistry, wasm::WasmRegistry, Claimable, Deployable, DevDeployable,
     Publishable,
@@ -34,8 +34,8 @@ impl DevDeployable for Contract {
     type Impl = ContractRegistry;
 }
 
-impl CoreRiff for Contract {
-    type Impl = Owner;
+impl Core for Contract {
+    type Impl = Admin;
 }
 
 soroban_contract!();

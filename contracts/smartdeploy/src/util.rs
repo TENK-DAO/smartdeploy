@@ -8,7 +8,7 @@ pub fn hash_string(s: &String) -> BytesN<32> {
     s.copy_into_slice(bytes);
     let mut b = Bytes::new(env);
     b.copy_from_slice(0, bytes);
-    env.crypto().sha256(&b)
+    env.crypto().sha256(&b).into()
 }
 
 pub const MAX_BUMP: u32 = 535_679;

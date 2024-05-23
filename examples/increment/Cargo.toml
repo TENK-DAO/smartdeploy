@@ -12,7 +12,7 @@ doctest = false
 
 [dependencies]
 loam-sdk = { workspace = true }
-loam-sdk-core-riff = { workspace = true }
+loam-subcontract-core = { workspace = true }
 
 
 [dev_dependencies]

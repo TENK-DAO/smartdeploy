@@ -15,6 +15,6 @@ impl ContractB {
     }
 }
 
-smartdeploy_sdk::core_riff!();
+smartdeploy_sdk::core!();
 
 mod test;

@@ -1,6 +1,6 @@
 use loam_sdk::{
-    riff,
     soroban_sdk::{self, Lazy},
+    subcontract,
 };
 
 use crate::{
@@ -11,7 +11,7 @@ use crate::{
 pub mod contract;
 pub mod wasm;
 
-#[riff]
+#[subcontract]
 pub trait IsPublishable {
     /// Fetch the hash from the registry
     fn fetch_hash(
@@ -50,7 +50,7 @@ pub trait IsPublishable {
     ) -> Result<soroban_sdk::Vec<(soroban_sdk::String, crate::metadata::PublishedContract)>, Error>;
 }
 
-#[riff]
+#[subcontract]
 pub trait IsDeployable {
     /// Deploys a new published contract returning the deployed contract's id.
     /// If no salt provided it will use the current sequence number.
@@ -59,7 +59,7 @@ pub trait IsDeployable {
         contract_name: soroban_sdk::String,
         version: Option<Version>,
         deployed_name: soroban_sdk::String,
-        owner: soroban_sdk::Address,
+        admin: soroban_sdk::Address,
         salt: Option<soroban_sdk::BytesN<32>>,
         init: Option<(soroban_sdk::Symbol, soroban_sdk::Vec<soroban_sdk::Val>)>,
     ) -> Result<soroban_sdk::Address, Error>;
@@ -78,23 +78,23 @@ pub trait IsDeployable {
     ) -> Result<soroban_sdk::Vec<(soroban_sdk::String, soroban_sdk::Address)>, Error>;
 }
 
-#[riff]
+#[subcontract]
 pub trait IsClaimable {
     /// Claim a contract id of an already deployed contract
     fn claim_already_deployed_contract(
         &mut self,
         deployed_name: soroban_sdk::String,
         id: soroban_sdk::Address,
-        owner: soroban_sdk::Address,
+        __admin_set: soroban_sdk::Address,
     ) -> Result<(), Error>;
 
-    /// Get the owner of a claimed deployed contract
-    fn get_claimed_owner(
+    /// Get the Admin of a claimed deployed contract
+    fn get_claimed_admin(
         &self,
         deployed_name: soroban_sdk::String,
     ) -> Result<Option<soroban_sdk::Address>, Error>;
 
-    /// Redeploy a claimed deployed contract to a new wasm. Defaults: use redeploy from coreriff
+    /// Redeploy a claimed deployed contract to a new wasm. Defaults: use redeploy from core
     fn redeploy_claimed_contract(
         &self,
         binary_name: Option<soroban_sdk::String>,
@@ -104,13 +104,13 @@ pub trait IsClaimable {
     ) -> Result<(), Error>;
 }
 
-#[riff]
+#[subcontract]
 pub trait IsDevDeployable {
     /// Skips the publish step to deploy a contract directly, keeping the name
     fn dev_deploy(
         &mut self,
         name: soroban_sdk::String,
-        owner: soroban_sdk::Address,
+        admin: soroban_sdk::Address,
         wasm: soroban_sdk::Bytes,
     ) -> Result<soroban_sdk::Address, Error>;
 }

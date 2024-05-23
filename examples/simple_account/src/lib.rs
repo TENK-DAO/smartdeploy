@@ -15,17 +15,17 @@ use soroban_sdk::{contractimpl, contracttype, BytesN, Env, Vec};
 #[derive(Clone)]
 #[contracttype]
 pub enum DataKey {
-    Owner,
+    Admin,
 }
 
 #[contractimpl]
 impl SimpleAccount {
-    // Initialize the contract with an owner's ed25519 public key.
+    // Initialize the contract with an Admin's ed25519 public key.
     pub fn init(env: Env, public_key: BytesN<32>) {
-        if env.storage().has(&DataKey::Owner) {
-            panic!("owner is already set");
+        if env.storage().has(&DataKey::Admin) {
+            panic!("Admin is already set");
         }
-        env.storage().set(&DataKey::Owner, &public_key);
+        env.storage().set(&DataKey::Admin, &public_key);
     }
 
     // This is the 'entry point' of the account contract and every account
@@ -55,7 +55,7 @@ impl SimpleAccount {
         if signature_args.len() != 1 {
             panic!("incorrect number of signature args");
         }
-        let public_key: BytesN<32> = env.storage().get(&DataKey::Owner).unwrap().unwrap();
+        let public_key: BytesN<32> = env.storage().get(&DataKey::Admin).unwrap().unwrap();
         env.crypto().ed25519_verify(
             &public_key,
             &signature_payload.into(),

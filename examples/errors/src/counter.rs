@@ -1,10 +1,10 @@
 use loam_sdk::{
-    riff,
+    subcontract,
     soroban_sdk::{self, contracttype, Lazy},
     IntoKey,
 };
 
-#[riff]
+#[subcontract]
 pub trait IsRiff {
     /// Increment increments an internal counter, and returns the value.
     fn increment(&mut self) -> Result<u32, crate::error::Error>;

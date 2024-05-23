@@ -12,7 +12,7 @@ use loam_sdk::soroban_sdk::xdr::{
 };
 use soroban_cli::{
     commands::{self, config, contract::invoke},
-    fee, rpc,
+    fee,
 };
 use soroban_spec_tools::Spec;
 
@@ -46,8 +46,6 @@ pub enum Error {
     SmartdeployBuild(#[from] smartdeploy_build::Error),
     #[error(transparent)]
     Install(#[from] super::install::Error),
-    #[error(transparent)]
-    Rpc(#[from] rpc::Error),
     #[error(transparent)]
     SpecTools(#[from] soroban_spec_tools::Error),
     #[error(transparent)]

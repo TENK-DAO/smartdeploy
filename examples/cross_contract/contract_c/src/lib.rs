@@ -9,6 +9,7 @@ pub struct ContractC;
 
 #[contractimpl]
 impl ContractC {
+    #[allow(clippy::similar_names)]
     pub fn add_with_a_and_b(
         env: Env,
         contract_a_addr: Address,
@@ -22,6 +23,6 @@ impl ContractC {
     }
 }
 
-smartdeploy_sdk::core_riff!();
+smartdeploy_sdk::core!();
 
 mod test;

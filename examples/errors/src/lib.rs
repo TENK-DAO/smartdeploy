@@ -1,12 +1,11 @@
 #![no_std]
 use loam_sdk::soroban_contract;
-use loam_sdk::soroban_sdk;
 
 pub mod counter;
 pub mod error;
 
 use counter::Riff;
-use loam_sdk_core_riff::CoreRiff;
+use loam_subcontract_core::Core;
 
 struct Contract;
 
@@ -14,8 +13,8 @@ impl counter::Riff for Contract {
     type Impl = counter::Impl;
 }
 
-impl CoreRiff for Contract {
-    type Impl = loam_sdk_core_riff::owner::Owner;
+impl Core for Contract {
+    type Impl = loam_subcontract_core::Admin;
 }
 
 soroban_contract!();

@@ -15,8 +15,8 @@ doctest = false
 
 [dependencies]
 loam-sdk = { workspace = true }
-loam-sdk-core-riff = { workspace = true }
-core-riff = { path = "../core", version = "0.1.0" }
+loam-subcontract-core = { workspace = true }
+core-subcontract = { path = "../core", version = "0.1.0" }
 
 [dev_dependencies]
 loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }

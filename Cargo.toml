@@ -7,7 +7,7 @@ members = [
     "examples/increment",
     "examples/errors",
     "examples/cross_contract/*",
-    "examples/increment-init"
+    "examples/increment-init",
 ]
 
 exclude = [
@@ -37,9 +37,11 @@ lto = true
 smartdeploy-sdk = { path = "./crates/smartdeploy-sdk" }
 smartdeploy-macros = { path = "./crates/smartdeploy-macros" }
 # loam-sdk = { path = "../../loam/crates/loam-sdk" }
-# loam-sdk-core-riff = { path = "../../loam/crates/loam-core" }
-loam-sdk-core-riff = "0.6.5"
-loam-sdk = "0.6.5"
+# loam-subcontract-core = { path = "../../loam/crates/loam-core" }
+# loam-subcontract-core= "0.7.0"
+loam-subcontract-core = { git = "https://github.com/loambuild/loam-sdk", rev = "ec4c08c772d21fe21f1a235c9b321c0e675c3f9c" }
+# loam-sdk = "0.6.8"
+loam-sdk = { git = "https://github.com/loambuild/loam-sdk", rev = "ec4c08c772d21fe21f1a235c9b321c0e675c3f9c" }
 clap = { version = "4.1.8", features = [
     "derive",
     "env",
