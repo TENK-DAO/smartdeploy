@@ -436,6 +436,7 @@ name = "contract-c"
 version = "0.0.0"
 dependencies = [
  "contract-a",
+ "contract-b",
  "loam-sdk",
  "smartdeploy-sdk",
 ]
