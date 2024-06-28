@@ -6,4 +6,4 @@ NAME=$1
 shift
 
 CONTRACT_ID=$(soroban contract invoke --source default --id $ID -- fetch_contract_id --deployed_name $NAME | jq -r)
-soroban contract invoke --id "$CONTRACT_ID" -- $@
+soroban contract invoke --id "$CONTRACT_ID" -- "$@"

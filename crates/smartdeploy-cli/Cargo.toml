@@ -47,8 +47,3 @@ heck = "0.4.1"
 ed25519-dalek = "2.0.0"
 stellar-strkey = "0.0.8"
 dotenvy = "0.15.7"
-
-[dev-dependencies]
-assert_cmd = "2.0.4"
-assert_fs = "1.0.7"
-predicates = "2.1.5"

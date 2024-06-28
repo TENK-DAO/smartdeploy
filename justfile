@@ -12,7 +12,6 @@ FILE := 'target/bin/soroban-smartdeploy'
 UPLOAD_FEE := '10000000'
 # smartdeploy := 'soroban contract invoke --id ' + env_var('DEFAULT_ID') + ' -- '
 # hash := if path_exists({{SMARTDEPLOY}}) == "true" {`soroban contract install --wasm ./target/wasm32-unknown-unknown/contracts/example_status_message.wasm --config-dir ./target` } else {""}
-id:=`cat contract_id.txt`
 ROOT_DIR := 'target/contracts/smartdeploy'
 
 [private]
@@ -36,14 +35,15 @@ smartdeploy +args:
     @just smartdeploy_raw -- {{args}}
 
 @smartdeploy_raw +args:
-    @soroban contract invoke --id {{id}} {{args}}
+    echo $SOROBAN_CONTRACT_ID
+    @soroban contract invoke {{args}}
 
 @soroban_install name:
     @soroban contract install --wasm ./target/wasm32-unknown-unknown/release-with-logs/{{name}}.wasm
 
 @generate: build
     @soroban contract bindings typescript \
-        --contract-id {{id}} \
+        --contract-id $SOROBAN_CONTRACT_ID \
         --wasm {{SMARTDEPLOY}} \
         --output-dir {{ ROOT_DIR }}/smartdeploy \
         --overwrite \
@@ -75,18 +75,19 @@ setup_default:
 
 [private]
 @claim_self owner='default':
-    just smartdeploy claim_already_deployed_contract --deployed_name smartdeploy --id {{ id }} --owner {{owner}}
+    echo $SOROBAN_CONTRACT_ID
+    just smartdeploy claim_already_deployed_contract --deployed_name smartdeploy --owner {{owner}}
 
 @set_owner owner:
     @just smartdeploy_raw -- owner_set --new_owner {{ owner }} 
 
 [private]
 @install_self:
-    echo "#!/usr/bin/env bash \nsoroban contract invoke --id {{id}} -- \$@" > {{ FILE }}
+    echo "#!/usr/bin/env bash \nsoroban contract invoke -- \$@" > {{ FILE }}
     chmod +x {{ FILE }}
 
 
-publish_all: fund_default deploy_self
+publish_all: fund_default
     #!/usr/bin/env bash
     set -e;
     just install_self;
@@ -96,13 +97,13 @@ publish_all: fund_default deploy_self
             echo $name;
             just build --package $name;
             name="${name//-/_}";
-            just publish_one $name
+            just publish_and_deploy_one $name
             cargo r -- install $name
         fi
     done
 
 [private]
-@publish_one name:
+@publish_and_deploy_one name:
     @just publish {{ name }}
     @just deploy {{ name }} {{ name }}
 
