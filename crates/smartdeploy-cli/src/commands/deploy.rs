@@ -7,8 +7,7 @@ use heck::ToKebabCase;
 use loam_sdk::soroban_sdk::xdr::{
     self, AccountId, HostFunction, InvokeContractArgs, InvokeHostFunctionOp, Memo, MuxedAccount,
     Operation, OperationBody, Preconditions, ScSpecEntry, ScSpecFunctionV0, ScSpecTypeDef,
-    ScString, ScSymbol, ScVal, SequenceNumber, Transaction, TransactionExt, TransactionMeta,
-    TransactionMetaV3, Uint256, VecM,
+    ScString, ScSymbol, ScVal, SequenceNumber, Transaction, TransactionExt,  Uint256, VecM,
 };
 use soroban_cli::{
     commands::{self, config, contract::invoke},
@@ -52,6 +51,8 @@ pub enum Error {
     Config(#[from] config::Error),
     #[error(transparent)]
     Xdr(#[from] xdr::Error),
+    #[error(transparent)]
+    Rpc(#[from]rpc::Error),
     #[error("Cannot parse contract spec")]
     CannotParseContractSpec,
     #[error("argument count ({current}) surpasses maximum allowed count ({maximum})")]
@@ -143,26 +144,8 @@ impl Cmd {
         let account_details = client.get_account(&public_strkey).await?;
         let sequence: i64 = account_details.seq_num.into();
         let tx = build_invoke_contract_tx(invoke_contract_args, sequence + 1, self.fee.fee, &key)?;
-        let (
-            _,
-            TransactionMeta::V3(TransactionMetaV3 {
-                soroban_meta: Some(xdr::SorobanTransactionMeta { return_value, .. }),
-                ..
-            }),
-            _,
-        ) = client
-            .prepare_and_send_transaction(
-                &tx,
-                &key,
-                &[],
-                &testnet::network_passphrase(),
-                None,
-                None,
-            )
-            .await?
-        else {
-            panic!("AAH");
-        };
+        let tx = client.simulate_and_assemble_transaction(&tx).await?;
+        let return_value = &tx.sim_response().results()?[0].xdr;
         println!("{return_value:#?}");
         Ok(())
     }

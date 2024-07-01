@@ -6,44 +6,44 @@ export PATH := './target/bin:' + env_var('PATH')
 TARGET_DIR := './target/loam'
 SMARTDEPLOY := TARGET_DIR / 'smartdeploy.wasm'
 BASE := TARGET_DIR / 'base.wasm'
-soroban := 'target/bin/soroban'
+stellar := 'target/bin/stellar'
 loam := 'target/bin/loam'
-FILE := 'target/bin/soroban-smartdeploy'
+FILE := 'target/bin/stellar-smartdeploy'
 UPLOAD_FEE := '10000000'
-# smartdeploy := 'soroban contract invoke --id ' + env_var('DEFAULT_ID') + ' -- '
-# hash := if path_exists({{SMARTDEPLOY}}) == "true" {`soroban contract install --wasm ./target/wasm32-unknown-unknown/contracts/example_status_message.wasm --config-dir ./target` } else {""}
+# smartdeploy := 'stellar contract invoke --id ' + env_var('DEFAULT_ID') + ' -- '
+# hash := if path_exists({{SMARTDEPLOY}}) == "true" {`stellar contract install --wasm ./target/wasm32-unknown-unknown/contracts/example_status_message.wasm --config-dir ./target` } else {""}
 ROOT_DIR := 'target/contracts/smartdeploy'
 
 [private]
 @default: setup build
-    soroban config network add standalone \
-        --rpc-url http://localhost:8000/soroban/rpc \
+    stellar config network add standalone \
+        --rpc-url http://localhost:8000/stellar/rpc \
         --network-passphrase "Standalone Network ; February 2017"
 
 # check clippy and cargo-spellcheck
 check:
     cargo spellcheck -c ./.config/spellcheck.toml
 
-@soroban +args:
-   soroban {{args}}
+@stellar +args:
+   stellar {{args}}
 
 # Execute plugin
 s name +args:
-    @soroban {{ name }} {{ args }}
+    @stellar {{ name }} {{ args }}
 
 smartdeploy +args:
     @just smartdeploy_raw -- {{args}}
 
 @smartdeploy_raw +args:
-    echo $SOROBAN_CONTRACT_ID
-    @soroban contract invoke {{args}}
+    echo $stellar_CONTRACT_ID
+    @stellar contract invoke {{args}}
 
-@soroban_install name:
-    @soroban contract install --wasm ./target/wasm32-unknown-unknown/release-with-logs/{{name}}.wasm
+@stellar_install name:
+    @stellar contract install --wasm ./target/wasm32-unknown-unknown/release-with-logs/{{name}}.wasm
 
 @generate: build
-    @soroban contract bindings typescript \
-        --contract-id $SOROBAN_CONTRACT_ID \
+    @stellar contract bindings typescript \
+        --contract-id $stellar_CONTRACT_ID \
         --wasm {{SMARTDEPLOY}} \
         --output-dir {{ ROOT_DIR }}/smartdeploy \
         --overwrite \
@@ -58,16 +58,16 @@ build +args='':
 
 [private]
 setup_default:
-   -soroban keys generate default
+   -stellar keys generate default
 
 @setup:
-    cargo binstall -y --install-path ./target/bin soroban-cli  --version 21.0.0-preview.1
-    cargo install --git https://github.com/loambuild/loam-sdk --rev 7eb6541d67160ac7bad3eeee5f72b8c94f4101de --debug --root ./target loam-cli
+    cargo binstall -y --install-path ./target/bin stellar-cli  --version 21.0.0
+    cargo binstall -y --install-path ./target/bin loam-cli --version 0.9.4
     just setup_default
 
 
 @fund_default:
-    soroban keys fund default
+    stellar keys fund default
 
 @deploy_self:
     just build --package smartdeploy
@@ -75,7 +75,7 @@ setup_default:
 
 [private]
 @claim_self owner='default':
-    echo $SOROBAN_CONTRACT_ID
+    echo $stellar_CONTRACT_ID
     just smartdeploy claim_already_deployed_contract --deployed_name smartdeploy --owner {{owner}}
 
 @set_owner owner:
@@ -83,7 +83,7 @@ setup_default:
 
 [private]
 @install_self:
-    echo "#!/usr/bin/env bash \nsoroban contract invoke -- \$@" > {{ FILE }}
+    echo "#!/usr/bin/env bash \nstellar contract invoke -- \$@" > {{ FILE }}
     chmod +x {{ FILE }}
 
 
@@ -127,11 +127,11 @@ publish_all: fund_default
 
 # Delete non-wasm artifacts
 @clean:
-    rm -rf .soroban/*.json hash.txt target/bin/soroban-* target/smartdeploy/*
+    rm -rf .stellar/*.json hash.txt target/bin/stellar-* target/smartdeploy/*
 
 # Delete installed binaries
 @clean_installed_binaries:
-    rm target/bin/loam target/bin/soroban target/bin/smartdeploy
+    rm target/bin/loam target/bin/stellar target/bin/smartdeploy
 
 # List Published Contracts
 published_contracts start='0' limit='100':
@@ -150,9 +150,9 @@ start_docker:
     docker run --rm -it \
     -p 8000:8000 \
     --name stellar \
-    stellar/quickstart:soroban-dev@sha256:c1030a6ee75c31ba6807b8feddded2af23789b5f2c9be3ac55a550630a35ef42 \
+    stellar/quickstart:stellar-dev@sha256:c1030a6ee75c31ba6807b8feddded2af23789b5f2c9be3ac55a550630a35ef42 \
     --local \
-    --enable-soroban-rpc \
+    --enable-stellar-rpc \
 
 smartdeploy_id:
     just smartdeploy fetch_contract_id --deployed_name smartdeploy | jq .

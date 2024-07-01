@@ -17,7 +17,7 @@ contract-a = { path = "../contract_a" }
 contract-b = { path = "../contract_b" }
 
 
-[dev_dependencies]
+[dev-dependencies]
 loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }
 
 [package.metadata.loam]

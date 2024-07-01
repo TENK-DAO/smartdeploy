@@ -1,7 +1,7 @@
 #![cfg(test)]
 
 use super::*;
-use soroban_sdk::{testutils::Logs, Env};
+use loam_sdk::soroban_sdk::{testutils::Logs, Env};
 
 extern crate std;
 

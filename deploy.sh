@@ -1,8 +1,8 @@
 #!/bin/bash
 
-CURRENT_HASH=$(soroban contract install --source default --network testnet --wasm ./target/loam/smartdeploy.wasm)
+CURRENT_HASH=$(stellar contract install --source default --network testnet --wasm ./target/loam/smartdeploy.wasm)
 echo current hash "$CURRENT_HASH"
-author=$(soroban config identity address default)
+author=$(stellar keys address default)
 echo "$author"
 
 FILE_HASH=""
@@ -17,19 +17,9 @@ if test "$CURRENT_HASH" = "$FILE_HASH"; then
 else
   FILE_HASH=""
   echo -n "$CURRENT_HASH" >./hash.txt
-  # printf -v a "%08d" $RANDOM
-  # printf -v b "%08d" $RANDOM
-  # printf -v c "%08d" $RANDOM
-  # printf -v d "%08d" $RANDOM
-  # printf -v e "%08d" $RANDOM
-  # printf -v f "%08d" $RANDOM
-  # printf -v g "%08d" $RANDOM
-  # printf -v h "%08d" $RANDOM
 
-  # SALT=$a$b$c$d$e$f$g$h
-
-  ID=$(soroban contract deploy \
-    --wasm-hash "$CURRENT_HASH")
+  ID=$(stellar contract deploy \
+    --wasm-hash "$CURRENT_HASH" --alias smartdeploy)
   loam update-env --name SOROBAN_CONTRACT_ID --value "$ID"
   loam update-env --name SMARTDEPLOY_CONTRACT_ID --value "$ID"
   echo -n "$ID" > contract_id.txt

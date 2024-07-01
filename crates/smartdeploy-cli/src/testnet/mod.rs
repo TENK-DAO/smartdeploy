@@ -1,8 +1,6 @@
 use loam_sdk::soroban_sdk::xdr::{Hash, ScAddress};
-use soroban_cli::{
-    commands::{contract::invoke, network},
-    rpc::{self, Client},
-};
+use rpc::{self, Client};
+use soroban_cli::commands::{contract::invoke, network, NetworkRunnable};
 
 const CONTRACT_ID: &str = include_str!("./smartdeploy.json");
 
@@ -34,7 +32,6 @@ pub fn build_invoke_cmd(slop: &[&str]) -> invoke::Cmd {
     invoke::Cmd {
         contract_id: contract_id(),
         wasm: None,
-        cost: false,
         slop: slop.iter().map(Into::into).collect(),
         config: soroban_cli::commands::config::Args {
             network: network::Args {
@@ -49,9 +46,11 @@ pub fn build_invoke_cmd(slop: &[&str]) -> invoke::Cmd {
 }
 
 pub async fn invoke_smartdeploy(slop: &[&str]) -> Result<String, invoke::Error> {
-    build_invoke_cmd(slop)
-        .run_against_rpc_server(&soroban_cli::commands::global::Args::default())
-        .await
+    Ok(build_invoke_cmd(slop)
+        .run_against_rpc_server(Some(&soroban_cli::commands::global::Args::default()), None)
+        .await?
+        .into_result()
+        .unwrap())
 }
 
 pub fn client() -> Result<Client, rpc::Error> {

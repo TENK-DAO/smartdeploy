@@ -11,21 +11,14 @@ crate-type = ["cdylib"]
 doctest = false
 
 [dependencies]
-soroban-sdk = { version = "0.7.0", git = "https://github.com/stellar/rs-soroban-sdk", rev = "9bbac60c25cee9aa995025db5af828c243d15690"}
+soroban-sdk = { package = "loam-soroban-sdk", version = "0.6.10" }
+loam-sdk = { workspace = true }
 
-[dev_dependencies]
-soroban-sdk = { version = "0.7.0", git = "https://github.com/stellar/rs-soroban-sdk", rev = "9bbac60c25cee9aa995025db5af828c243d15690", features = ["testutils"] }
+[dev-dependencies]
+soroban-sdk = { package = "loam-soroban-sdk", version = "0.6.10", features = [
+    "testutils",
+] }
 
-[profile.release]
-opt-level = "z"
-overflow-checks = true
-debug = 0
-strip = "symbols"
-debug-assertions = false
-panic = "abort"
-codegen-units = 1
-lto = true
 
-[profile.release-with-logs]
-inherits = "release"
-debug-assertions = true
+[package.metadata.loam]
+contract = true

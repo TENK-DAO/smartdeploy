@@ -51,7 +51,11 @@ impl Cmd {
             .into_iter()
             .map(Into::into)
             .collect::<Vec<_>>();
-        let id = cmd.invoke(&global::Args::default()).await?;
+        let id = cmd
+            .invoke(&global::Args::default())
+            .await?
+            .into_result()
+            .expect("Missing result");
         let contract_id = id.trim_matches('"');
         let out_dir = if let Some(out_dir) = self.out_dir.clone() {
             out_dir

@@ -25,11 +25,17 @@ path = "src/lib.rs"
 doctest = false
 
 [dependencies]
-soroban-cli = { git = "https://github.com/stellar/soroban-cli", rev = "e61a06a26380f73ecb83462ba7c91346c874445a" }
-soroban-rpc = "20.3.3"
+smartdeploy-build = { path = "../smartdeploy-build", version = "0.2.1" }
+
+soroban-cli = { workspace = true }
+rpc = { version = "21.3.1", package = "stellar-rpc-client" }
 #soroban-cli = { path = "../../../soroban-cli/cmd/soroban-cli" }
 #soroban-cli = {package = "loam-soroban-cli", version = "20.0.0-rc3" }
 # soroban-cli = "20.1.1"
+loam-sdk = { workspace = true }
+soroban-spec = "21.1.0-rc.1"
+soroban-spec-tools = "21.0.0"
+
 clap = { version = "4.1.8", features = [
     "derive",
     "env",
@@ -40,11 +46,7 @@ clap = { version = "4.1.8", features = [
 thiserror = "1.0.31"
 tokio = { version = "1", features = ["full"] }
 shlex = "1.1.0"
-smartdeploy-build = { path = "../smartdeploy-build", version = "0.2.1" }
-loam-sdk = { workspace = true }
-soroban-spec = "20.0.3"
-soroban-spec-tools = "20.1.1"
-heck = "0.4.1"
+heck = "0.5.0"
 ed25519-dalek = "2.0.0"
 stellar-strkey = "0.0.8"
 dotenvy = "0.15.7"

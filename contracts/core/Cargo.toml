@@ -16,7 +16,7 @@ loam-sdk = { workspace = true, features = ["loam-soroban-sdk"] }
 smartdeploy-sdk = { path = "../../crates/smartdeploy-sdk", version = "0.1.5" }
 
 
-[dev_dependencies]
+[dev-dependencies]
 loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }
 
 [package.metadata.loam]

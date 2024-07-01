@@ -16,7 +16,7 @@ smartdeploy-sdk = { workspace = true }
 contract-a = { path = "../contract_a" }
 
 
-[dev_dependencies]
+[dev-dependencies]
 loam-sdk = { workspace = true, features = ["soroban-sdk-testutils"] }
 
 [package.metadata.loam]
