@@ -12,23 +12,23 @@ pub fn core(_: TokenStream) -> TokenStream {
     #[soroban_sdk::contractimpl]
     impl Contract__ {
             /// Returns the Admin of the contract
-            pub fn Admin_get(env: soroban_sdk::Env) -> Option<soroban_sdk::Address> {
-                env.storage().instance().get(&Self::Admin_key())
+            pub fn admin_get(env: soroban_sdk::Env) -> Option<soroban_sdk::Address> {
+                env.storage().instance().get(&Self::admin_key())
             }
 
             /// Sets the Admin of the contract. If one already set it transfers it to the new Admin, if signed by Admin.
-            pub fn Admin_set(env: soroban_sdk::Env, new_Admin: soroban_sdk::Address) {
-                Self::Admin_get(env.clone()).as_ref().map(soroban_sdk::Address::require_auth);
-                env.storage().instance().set(&Self::Admin_key(), &new_Admin);
+            pub fn admin_set(env: soroban_sdk::Env, new_admin: soroban_sdk::Address) {
+                Self::admin_get(env.clone()).as_ref().map(soroban_sdk::Address::require_auth);
+                env.storage().instance().set(&Self::admin_key(), &new_admin);
             }
 
             /// Redeploy the contract to a Wasm hash
             pub fn redeploy(env: soroban_sdk::Env, wasm_hash: soroban_sdk::BytesN<32>) {
-                Self::Admin_get(env.clone()).as_ref().map(soroban_sdk::Address::require_auth);
+                Self::admin_get(env.clone()).as_ref().map(soroban_sdk::Address::require_auth);
                 env.deployer().update_current_contract_wasm(wasm_hash);
             }
-            fn Admin_key() -> soroban_sdk::Symbol {
-                soroban_sdk::symbol_short!("Admin")
+            fn admin_key() -> soroban_sdk::Symbol {
+                soroban_sdk::symbol_short!("admin")
             }
     }
         }

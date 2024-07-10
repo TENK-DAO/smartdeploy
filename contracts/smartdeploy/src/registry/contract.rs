@@ -216,7 +216,7 @@ fn deploy_and_init(
         .deploy(wasm_hash);
     // Set the Admin of the contract to the given Admin.
     let _ = core_subcontract::Client::new(env(), &address)
-        .try_Admin_set(admin)
+        .try_admin_set(admin)
         .map_err(|_| Error::InitFailed)?;
     Ok(address)
 }

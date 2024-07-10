@@ -59,6 +59,7 @@ build +args='':
 [private]
 setup_default:
    -stellar keys generate default
+   -stellar keys generate test --default-seed
 
 @setup:
     cargo binstall -y --install-path ./target/bin stellar-cli  --version 21.0.0
@@ -68,6 +69,12 @@ setup_default:
 
 @fund_default:
     stellar keys fund default
+
+deploy_deployer:
+    stellar contract deploy \
+        --wasm ./target/loam/soroban_deployer_contract.wasm \
+        --source test \
+        --alias deployer
 
 @deploy_self:
     just build --package smartdeploy
@@ -81,16 +88,10 @@ setup_default:
 @set_owner owner:
     @just smartdeploy_raw -- owner_set --new_owner {{ owner }} 
 
-[private]
-@install_self:
-    echo "#!/usr/bin/env bash \nstellar contract invoke -- \$@" > {{ FILE }}
-    chmod +x {{ FILE }}
-
 
 publish_all: fund_default
     #!/usr/bin/env bash
     set -e;
-    just install_self;
     for name in $(loam build --ls)
     do
         if [ "$name" != "smartdeploy" ]; then
