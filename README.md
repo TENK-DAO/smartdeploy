@@ -20,7 +20,7 @@ impl ContractA {
     }
 }
 
-smartdeploy_sdk::core_riff!();
+smartdeploy_sdk::core_subcontract!();
 ```
 
 The last line `smartdeploy_sdk::core_riff` ensures that the contract is redeployable.

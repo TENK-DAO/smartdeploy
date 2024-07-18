@@ -35,7 +35,6 @@ smartdeploy +args:
     @just smartdeploy_raw -- {{args}}
 
 @smartdeploy_raw +args:
-    echo $stellar_CONTRACT_ID
     @stellar contract invoke {{args}}
 
 @stellar_install name:
@@ -43,7 +42,6 @@ smartdeploy +args:
 
 @generate: build
     @stellar contract bindings typescript \
-        --contract-id $stellar_CONTRACT_ID \
         --wasm {{SMARTDEPLOY}} \
         --output-dir {{ ROOT_DIR }}/smartdeploy \
         --overwrite \
@@ -81,12 +79,11 @@ deploy_deployer:
     @./deploy.sh
 
 [private]
-@claim_self owner='default':
-    echo $stellar_CONTRACT_ID
-    just smartdeploy claim_already_deployed_contract --deployed_name smartdeploy --owner {{owner}}
+@claim_self admin='default':
+    just smartdeploy claim_already_deployed_contract --deployed_name smartdeploy --admin {{admin}}
 
-@set_owner owner:
-    @just smartdeploy_raw -- owner_set --new_owner {{ owner }} 
+@set_admin admin:
+    @just smartdeploy_raw -- admin_set --new_admin {{ admin }} 
 
 
 publish_all: fund_default
@@ -94,7 +91,8 @@ publish_all: fund_default
     set -e;
     for name in $(loam build --ls)
     do
-        if [ "$name" != "smartdeploy" ]; then
+       # skip if smartdeploy or deployer
+        if [ "$name" != "smartdeploy" ] && [ "$name" != "deployer" ]; then
             echo $name;
             just build --package $name;
             name="${name//-/_}";
@@ -108,13 +106,13 @@ publish_all: fund_default
     @just publish {{ name }}
     @just deploy {{ name }} {{ name }}
 
-@deploy contract_name deployed_name owner='default':
-    @just smartdeploy_raw --source {{owner}} -- deploy --contract_name {{contract_name}} --deployed_name {{deployed_name}} --owner {{owner}}
+@deploy contract_name deployed_name admin='default':
+    @just smartdeploy_raw --source {{admin}} -- deploy --contract_name {{contract_name}} --deployed_name {{deployed_name}} --admin {{admin}}
 
-@dev_deploy name file owner='default':
-    just smartdeploy_raw --fee {{UPLOAD_FEE}} --source {{owner}} -- \
+@dev_deploy name file admin='default':
+    just smartdeploy_raw --fee {{UPLOAD_FEE}} --source {{admin}} -- \
         dev_deploy \
-        --owner {{owner}}} \
+        --admin {{admin}}} \
         --name {{name}} \
         --wasm-file-path {{file}}} \
 

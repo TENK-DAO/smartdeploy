@@ -713,6 +713,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "deployer"
+version = "0.0.0"
+dependencies = [
+ "loam-sdk",
+ "loam-soroban-sdk",
+]
+
+[[package]]
 name = "der"
 version = "0.7.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3825,22 +3833,6 @@ dependencies = [
  "ureq",
  "wasmparser 0.90.0",
  "which",
-]
-
-[[package]]
-name = "soroban-deployer-contract"
-version = "0.0.0"
-dependencies = [
- "loam-sdk",
- "loam-soroban-sdk",
-]
-
-[[package]]
-name = "soroban-deployer-test-contract"
-version = "0.0.0"
-dependencies = [
- "loam-sdk",
- "loam-soroban-sdk",
 ]
 
 [[package]]

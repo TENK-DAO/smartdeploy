@@ -1,5 +1,5 @@
 [package]
-name = "soroban-deployer-contract"
+name = "deployer"
 version = "0.0.0"
 authors = ["Stellar Development Foundation <info@stellar.org>"]
 license = "Apache-2.0"

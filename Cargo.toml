@@ -8,11 +8,11 @@ members = [
     "examples/errors",
     "examples/cross_contract/*",
     "examples/increment-init",
-    "examples/deployer/*",
+    "examples/deployer/deployer",
 ]
 
 exclude = [
-    "examples/deployer/*",
+    "examples/deployer/deployer",
     # "crates/smartdeploy-macros",
     # "crates/smartdeploy-sdk",
     "contracts/*",
