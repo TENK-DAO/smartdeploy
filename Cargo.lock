@@ -2363,6 +2363,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "itertools"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ba291022dbbd398a455acf126c1e341954079855bc60dfdda641363bd6922569"
+dependencies = [
+ "either",
+]
+
+[[package]]
 name = "itoa"
 version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2507,9 +2516,9 @@ dependencies = [
 
 [[package]]
 name = "loam-build"
-version = "0.7.0"
+version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2fe069a494874d8eaf4bfc34c7f80db5bbb1cd2c764250d37246680c81653d3c"
+checksum = "f22a962acc712bcb9c9447a24c93dd0ab799f7d334af41b6138bd021911683fb"
 dependencies = [
  "cargo_metadata 0.18.1",
  "thiserror",
@@ -2518,9 +2527,9 @@ dependencies = [
 
 [[package]]
 name = "loam-sdk"
-version = "0.6.10"
+version = "0.6.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b6fb002880fd0ae423eef934ff42616c51bfdd186281ef195bf7de0446ea9b7f"
+checksum = "8bab14814c942cd57bf5ae495945a108d2634b9d709e1c813e9c6a723ea11146"
 dependencies = [
  "loam-sdk-macro",
  "loam-soroban-sdk",
@@ -2528,13 +2537,15 @@ dependencies = [
 
 [[package]]
 name = "loam-sdk-macro"
-version = "0.8.0"
+version = "0.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "47241a07b01b4777b971da0cdbb0c33efecbdc13f73893c1a49e2f7a00fd052d"
+checksum = "f32965a524669690dc9d9650c3669307a614973d6bc0091c4c46f106cdca2990"
 dependencies = [
  "Inflector",
  "cargo_metadata 0.18.1",
- "loam-build 0.7.0",
+ "darling",
+ "itertools 0.12.1",
+ "loam-build 0.7.2",
  "proc-macro2",
  "quote",
  "syn 2.0.39",
@@ -2544,9 +2555,9 @@ dependencies = [
 
 [[package]]
 name = "loam-soroban-sdk"
-version = "0.6.10"
+version = "0.6.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1364027edede5046ff15470e85d8d3fb8e67d03b18b4f33a4648e27bc773a906"
+checksum = "dacdda50e1128c874e0dfe66ec8e3a1d9741ab9cd7520408720141e52c8ff6b2"
 dependencies = [
  "loam-sdk-macro",
  "soroban-sdk",
@@ -2554,9 +2565,9 @@ dependencies = [
 
 [[package]]
 name = "loam-subcontract-core"
-version = "0.7.2"
+version = "0.7.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7b2df8c8dba4d6faa4e466bdde03118f2a0f7a6d16593003adb085ea8f750ea8"
+checksum = "f99acb19dd938705ccb8f876361b3614aa43c70c2dd690c74945d66011f7952d"
 dependencies = [
  "loam-sdk",
 ]
@@ -4209,15 +4220,15 @@ dependencies = [
 
 [[package]]
 name = "syn-file-expand"
-version = "0.2.0"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b6181cbea559711c240607c08763542d871f1b8988dd48e4c713e1c674642c63"
+checksum = "7af40d2da901c8c24077520fbf09848d38ddb4856a83d661892007836489fdb0"
 dependencies = [
  "im-rc",
  "itertools 0.10.5",
  "proc-macro2",
  "quote",
- "syn 1.0.109",
+ "syn 2.0.39",
  "thiserror",
 ]
 

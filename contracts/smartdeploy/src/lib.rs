@@ -1,5 +1,5 @@
 #![no_std]
-use loam_sdk::{soroban_contract, soroban_sdk};
+use loam_sdk::{derive_contract, soroban_sdk};
 use loam_subcontract_core::{Admin, Core};
 use registry::{
     contract::ContractRegistry, wasm::WasmRegistry, Claimable, Deployable, DevDeployable,
@@ -16,29 +16,15 @@ pub mod version;
 use error::Error;
 use version::Version;
 
+#[derive_contract(
+    Core(Admin),
+    Claimable(ContractRegistry),
+    Publishable(WasmRegistry),
+    Deployable(ContractRegistry),
+    DevDeployable(ContractRegistry)
+)]
 pub struct Contract;
 
-impl Publishable for Contract {
-    type Impl = WasmRegistry;
-}
-
-impl Deployable for Contract {
-    type Impl = ContractRegistry;
-}
-
-impl Claimable for Contract {
-    type Impl = ContractRegistry;
-}
-
-impl DevDeployable for Contract {
-    type Impl = ContractRegistry;
-}
-
-impl Core for Contract {
-    type Impl = Admin;
-}
-
-soroban_contract!();
 
 #[cfg(test)]
 mod test;

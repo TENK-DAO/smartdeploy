@@ -1,6 +1,9 @@
 #![cfg(test)]
 use super::*;
-use crate::{error::Error, SorobanContract, SorobanContractClient};
+use crate::{
+    error::Error, SorobanContract__ as SorobanContract,
+    SorobanContract__Client as SorobanContractClient,
+};
 use loam_sdk::soroban_sdk::{
     testutils::{Address as _, Events},
     vec, Address, Bytes, Env, IntoVal, String,

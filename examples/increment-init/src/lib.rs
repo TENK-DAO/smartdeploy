@@ -1,21 +1,13 @@
 #![no_std]
 
-use loam_sdk::soroban_contract;
-use loam_subcontract_core::{Admin, Core};
+use loam_sdk::derive_contract;
 
 pub mod counter;
-pub use counter::Riff;
 
+use counter::{Impl, Riff};
+use loam_subcontract_core::{Admin, Core};
+
+#[derive_contract(Core(Admin), Riff(Impl))]
 struct Contract;
-
-impl Riff for Contract {
-    type Impl = counter::Impl;
-}
-
-impl Core for Contract {
-    type Impl = Admin;
-}
-
-soroban_contract!();
 
 mod test;

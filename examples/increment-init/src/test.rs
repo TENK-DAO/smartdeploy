@@ -1,6 +1,6 @@
 #![cfg(test)]
 
-use super::{SorobanContract, SorobanContractClient};
+use super::{SorobanContract__ as SorobanContract, SorobanContract__Client as SorobanContractClient};
 use loam_sdk::soroban_sdk::{testutils::Logs, Env};
 
 extern crate std;

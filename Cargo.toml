@@ -41,9 +41,12 @@ smartdeploy-macros = { path = "./crates/smartdeploy-macros" }
 # loam-sdk = { path = "../../loam/crates/loam-sdk" }
 # loam-subcontract-core = { path = "../../loam/crates/loam-core" }
 # loam-subcontract-core= "0.7.0"
-loam-subcontract-core = "0.7.2"
+loam-subcontract-core = "0.7.5"
 # loam-sdk = "0.6.8"
-loam-sdk = "0.6.10"
+loam-sdk = "0.6.12"
+soroban-cli = "21.0.0"
+
+
 clap = { version = "4.1.8", features = [
     "derive",
     "env",
@@ -58,6 +61,5 @@ serde-aux = "4.1.2"
 hex = "0.4.3"
 num-bigint = "0.4"
 tokio = { version = "1", features = ["full"] }
-soroban-cli = "21.0.0"
 tracing = "0.1.37"
 tracing-subscriber = "0.3.17"
